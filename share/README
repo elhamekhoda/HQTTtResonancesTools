@@ -1,0 +1,19 @@
+README
+
+These are a set of files to be used to run the HQTTtResonancesTools.
+
+  * The GRL for 3.34 /fb containing all the data for the EOYE is at
+    data15_13TeV.periodAllYear_DetStatus-v71-pro19-06_DQDefects-00-01-02_PHYS_StandardGRL_All_Good_25ns.xml
+  * The respective ilumicalc file is 	ilumicalc_histograms_None_276262-284484.root
+  * More information about the GRLs and their names in https://twiki.cern.ch/twiki/bin/view/AtlasProtected/GoodRunListsForAnalysisRun2
+
+  * ttbar_25ns.mc15.prw.root has most (but not all) the ttbar events processed using the PileupReweightingTool.
+  * all_25ns.mc15.prw.root has all the <mu> distribution for all the backgrounds in MC15a, to be used as an input to the PRWTool.
+  * ttres-ljets-cuts-mc15-25ns.txt is the setup to be used for 25 ns runs in this tool. It includes all systematics by default.
+
+Old files:
+
+
+  * data15_13TeV.periodAllYear_DetStatus-v64-pro19_DQDefects-00-01-02_PHYS_StandardGRL_All_Good.xml
+     is a GRL for run 2, periods D1-D6, as mentioned here: https://twiki.cern.ch/twiki/bin/view/AtlasProtected/GoodRunListsForAnalysisRun2
+  * ilumicalc_histograms_None_276262-276954.root is the pile up reweighting file corresponding to the GRL above.

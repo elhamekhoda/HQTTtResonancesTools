@@ -1,0 +1,350 @@
+LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtResonancesTools libTtResonancesTools libBoostedJetTaggers libJetSelectorTools
+
+# http://atlas.web.cern.ch/Atlas/GROUPS/DATABASE/GroupData/GoodRunsLists/data16_13TeV/
+GRLDir  GoodRunsLists
+# 27.7+3.2 fb-1
+#GRLFile data15_13TeV/20160720/physics_25ns_20.7.xml data16_13TeV/20161019/physics_25ns_20.7.xml
+# 33.3+3.2 fb-1
+GRLFile data15_13TeV/20160720/physics_25ns_20.7.xml data16_13TeV/20161101/physics_25ns_20.7.xml
+
+PRWConfigFiles TopCorrections/PRW.410000.mc15c.r7725_r7676.root
+# 27.7+3.2 fb-1
+#PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20160720/physics_25ns_20.7.lumicalc.OflLumi-13TeV-005.root GoodRunsLists/data16_13TeV/20161019/physics_25ns_20.7.lumicalc.OflLumi-13TeV-005.root
+# 33.3+3.2 fb-1
+PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20160720/physics_25ns_20.7.lumicalc.OflLumi-13TeV-005.root GoodRunsLists/data16_13TeV/20161101/physics_25ns_20.7.lumicalc.OflLumi-13TeV-005.root
+PRWDefaultChannel 410000
+
+ElectronCollectionName Electrons
+MuonCollectionName Muons
+PhotonCollectionName None
+JetCollectionName AntiKt4EMTopoJets
+# original xAOD without trimmed jets
+LargeJetCollectionName AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets
+LargeJetSubstructure None
+#LargeJetCollectionName AntiKt10LCTopoJets
+#LargeJetSubstructure Trimmer
+TauCollectionName None
+PhotonCollectionName None
+TrackJetCollectionName AntiKt2PV0TrackJets
+
+TruthCollectionName TruthParticles
+#TruthCollectionName None
+TruthJetCollectionName AntiKt4TruthJets
+TopPartonHistory ttbar
+TruthBlockInfo False
+PDFInfo False
+IsAFII False
+
+OutputFileSetAutoFlushZero True
+
+ObjectSelectionName top::ObjectLoaderTtres
+OutputFormat top::TtresEventSaverFlatNtuple
+OutputEvents SelectedEvents
+OutputFilename output.root
+PerfStats No
+
+CalculateSF True
+Systematics None
+#Systematics All
+BTaggingWP FixedCutBEff_70
+
+JetUncertainties_NPModel 21NP
+#LargeRJESUncertaintyConfig TopTagging
+
+ElectronID TightLH
+ElectronIDLoose TightLH
+MuonQuality Medium
+MuonQualityLoose Loose
+ElectronIsolation FixedCutTightTrackOnly
+MuonIsolation FixedCutTightTrackOnly
+ElectronIsolationLoose FixedCutTightTrackOnly
+MuonIsolationLoose None
+
+FakesControlRegionDoLooseMC True
+OverlapRemovalLeptonDef Loose
+ApplyElectronInJetSubtraction False
+
+DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW
+
+TtresrunEWK  True
+TtresRunHTT False
+TtresSavePartons True
+isTOPQ False
+fakeLeptonSel False
+isSherpaW True
+
+#NEvents 1000
+
+
+SELECTION bmujets_2015
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_mu20_iloose_L1MU15 HLT_mu50 
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+MU_N 30000 >= 1
+MU_N 25000 == 1
+EL_N 25000 == 0
+TRIGMATCH HLT_mu20_iloose_L1MU15 HLT_mu50
+JETCLEAN LooseBad
+MET > 20000
+MET+MWT > 60000
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESST_N 200000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 1
+NOBADMUON
+SAVE
+
+SELECTION bmujets_2016
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_mu26_ivarmedium HLT_mu50
+RUN_NUMBER >= 297730
+MU_N 30000 >= 1
+MU_N 25000 == 1
+EL_N 25000 == 0
+TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+JETCLEAN LooseBad
+MET > 20000
+MET+MWT > 60000
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESST_N 200000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 1
+NOBADMUON
+SAVE
+
+SELECTION rmujets_2015
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_mu20_iloose_L1MU15 HLT_mu50 
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+MU_N 30000 >= 1
+MU_N 25000 == 1
+EL_N 25000 == 0
+TRIGMATCH HLT_mu20_iloose_L1MU15 HLT_mu50
+JETCLEAN LooseBad
+MET > 20000
+MET+MWT > 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+JET_N 25000 >= 3
+JET_N 25000 >= 4
+TRACKMV2C10_N 0.6455 >= 1
+LOG10_CHI2 < 0.9
+NOBADMUON
+SAVE
+
+SELECTION rmujets_2016
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_mu26_ivarmedium HLT_mu50
+RUN_NUMBER >= 297730
+MU_N 30000 >= 1
+MU_N 25000 == 1
+EL_N 25000 == 0
+TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+JETCLEAN LooseBad
+MET > 20000
+MET+MWT > 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+JET_N 25000 >= 3
+JET_N 25000 >= 4
+TRACKMV2C10_N 0.6455 >= 1
+LOG10_CHI2 < 0.9
+NOBADMUON
+SAVE
+
+SELECTION bmujetsQCDCR_xe80_2015
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_xe80_tc_lcw_L1XE50
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+MU_N 30000 >= 1
+MU_N 25000 == 1
+EL_N 25000 == 0
+JETCLEAN LooseBad
+#MET > 20000
+#MET+MWT > 60000
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESFAKES_N 200000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+SELECTION bmujetsQCDCR_xe110_2016
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_xe110_mht_L1XE50 HLT_xe110_mht_L1XE60
+RUN_NUMBER > 284484
+MU_N 30000 >= 1
+MU_N 25000 == 1
+EL_N 25000 == 0
+JETCLEAN LooseBad
+#MET > 20000
+#MET+MWT > 60000
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESFAKES_N 200000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+SELECTION bmujetsQCDCR_2015
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_mu20_iloose_L1MU15 HLT_mu50 
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+MU_N 30000 >= 1
+MU_N 25000 == 1
+EL_N 25000 == 0
+TRIGMATCH HLT_mu20_iloose_L1MU15 HLT_mu50
+JETCLEAN LooseBad
+#MET > 20000
+#MET+MWT > 60000
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESFAKES_N 200000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+SELECTION bmujetsQCDCR_2016
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_mu26_ivarmedium HLT_mu50
+RUN_NUMBER >= 297730
+MU_N 30000 >= 1
+MU_N 25000 == 1
+EL_N 25000 == 0
+TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+JETCLEAN LooseBad
+#MET > 20000
+#MET+MWT > 60000
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESFAKES_N 200000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+
+SELECTION rmujetsQCDCR_2015
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_mu20_iloose_L1MU15 HLT_mu50 
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+MU_N 30000 >= 1
+MU_N 25000 == 1
+EL_N 25000 == 0
+TRIGMATCH HLT_mu20_iloose_L1MU15 HLT_mu50
+JETCLEAN LooseBad
+#MET > 20000
+#MET+MWT > 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+#JET_N 25000 >= 3
+#JET_N 25000 >= 4
+TRACKMV2C10_N 0.6455 >= 0
+#LOG10_CHI2 < 0.9
+NOBADMUON
+SAVE
+
+SELECTION rmujetsQCDCR_2016
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_mu26_ivarmedium HLT_mu50
+RUN_NUMBER >= 297730
+MU_N 30000 >= 1
+MU_N 25000 == 1
+EL_N 25000 == 0
+TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+JETCLEAN LooseBad
+#MET > 20000
+#MET+MWT > 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+#JET_N 25000 >= 3
+#JET_N 25000 >= 4
+TRACKMV2C10_N 0.6455 >= 0
+#LOG10_CHI2 < 0.9
+NOBADMUON
+SAVE
+
+SELECTION rmujetsQCDCR_xe80_2015
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_xe80_tc_lcw_L1XE50
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+MU_N 30000 >= 1
+MU_N 25000 == 1
+EL_N 25000 == 0
+JETCLEAN LooseBad
+#MET > 20000
+#MET+MWT > 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+#JET_N 25000 >= 3
+#JET_N 25000 >= 4
+TRACKMV2C10_N 0.6455 >= 0
+#LOG10_CHI2 < 0.9
+NOBADMUON
+SAVE
+
+SELECTION rmujetsQCDCR_xe110_2016
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC  HLT_xe110_mht_L1XE50 HLT_xe110_mht_L1XE60
+RUN_NUMBER > 284484
+MU_N 30000 >= 1
+MU_N 25000 == 1
+EL_N 25000 == 0
+JETCLEAN LooseBad
+#MET > 20000
+#MET+MWT > 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+#JET_N 25000 >= 3
+#JET_N 25000 >= 4
+TRACKMV2C10_N 0.6455 >= 0
+#LOG10_CHI2 < 0.9
+NOBADMUON
+SAVE

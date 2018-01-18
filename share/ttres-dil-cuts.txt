@@ -1,0 +1,118 @@
+LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtResonancesTools
+
+ElectronCollectionName ElectronCollection
+MuonCollectionName Muons
+JetCollectionName AntiKt4LCTopoJets
+LargeJetCollectionName None
+LargeJetSubstructure None
+TauCollectionName None
+PhotonCollectionName None
+METCollectionName MET_RefFinalFix
+
+#TruthCollectionName TruthParticle
+TruthCollectionName None
+TruthJetCollectionName None
+TopPartonHistory ttbar
+PDFInfo False
+
+ObjectSelectionName top::ObjectLoaderTtres
+OutputFormat top::TtresEventSaverFlatNtuple
+OutputEvents SelectedEvents
+OutputFilename output.root
+PerfStats No
+
+CalculateSF False
+Systematics Nominal
+
+ElectronID LHTight
+ElectronIDLoose LHMedium
+FakesControlRegionDoLooseMC False
+LooseMETCollectionName MET_RefFinalFix
+OverlapRemovalLeptonDef Tight
+ApplyElectronInJetSubtraction False
+
+DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel
+
+TtresrunEWK False
+TtresRunHTT False
+TtresSavePartons True
+isTOPQ False
+fakeLeptonSel False
+
+SELECTION ee
+INITIAL
+GRL data/TopAnalysis/data12_8TeV.periodB_DetStatus-v61-pro16_DQDefects-00-01-00_PHYS_StandardGRL_All_Good.xml
+#HFOR
+#LAR
+#TRIGGER EL
+#PV #Not required in Run-II
+EL_N 25000 >= 1
+EL_N 25000 >= 2
+#EL_TRIGGER_MATCH
+#EMU_OVERLAP
+JETCLEAN MediumBad
+#MET > 60000
+#JET_N 25000 >= 1
+#JET_N 25000 >= 2
+EL_N 25000 == 2
+MU_N 25000 == 0
+OS
+MLL > 15000
+#MLLWIN 80000 100000
+#TRUTH_MATCH
+#MV1_N 0.5 >= 1
+#EXAMPLEPLOTS
+#PRINT
+SAVE
+
+SELECTION mumu
+INITIAL
+GRL data/TopAnalysis/data12_8TeV.periodB_DetStatus-v61-pro16_DQDefects-00-01-00_PHYS_StandardGRL_All_Good.xml
+#HFOR
+#LAR
+#TRIGGER EL
+#PV #Not required in Run-II
+MU_N 25000 >= 1
+MU_N 25000 >= 2
+#EL_TRIGGER_MATCH
+#EMU_OVERLAP
+JETCLEAN MediumBad
+#MET > 60000
+#JET_N 25000 >= 1
+#JET_N 25000 >= 2
+MU_N 25000 == 2
+EL_N 25000 == 0
+OS
+MLL > 15000
+#MLLWIN 80000 100000
+#TRUTH_MATCH
+#MV1_N 0.5 >= 1
+#EXAMPLEPLOTS
+#PRINT
+SAVE
+
+SELECTION emu
+INITIAL
+GRL data/TopAnalysis/data12_8TeV.periodB_DetStatus-v61-pro16_DQDefects-00-01-00_PHYS_StandardGRL_All_Good.xml
+#HFOR
+#LAR
+#TRIGGER EL
+#PV #Not required in Run-II
+EL_N_OR_MU_N 25000 >= 1
+EL_N 25000 >= 1
+MU_N 25000 >= 1
+#EL_TRIGGER_MATCH
+#EMU_OVERLAP
+JETCLEAN MediumBad
+#HT > 120000
+#JET_N 25000 >= 1
+#JET_N 25000 >= 2
+EL_N 25000 == 1
+MU_N 25000 == 1
+OS
+MLL > 15000
+#TRUTH_MATCH
+#MV1_N 0.5 >= 1
+#EXAMPLEPLOTS
+#PRINT
+SAVE

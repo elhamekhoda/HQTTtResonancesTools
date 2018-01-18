@@ -1,0 +1,102 @@
+LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtResonancesTools libTtResonancesTools libBoostedJetTaggers libJetSelectorTools
+
+GRLDir HQTTtResonancesTools
+GRLFile data15_13TeV.periodAllYear_DetStatus-v73-pro19-08_DQDefects-00-01-02_PHYS_StandardGRL_All_Good_25ns.xml
+
+PRWConfigFiles HQTTtResonancesTools/ttbar_25ns.mc15.prw.root 
+PRWLumiCalcFiles HQTTtResonancesTools/ilumicalc_histograms_None_276262-284484.root
+PRWDefaultChannel 410000
+
+ElectronCollectionName Electrons
+MuonCollectionName Muons
+PhotonCollectionName None
+JetCollectionName AntiKt4EMTopoJets
+LargeJetCollectionName AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets
+LargeJetSubstructure None
+TauCollectionName None
+PhotonCollectionName None
+TrackJetCollectionName AntiKt2PV0TrackJets
+
+TruthCollectionName TruthParticles
+TruthJetCollectionName None
+TopPartonHistory ttbar
+TruthBlockInfo False
+PDFInfo False
+
+ObjectSelectionName top::ObjectLoaderTtres
+OutputFormat top::TtresEventSaverFlatNtuple
+OutputEvents SelectedEvents
+OutputFilename output.root
+PerfStats No
+
+CalculateSF True
+Systematics Nominal
+BTaggingWP 70%
+
+ElectronID TightLH
+ElectronIDLoose MediumLH
+MuonQuality Tight
+MuonQualityLoose Medium
+ElectronIsolation FixedCutTightTrackOnly
+MuonIsolation FixedCutTightTrackOnly
+ElectronIsolationLoose None
+MuonIsolationLoose None
+#MuonTriggerSF None
+
+NEvents 1500
+
+DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel
+
+TtresrunEWK True
+TtresRunHTT True
+TtresSavePartons True
+isTOPQ False
+fakeLeptonSel False
+
+SELECTION allhad
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_j360_a10r_L1J100 HLT_ht850
+EL_N 25000 == 0
+MU_N 25000 == 0
+JETCLEAN LooseBad
+SAVE
+
+SELECTION allhad_0btag
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_j360_a10r_L1J100 HLT_ht850
+EL_N 25000 == 0
+MU_N 25000 == 0
+JETCLEAN LooseBad
+TRACKMV2C20_N -0.3098 == 0	
+SAVE
+
+SELECTION allhad_1btag
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_j360_a10r_L1J100 HLT_ht850
+EL_N 25000 == 0
+MU_N 25000 == 0
+JETCLEAN LooseBad
+TRACKMV2C20_N -0.3098 == 1	
+SAVE
+
+SELECTION allhad_2btag
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_j360_a10r_L1J100 HLT_ht850
+EL_N 25000 == 0
+MU_N 25000 == 0
+JETCLEAN LooseBad
+TRACKMV2C20_N -0.3098 >= 2	
+SAVE
+

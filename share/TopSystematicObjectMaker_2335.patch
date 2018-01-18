@@ -1,0 +1,23 @@
+Index: Root/JetObjectCollectionMaker.cxx
+===================================================================
+--- Root/JetObjectCollectionMaker.cxx	(revision 710116)
++++ Root/JetObjectCollectionMaker.cxx	(working copy)
+@@ -306,12 +306,13 @@
+         
+         ///-- Loop over the xAOD Container --///
+         for( auto jet : *(shallow_xaod_copy.first) ){    
+-          if (isLargeR) {
+-            jet->auxdecor<float>("Tau3_WTA") = jet->auxdata<float>("Tau3_wta");
+-            jet->auxdecor<float>("Tau2_WTA") = jet->auxdata<float>("Tau2_wta");
++          ///-- Apply Corrrection --///
++          if ((isLargeR && ((*syst).first.name().find("LARGER") != std::string::npos) && \
++                            (jet->m()/jet->pt() <= 1  && std::fabs(jet->eta()) <= 2.0 && jet->pt() > 150e3 && jet->pt() < 3000e3)) \
++              || (!isLargeR) ) {
++              ///-- Apply Corrrection --///
++            top::check( tool->applyCorrection( *jet ) , "Failed to applyCorrection" );
+           }
+-          ///-- Apply Corrrection --///
+-          top::check( tool->applyCorrection( *jet ) , "Failed to applyCorrection" );
+           ///-- Update JVT --///
+           if (!isLargeR) jet->auxdecor<float>("AnalysisTop_JVT") = m_jetUpdateJvtTool->updateJvt( *jet );
+         }

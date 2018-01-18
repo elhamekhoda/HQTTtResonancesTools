@@ -1,0 +1,200 @@
+Index: submitToGrid-25ns-fakes.py
+===================================================================
+--- submitToGrid-25ns-fakes.py	(revision 248497)
++++ submitToGrid-25ns-fakes.py	(working copy)
+@@ -1,10 +1,12 @@
+ #!/usr/bin/env python
+ import getpass
+-import TopExamples.grid
+-import HQTTtResonancesTools.DC15MC13TeV_25ns_mc15b_EXOT4
+-import HQTTtResonancesTools.DC15Data13TeV_25ns_EXOT4
++import grid
++#import TopExamples.grid
++import DC15MC13TeV_25ns_mc15b_EXOT4
++import DC15Data13TeV_25ns_EXOT4
+ 
+-config = TopExamples.grid.Config()
++#config = TopExamples.grid.Config()
++config = grid.Config()
+ config.code          = 'top-xaod'
+ config.settingsFile  = 'ttres-ljets-cuts-mc15-fakes-25ns.txt'
+ 
+@@ -15,9 +17,10 @@
+ config.mergeType     = 'None' #'None', 'Default' or 'xAOD'
+ 
+ if getpass.getuser()=="scalvet": 
+-	config.gridUsername  = 'scalvet'
++	config.gridUsername  = 'phys-exotics.scalvet'
+ 	config.mergeType     = 'None' #'None', 'Default' or 'xAOD'
+ 	config.suffix        = 'v7.0qcd'
++	config.official        = 1
+ 
+ names   = []
+ names += ['MC15b_13TeV_25ns_FS_EXOT4_ttbarPowhegPythia']
+@@ -28,6 +31,10 @@
+ #names += ['MC15_13TeV_25ns_FS_EXOT4_VV']
+ 
+ names += ['Data15_13TeV_25ns_FS_EXOT4_3_3fb']
+-samples = TopExamples.grid.Samples(names)
+-TopExamples.grid.submit(config, samples)
++#print names
++#print grid.availableDatasets
++samples = grid.Samples(names)
++grid.submit(config, samples)
++#samples = TopExamples.grid.Samples(names)
++#TopExamples.grid.submit(config, samples)
+ 
+Index: DC15MC13TeV_25ns_mc15b_EXOT4.py
+===================================================================
+--- DC15MC13TeV_25ns_mc15b_EXOT4.py	(revision 248492)
++++ DC15MC13TeV_25ns_mc15b_EXOT4.py	(working copy)
+@@ -1,43 +1,43 @@
+-import TopExamples.grid
++import grid
+ 
+-TopExamples.grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarSherpaAF2").datasets = [
++grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarSherpaAF2").datasets = [
+ ]
+ 
+ # systematics
+ # for PDF:
+-TopExamples.grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbaraMcAtNlo_PDF").datasets = [
++grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbaraMcAtNlo_PDF").datasets = [
+ ]
+ 
+ # for MC gen syst. (1) and p. shower (1)
+-TopExamples.grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarPowhegHerwigAF2").datasets = [
++grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarPowhegHerwigAF2").datasets = [
+ ]
+ 
+ #for MC gen syst. (2)
+-TopExamples.grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarMCAtNLOHerwigAF2").datasets = [
++grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarMCAtNLOHerwigAF2").datasets = [
+ ]
+ 
+ # for p. shower (2)
+-TopExamples.grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarPowhegPythiaAF2").datasets = [
++grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarPowhegPythiaAF2").datasets = [
+ ]
+ 
+ # for ISR/FSR (1)
+-TopExamples.grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarRadLo").datasets = [
++grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarRadLo").datasets = [
+ ]
+ 
+-TopExamples.grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarRadHi").datasets = [
++grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarRadHi").datasets = [
+ ]
+ 
+ 
+ # backgrounds
+ # also use for p. shower (2)
+-TopExamples.grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarPowhegPythia").datasets = [
++grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarPowhegPythia").datasets = [
+ 'mc15_13TeV.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.DAOD_EXOT4.e3698_s2608_s2183_r7267_r6282_p2495'
+ ]
+ 
+-TopExamples.grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarPowhegPythia_allhad").datasets = [
++grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarPowhegPythia_allhad").datasets = [
+ ]
+ 
+-TopExamples.grid.Add("MC15b_13TeV_25ns_FS_EXOT4_singletop").datasets = [
++grid.Add("MC15b_13TeV_25ns_FS_EXOT4_singletop").datasets = [
+ 'mc15_13TeV.410011.PowhegPythiaEvtGen_P2012_singletop_tchan_lept_top.merge.DAOD_EXOT4.e3824_s2608_s2183_r7326_r6282_p2495',
+ 'mc15_13TeV.410012.PowhegPythiaEvtGen_P2012_singletop_tchan_lept_antitop.merge.DAOD_EXOT4.e3824_s2608_s2183_r7326_r6282_p2495',
+ 'mc15_13TeV.410013.PowhegPythiaEvtGen_P2012_Wt_inclusive_top.merge.DAOD_EXOT4.e3753_s2608_s2183_r7326_r6282_p2495',
+@@ -48,7 +48,7 @@
+ 'mc15_13TeV.410026.PowhegPythiaEvtGen_P2012_SingleTopSchan_noAllHad_antitop.merge.DAOD_EXOT4.e3998_s2608_s2183_r7326_r6282_p2495'
+ ]
+ 
+-TopExamples.grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarPowhegPythia_mttsliced").datasets = [
++grid.Add("MC15b_13TeV_25ns_FS_EXOT4_ttbarPowhegPythia_mttsliced").datasets = [
+ 'mc15_13TeV.301528.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad_mtt_1.merge.DAOD_EXOT4.e3954_s2608_r7326_r6282_p2495',
+ 'mc15_13TeV.301529.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad_mtt_2.merge.DAOD_EXOT4.e3954_s2608_r7326_r6282_p2495',
+ 
+@@ -56,7 +56,7 @@
+ 'mc15_13TeV.301532.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad_mtt_5.merge.DAOD_EXOT4.e3954_s2608_r7326_r6282_p2495',
+ ]
+ 
+-TopExamples.grid.Add("MC15_13TeV_25ns_FS_EXOT4_dijets").datasets = [
++grid.Add("MC15_13TeV_25ns_FS_EXOT4_dijets").datasets = [
+ 'mc15_13TeV.361020.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ0W.merge.DAOD_EXOT4.e3569_s2576_s2132_r7267_r6282_p2495',
+ 'mc15_13TeV.361021.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ1W.merge.DAOD_EXOT4.e3569_s2576_s2132_r7267_r6282_p2495',
+ 'mc15_13TeV.361022.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ2W.merge.DAOD_EXOT4.e3668_s2576_s2132_r7267_r6282_p2495',
+@@ -72,7 +72,7 @@
+ 'mc15_13TeV.361032.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ12W.merge.DAOD_EXOT4.e3668_s2608_s2183_r7267_r6282_p2495'
+ ]
+ 
+-TopExamples.grid.Add("MC15b_13TeV_25ns_FS_EXOT4_Wjets").datasets = [
++grid.Add("MC15b_13TeV_25ns_FS_EXOT4_Wjets").datasets = [
+ 'mc15_13TeV.361300.Sherpa_CT10_Wenu_Pt0_70_CVetoBVeto.merge.DAOD_EXOT4.e3651_s2608_s2183_r7326_r6282_p2495',
+ 'mc15_13TeV.361301.Sherpa_CT10_Wenu_Pt0_70_CFilterBVeto.merge.DAOD_EXOT4.e3651_s2586_s2174_r7326_r6282_p2495',
+ 'mc15_13TeV.361302.Sherpa_CT10_Wenu_Pt0_70_BFilter.merge.DAOD_EXOT4.e3651_s2586_s2174_r7326_r6282_p2495',
+@@ -146,7 +146,7 @@
+ 'mc15_13TeV.361370.Sherpa_CT10_Wtaunu_Pt2000_E_CMS_CFilterBVeto.merge.DAOD_EXOT4.e3741_s2608_s2183_r7267_r6282_p2495',
+ 'mc15_13TeV.361371.Sherpa_CT10_Wtaunu_Pt2000_E_CMS_BFilter.merge.DAOD_EXOT4.e3741_s2608_s2183_r7267_r6282_p2495',
+ ]
+-TopExamples.grid.Add("MC15b_13TeV_25ns_FS_EXOT4_Zjets").datasets = [
++grid.Add("MC15b_13TeV_25ns_FS_EXOT4_Zjets").datasets = [
+ 'mc15_13TeV.361372.Sherpa_CT10_Zee_Pt0_70_CVetoBVeto.merge.DAOD_EXOT4.e3651_s2586_s2174_r7267_r6282_p2495',
+ 'mc15_13TeV.361373.Sherpa_CT10_Zee_Pt0_70_CFilterBVeto.merge.DAOD_EXOT4.e3651_s2586_s2174_r7267_r6282_p2495',
+ 'mc15_13TeV.361374.Sherpa_CT10_Zee_Pt0_70_BFilter.merge.DAOD_EXOT4.e3651_s2586_s2174_r7267_r6282_p2495',
+Index: DC15Data13TeV_25ns_EXOT4.py
+===================================================================
+--- DC15Data13TeV_25ns_EXOT4.py	(revision 248492)
++++ DC15Data13TeV_25ns_EXOT4.py	(working copy)
+@@ -1,7 +1,7 @@
+-import TopExamples.grid
++import grid
+ 
+ # luminosity = 3.20905 /fb
+-TopExamples.grid.Add("Data15_13TeV_25ns_FS_EXOT4_3_3fb").datasets = [
++grid.Add("Data15_13TeV_25ns_FS_EXOT4_3_3fb").datasets = [
+ 'data15_13TeV.00276262.physics_Main.merge.DAOD_EXOT4.f620_m1480_p2425',
+ 'data15_13TeV.00276329.physics_Main.merge.DAOD_EXOT4.f620_m1480_p2425',
+ 'data15_13TeV.00276336.physics_Main.merge.DAOD_EXOT4.f620_m1480_p2425',
+@@ -69,7 +69,7 @@
+ 'data15_13TeV.00284484.physics_Main.merge.DAOD_EXOT4.f644_m1518_p2425'
+ ]
+ 
+-TopExamples.grid.Add("QCD15_13TeV_25ns_FS_EXOT4_3_3fb").datasets = [
++grid.Add("QCD15_13TeV_25ns_FS_EXOT4_3_3fb").datasets = [
+ 'data15_13TeV.00276262.physics_Main.merge.DAOD_EXOT4.f620_m1480_p2425',
+ 'data15_13TeV.00276329.physics_Main.merge.DAOD_EXOT4.f620_m1480_p2425',
+ 'data15_13TeV.00276336.physics_Main.merge.DAOD_EXOT4.f620_m1480_p2425',
+Index: submitToGrid-25ns-fakesSR.py
+===================================================================
+--- submitToGrid-25ns-fakesSR.py	(revision 248492)
++++ submitToGrid-25ns-fakesSR.py	(working copy)
+@@ -1,18 +1,19 @@
+ #!/usr/bin/env python
+ import getpass
+ import TopExamples.grid
+-import HQTTtResonancesTools.DC15MC13TeV_25ns_EXOT4
+-import HQTTtResonancesTools.DC15Data13TeV_25ns_EXOT4
++import DC15MC13TeV_25ns_EXOT4
++import DC15Data13TeV_25ns_EXOT4
+ 
+ config = TopExamples.grid.Config()
+ config.code          = 'top-xaod'
+ config.settingsFile  = 'ttres-ljets-cuts-mc15-fakeSR-25ns.txt'
+ 
+-config.gridUsername  = 'dferreir'
++config.gridUsername  = 'phys-exotics.dferreir'
+ config.suffix        = '09022016fakesSRv1'
+ config.excludedSites = ''
+ config.noSubmit      = False
+ config.mergeType     = 'None' #'None', 'Default' or 'xAOD'
++config.official        = 1
+ 
+ names   = []
+ names += ['MC15_13TeV_25ns_FS_EXOT4_ttbarPowhegPythia']
+@@ -33,6 +34,6 @@
+ #names += ['MC15_13TeV_25ns_FS_EXOT4_Zprime4000']
+ #names += ['MC15_13TeV_25ns_FS_EXOT4_Zprime5000']
+ names += ['Data15_13TeV_25ns_FS_EXOT4_3_3fb']
+-samples = TopExamples.grid.Samples(names)
+-TopExamples.grid.submit(config, samples)
++samples = grid.Samples(names)
++grid.submit(config, samples)
+ 
