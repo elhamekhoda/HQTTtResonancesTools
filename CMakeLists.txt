@@ -74,3 +74,7 @@ atlas_add_library( HQTTtResonancesTools Root/*.cxx Root/*.h Root/*.icc
 
 # Install data files from the package:
 atlas_install_data( share/* )
+
+# Install the Python modules of the package:
+atlas_install_python_modules( python/*.py )
+

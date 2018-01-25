@@ -1308,6 +1308,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
           const xAOD::TruthParticle * outgoingParton = 0;
           for (unsigned int ii=0;ii<initialparton0->nChildren();ii++){
             const int pdgID = abs(initialparton0->child(ii)->pdgId());
+            cout<< "THE outgoing particle PDG ID:     "<< pdgID <<endl; //Elham
             if (pdgID != 6) {
               outgoingParton = initialparton0->child(ii);
               if (!(pdgID == 1 || pdgID == 3 || pdgID == 5 || pdgID == 2 || pdgID == 4 || pdgID == 21)) {
