@@ -93,12 +93,27 @@ bool NLargeJetTtresSTSelector::apply(const top::Event& event) const {
             if(m_dnnTopTagger80->tag(*largeJet)) good_dnn_80 = 1; 
             if(m_topoTopTagger->tag(*largeJet)) good_topo = 1; 
 
+            if (good_sub_80 == 1 ||
+                good_sub_50 == 1 ||
+                good_smooth_mt80 == 1 ||
+                good_smooth_mt50 == 1 ||
+                good_smooth_ts80 == 1 ||
+                good_smooth_ts50 == 1 ||
+                good_smooth_qt80 == 1 ||
+                good_smooth_qt50 == 1 ||
+                good_bdt_80 == 1 ||
+                good_dnn_80 == 1 ||
+                good_topo == 1){
 
-            ++nGoodJets;
-            good = 1;
+              ++nGoodJets;
+              good = 1;
+
+            }
+
+            
         }
 
-        //largeJet->auxdecor<char>("topTagged") = good;
+        largeJet->auxdecor<char>("topTagged") = good; // If it gets tagged by any of the algorithmes 
         largeJet->auxdecor<char>("topTaggedSub80") = good_sub_80;
         largeJet->auxdecor<char>("topTaggedSub50") = good_sub_50;
         largeJet->auxdecor<char>("topTaggedSmoothMT80") = good_smooth_mt80;
