@@ -240,7 +240,6 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_ljet_topo_score,   "ljet_topo_score");
 
 
-
         // book large-R calo jet trackjet b-tagging information
         systematicTree->makeOutputVariable(m_ljet_ghosttrackjet_idx, "ljet_ghosttrackjet_idx");
         systematicTree->makeOutputVariable(m_ljet_nghosttrackjet, "ljet_nghosttrackjet");

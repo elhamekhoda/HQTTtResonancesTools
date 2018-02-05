@@ -93,6 +93,7 @@ bool NLargeJetTtresSTSelector::apply(const top::Event& event) const {
             if(m_dnnTopTagger80->tag(*largeJet)) good_dnn_80 = 1; 
             if(m_topoTopTagger->tag(*largeJet)) good_topo = 1; 
 
+
             if (good_sub_80 == 1 ||
                 good_sub_50 == 1 ||
                 good_smooth_mt80 == 1 ||
@@ -104,13 +105,11 @@ bool NLargeJetTtresSTSelector::apply(const top::Event& event) const {
                 good_bdt_80 == 1 ||
                 good_dnn_80 == 1 ||
                 good_topo == 1){
-
               ++nGoodJets;
               good = 1;
 
             }
 
-            
         }
 
         largeJet->auxdecor<char>("topTagged") = good; // If it gets tagged by any of the algorithmes 
@@ -125,7 +124,7 @@ bool NLargeJetTtresSTSelector::apply(const top::Event& event) const {
         largeJet->auxdecor<char>("topTaggedBDT80") = good_bdt_80;
         largeJet->auxdecor<char>("topTaggedDNN80") = good_dnn_80;
         largeJet->auxdecor<char>("topTaggedTopoCluster") = good_topo;
-        //std::cout << "substructure top tag result=" << good << std::endl;
+
         //std::cout << "smoothed top tag MT80 result=" << m_smoothedTopTaggerMT80->tag(*largeJet) << std::endl; 
         //std::cout << "smoothed top tag TS80 result=" << m_smoothedTopTaggerTS80->tag(*largeJet) << std::endl; 
  
