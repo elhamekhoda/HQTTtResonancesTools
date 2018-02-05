@@ -112,18 +112,18 @@ bool NLargeJetTtresSTSelector::apply(const top::Event& event) const {
 
         }
 
-        largeJet->auxdecor<char>("topTagged") = good; // If it gets tagged by any of the algorithmes 
-        largeJet->auxdecor<char>("topTaggedSub80") = good_sub_80;
-        largeJet->auxdecor<char>("topTaggedSub50") = good_sub_50;
-        largeJet->auxdecor<char>("topTaggedSmoothMT80") = good_smooth_mt80;
-        largeJet->auxdecor<char>("topTaggedSmoothMT50") = good_smooth_mt50;
-        largeJet->auxdecor<char>("topTaggedSmoothTS80") = good_smooth_ts80;
-        largeJet->auxdecor<char>("topTaggedSmoothTS50") = good_smooth_ts50;
-        largeJet->auxdecor<char>("topTaggedSmoothQT80") = good_smooth_qt80;
-        largeJet->auxdecor<char>("topTaggedSmoothQT50") = good_smooth_qt50;
-        largeJet->auxdecor<char>("topTaggedBDT80") = good_bdt_80;
-        largeJet->auxdecor<char>("topTaggedDNN80") = good_dnn_80;
-        largeJet->auxdecor<char>("topTaggedTopoCluster") = good_topo;
+        largeJet->auxdecor<int>("topTagged") = good; // If it gets tagged by any of the algorithmes 
+        largeJet->auxdecor<int>("topTaggedSub80") = good_sub_80;
+        largeJet->auxdecor<int>("topTaggedSub50") = good_sub_50;
+        largeJet->auxdecor<int>("topTaggedSmoothMT80") = good_smooth_mt80;
+        largeJet->auxdecor<int>("topTaggedSmoothMT50") = good_smooth_mt50;
+        largeJet->auxdecor<int>("topTaggedSmoothTS80") = good_smooth_ts80;
+        largeJet->auxdecor<int>("topTaggedSmoothTS50") = good_smooth_ts50;
+        largeJet->auxdecor<int>("topTaggedSmoothQT80") = good_smooth_qt80;
+        largeJet->auxdecor<int>("topTaggedSmoothQT50") = good_smooth_qt50;
+        largeJet->auxdecor<int>("topTaggedBDT80") = good_bdt_80;
+        largeJet->auxdecor<int>("topTaggedDNN80") = good_dnn_80;
+        largeJet->auxdecor<int>("topTaggedTopoCluster") = good_topo;
 
         //std::cout << "smoothed top tag MT80 result=" << m_smoothedTopTaggerMT80->tag(*largeJet) << std::endl; 
         //std::cout << "smoothed top tag TS80 result=" << m_smoothedTopTaggerTS80->tag(*largeJet) << std::endl; 

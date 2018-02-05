@@ -986,17 +986,17 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         m_ljet_good_dnn80[i] = 0;
         m_ljet_good_topo[i] = 0;
   
-        if (jetPtr->isAvailable<char>("topTaggedSub80")) m_ljet_good_sub80[i] = jetPtr->auxdata<char>("topTaggedSub80");
-        if (jetPtr->isAvailable<char>("topTaggedSub50")) m_ljet_good_sub50[i] = jetPtr->auxdata<char>("topTaggedSub50");
-        if (jetPtr->isAvailable<char>("topTaggedSmoothMT80")) m_ljet_good_smooth_mt80[i] = jetPtr->auxdata<char>("topTaggedSmoothMT80");
-        if (jetPtr->isAvailable<char>("topTaggedSmoothMT50")) m_ljet_good_smooth_mt50[i] = jetPtr->auxdata<char>("topTaggedSmoothMT50");
-        if (jetPtr->isAvailable<char>("topTaggedSmoothTS80")) m_ljet_good_smooth_ts80[i] = jetPtr->auxdata<char>("topTaggedSmoothTS80");
-        if (jetPtr->isAvailable<char>("topTaggedSmoothTS50")) m_ljet_good_smooth_ts50[i] = jetPtr->auxdata<char>("topTaggedSmoothTS50");
-        if (jetPtr->isAvailable<char>("topTaggedSmoothQT80")) m_ljet_good_smooth_qt80[i] = jetPtr->auxdata<char>("topTaggedSmoothQT80");
-        if (jetPtr->isAvailable<char>("topTaggedSmoothQT50")) m_ljet_good_smooth_qt50[i] = jetPtr->auxdata<char>("topTaggedSmoothQT50");
-        if (jetPtr->isAvailable<char>("topTaggedBDT80")) m_ljet_good_bdt80[i] = jetPtr->auxdata<char>("topTaggedBDT80");
-        if (jetPtr->isAvailable<char>("topTaggedDNN80")) m_ljet_good_dnn80[i] = jetPtr->auxdata<char>("topTaggedDNN80");
-        if (jetPtr->isAvailable<char>("topTaggedTopoCluster")) m_ljet_good_topo[i] = jetPtr->auxdata<char>("topTaggedTopoCluster");
+        if (jetPtr->isAvailable<int>("topTaggedSub80")) m_ljet_good_sub80[i] = jetPtr->auxdata<int>("topTaggedSub80");
+        if (jetPtr->isAvailable<int>("topTaggedSub50")) m_ljet_good_sub50[i] = jetPtr->auxdata<int>("topTaggedSub50");
+        if (jetPtr->isAvailable<int>("topTaggedSmoothMT80")) m_ljet_good_smooth_mt80[i] = jetPtr->auxdata<int>("topTaggedSmoothMT80");
+        if (jetPtr->isAvailable<int>("topTaggedSmoothMT50")) m_ljet_good_smooth_mt50[i] = jetPtr->auxdata<int>("topTaggedSmoothMT50");
+        if (jetPtr->isAvailable<int>("topTaggedSmoothTS80")) m_ljet_good_smooth_ts80[i] = jetPtr->auxdata<int>("topTaggedSmoothTS80");
+        if (jetPtr->isAvailable<int>("topTaggedSmoothTS50")) m_ljet_good_smooth_ts50[i] = jetPtr->auxdata<int>("topTaggedSmoothTS50");
+        if (jetPtr->isAvailable<int>("topTaggedSmoothQT80")) m_ljet_good_smooth_qt80[i] = jetPtr->auxdata<int>("topTaggedSmoothQT80");
+        if (jetPtr->isAvailable<int>("topTaggedSmoothQT50")) m_ljet_good_smooth_qt50[i] = jetPtr->auxdata<int>("topTaggedSmoothQT50");
+        if (jetPtr->isAvailable<int>("topTaggedBDT80")) m_ljet_good_bdt80[i] = jetPtr->auxdata<int>("topTaggedBDT80");
+        if (jetPtr->isAvailable<int>("topTaggedDNN80")) m_ljet_good_dnn80[i] = jetPtr->auxdata<int>("topTaggedDNN80");
+        if (jetPtr->isAvailable<int>("topTaggedTopoCluster")) m_ljet_good_topo[i] = jetPtr->auxdata<int>("topTaggedTopoCluster");
         if (jetPtr->isAvailable<float>("BDTTaggerTopQuark80_Score")) m_ljet_bdt_score[i] = jetPtr->auxdata<float>("BDTTaggerTopQuark80_Score");
         if (jetPtr->isAvailable<float>("DNNTaggerTopQuark80_Score")) m_ljet_dnn_score[i] = jetPtr->auxdata<float>("DNNTaggerTopQuark80_Score");
         if (jetPtr->isAvailable<float>("TopoclusterTopTaggerTopQuark_Score")) m_ljet_topo_score[i] = jetPtr->auxdata<float>("TopoclusterTopTaggerTopQuark_Score");
@@ -1005,14 +1005,14 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 //==================================== End Elham ================================================
 
 
-        if (jetPtr->isAvailable<char>("topTagged"))
-            m_ljet_good[i] = jetPtr->auxdata<char>("topTagged");
+        if (jetPtr->isAvailable<int>("topTagged"))
+            m_ljet_good[i] = jetPtr->auxdata<int>("topTagged");
             if (m_ljet_good[i]==1){
             if (jetPtr->pt()>max_pt){max_pt=jetPtr->pt(); hadtop_index=i;}
             }
        
        try { // defined only by NLargeJetTtresSTWjetsSelector.cxx, for W CR, in which there is a veto against good top jet --> no conflict
-              m_ljet_notgood[i] = jetPtr->auxdata<char>("notTopTagged");
+              m_ljet_notgood[i] = jetPtr->auxdata<int>("notTopTagged");
               if (m_ljet_notgood[i]==1){
               if (jetPtr->pt()>max_pt){max_pt=jetPtr->pt(); hadtop_index=i;}
               }

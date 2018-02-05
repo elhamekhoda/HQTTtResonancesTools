@@ -1,5 +1,11 @@
+2018-02-05 Elham E Khoda <elham.e.khoda@.cern.ch>
+	* Changed the type of large jet good variables from <char> to <int> 
+
+2018-01-18 Elham E Khoda <elham.e.khoda@.cern.ch>
+	* Added all the top-tagging algorithms
+
 2017-11-04 Elham E Khoda <elham.e.khoda@.cern.ch>
-    * Updated for AnalysisTop-21.2.8.
+	* Updated for AnalysisTop-21.2.8.
 	* Removed the OverlapRemoval Tool for Ttres. The parent class structure has been changed so the implementation here will have to be changed
 
 2017-05-19 Danilo Ferreira de Lima <dferreir@mail.cern.ch>

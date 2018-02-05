@@ -53,7 +53,7 @@ bool AngularCutsSL::apply(const top::Event& event) const {
     int nGoodJets = 0;
     for (const auto* const largeJet : event.m_largeJets) {
         
-        if (largeJet->auxdecor<char>("topTagged") != 1 ) continue;
+        if (largeJet->auxdecor<int>("topTagged") != 1 ) continue;
        
         if ( std::fabs(top::deltaPhi(*largeJet, *lep)) > 2.3 &&
              top::deltaR(*largeJet, *selJet) > 1.5) {
@@ -61,18 +61,18 @@ bool AngularCutsSL::apply(const top::Event& event) const {
             ++nGoodJets;
         }
         else{
-            largeJet->auxdecor<char>("topTagged") = 0; 
-            largeJet->auxdecor<char>("topTaggedSub80") = 0;
-            largeJet->auxdecor<char>("topTaggedSub50") = 0;
-            largeJet->auxdecor<char>("topTaggedSmoothMT80") = 0;
-            largeJet->auxdecor<char>("topTaggedSmoothMT50") = 0;
-            largeJet->auxdecor<char>("topTaggedSmoothTS80") = 0;
-            largeJet->auxdecor<char>("topTaggedSmoothTS50") = 0;
-            largeJet->auxdecor<char>("topTaggedSmoothQT80") = 0;
-            largeJet->auxdecor<char>("topTaggedSmoothQT50") = 0;
-            largeJet->auxdecor<char>("topTaggedBDT80") = 0;
-            largeJet->auxdecor<char>("topTaggedDNN80") = 0;
-            largeJet->auxdecor<char>("topTaggedTopoCluster") = 0;
+            largeJet->auxdecor<int>("topTagged") = 0; 
+            largeJet->auxdecor<int>("topTaggedSub80") = 0;
+            largeJet->auxdecor<int>("topTaggedSub50") = 0;
+            largeJet->auxdecor<int>("topTaggedSmoothMT80") = 0;
+            largeJet->auxdecor<int>("topTaggedSmoothMT50") = 0;
+            largeJet->auxdecor<int>("topTaggedSmoothTS80") = 0;
+            largeJet->auxdecor<int>("topTaggedSmoothTS50") = 0;
+            largeJet->auxdecor<int>("topTaggedSmoothQT80") = 0;
+            largeJet->auxdecor<int>("topTaggedSmoothQT50") = 0;
+            largeJet->auxdecor<int>("topTaggedBDT80") = 0;
+            largeJet->auxdecor<int>("topTaggedDNN80") = 0;
+            largeJet->auxdecor<int>("topTaggedTopoCluster") = 0;
         }
 
     }
