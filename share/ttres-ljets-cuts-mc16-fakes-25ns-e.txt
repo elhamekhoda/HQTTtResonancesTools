@@ -1,0 +1,539 @@
+LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtResonancesTools libTtResonancesTools libBoostedJetTaggersLib
+
+# http://atlas.web.cern.ch/Atlas/GROUPS/DATABASE/GroupData/GoodRunsLists/data16_13TeV/
+GRLDir  GoodRunsLists
+GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml  data16_13TeV/20170605/physics_25ns_21.0.19.xml data17_13TeV/20171130/data17_13TeV.periodAllYear_DetStatus-v97-pro21-13_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml 
+
+PRWConfigFiles HQTTtResonancesTools/PRW_Zp_mc16a.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.v1/prw.merged.root  dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16c.v1/prw.merged.root 
+PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root  GoodRunsLists/data16_13TeV/20170605/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-008.root GoodRunsLists/data17_13TeV/20171130/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-001.root
+
+ElectronCollectionName Electrons
+MuonCollectionName Muons
+PhotonCollectionName None
+JetCollectionName AntiKt4EMTopoJets
+# original xAOD without trimmed jets
+LargeJetCollectionName AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets
+LargeJetSubstructure None
+#LargeJetCollectionName AntiKt10LCTopoJets
+#LargeJetSubstructure Trimmer
+TauCollectionName None
+PhotonCollectionName None
+TrackJetCollectionName AntiKt2PV0TrackJets
+
+TruthCollectionName TruthParticles
+#TruthCollectionName None
+TruthJetCollectionName AntiKt4TruthJets
+TopPartonHistory ttbar
+TruthBlockInfo False
+PDFInfo False
+IsAFII False
+
+OutputFileSetAutoFlushZero True
+
+ObjectSelectionName top::ObjectLoaderTtres
+OutputFormat top::TtresEventSaverFlatNtuple
+OutputEvents SelectedEvents
+OutputFilename output.root
+PerfStats No
+
+CalculateSF True
+Systematics None
+#Systematics All
+BTaggingWP FixedCutBEff_70
+
+#JetUncertainties_NPModel 21NP
+#LargeRJESUncertaintyConfig TopTagging
+
+ElectronID TightLH
+ElectronIDLoose MediumLH
+MuonQuality Medium
+MuonQualityLoose Medium
+ElectronIsolation FixedCutTightTrackOnly
+MuonIsolation FixedCutTightTrackOnly
+ElectronIsolationLoose None
+MuonIsolationLoose FixedCutTightTrackOnly
+
+FakesControlRegionDoLooseMC True
+OverlapRemovalLeptonDef Loose
+ApplyElectronInJetSubtraction False
+
+DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW
+
+TtresrunEWK  True
+TtresRunHTT False
+TtresSavePartons True
+isTOPQ False
+fakeLeptonSel False
+isSherpaW True
+
+#NEvents 30000
+
+SELECTION bejets_2015
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+JETCLEAN LooseBad
+MET > 20000
+MET+MWT > 60000
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESST_N 300000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 1
+NOBADMUON
+SAVE
+
+SELECTION bejets_2016
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 297730
+RUN_NUMBER <= 311481
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+MET > 20000
+MET+MWT > 60000
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESST_N 300000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 1
+NOBADMUON
+SAVE
+
+
+SELECTION bejets_2017
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 325713
+RUN_NUMBER <= 340435
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+MET > 20000
+MET+MWT > 60000
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESST_N 300000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 1
+NOBADMUON
+SAVE
+
+
+SELECTION rejets_2015
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+JETCLEAN LooseBad
+MET > 20000
+MET+MWT > 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+JET_N 25000 >= 3
+JET_N 25000 >= 4
+TRACKMV2C10_N 0.6455 >= 1
+LOG10_CHI2 < 0.9
+NOBADMUON
+SAVE
+
+SELECTION rejets_2016
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 297730
+RUN_NUMBER <= 311481
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+MET > 20000
+MET+MWT > 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+JET_N 25000 >= 3
+JET_N 25000 >= 4
+TRACKMV2C10_N 0.6455 >= 1
+LOG10_CHI2 < 0.9
+NOBADMUON
+SAVE
+
+
+SELECTION rejets_2017
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 325713
+RUN_NUMBER <= 340435
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+MET > 20000
+MET+MWT > 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+JET_N 25000 >= 3
+JET_N 25000 >= 4
+TRACKMV2C10_N 0.6455 >= 1
+LOG10_CHI2 < 0.9
+NOBADMUON
+SAVE
+
+
+SELECTION rejetsWCR_2015
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+JETCLEAN LooseBad
+MET > 20000
+MET+MWT > 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+SELECTION rejetsWCR_2016
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 297730
+RUN_NUMBER <= 311481
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+MET > 20000
+MET+MWT > 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+SELECTION rejetsWCR_2017
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 325713
+RUN_NUMBER <= 340435
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+MET > 20000
+MET+MWT > 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+
+SELECTION bejetsQCDCR_2015
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+JETCLEAN LooseBad
+MET < 20000
+MET+MWT < 60000
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESST_N 200000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+SELECTION bejetsQCDCR_2016
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 297730
+RUN_NUMBER <= 311481
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+MET < 20000
+MET+MWT < 60000
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESST_N 200000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+
+SELECTION bejetsQCDCR_2017
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 325713
+RUN_NUMBER <= 340435
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+MET < 20000
+MET+MWT < 60000
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESST_N 200000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+
+SELECTION rejetsQCDCR_2015
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+JETCLEAN LooseBad
+MET < 20000
+MET+MWT < 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+SELECTION rejetsQCDCR_2016
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 297730
+RUN_NUMBER <= 311481
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+MET < 20000
+MET+MWT < 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+
+SELECTION rejetsQCDCR_2017
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 325713
+RUN_NUMBER <= 340435
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+MET < 20000
+MET+MWT < 60000
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+
+SELECTION bejetsIncluR_2015
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+JETCLEAN LooseBad
+
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESST_N 200000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+SELECTION bejetsIncluR_2016
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 297730
+RUN_NUMBER <= 311481
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESST_N 200000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+
+SELECTION bejetsIncluR_2017
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 325713
+RUN_NUMBER <= 340435
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+JET_N 25000 >= 1
+JETCLOSELEPTON_N >= 1
+LARGEJETTTRESST_N 200000 >= 1
+ANGULARCUTSSL >= 1
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+
+SELECTION rejetsIncluR_2015
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+JETCLEAN LooseBad
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+SELECTION rejetsIncluR_2016
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 297730
+RUN_NUMBER <= 311481
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+SAVE
+
+
+SELECTION rejetsIncluR_2017
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+RUN_NUMBER >= 325713
+RUN_NUMBER <= 340435
+EL_N 30000 >= 1
+EL_N 25000 == 1
+MU_N 25000 == 0
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+JETCLEAN LooseBad
+JET_N 25000 >= 1
+JET_N 25000 >= 2
+TRACKMV2C10_N 0.6455 >= 0
+NOBADMUON
+
+SAVE
