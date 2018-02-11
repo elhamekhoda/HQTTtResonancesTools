@@ -22,10 +22,10 @@ NLargeJetTtresSTSelector::NLargeJetTtresSTSelector(const std::string& params) :
     checkValueIsInteger();
 //  STT = STTHelpers::configSubstTagger("TightSmoothTopTag", "SmoothCut_50");
     STL80 = STTHelpers::configSubstTagger("LooseSmoothTopTag", "SmoothCut_80");
-    STL50 = STTHelpers::configSubstTagger("LooseSmoothTopTag", "SmoothCut_50");
+    //STL50 = STTHelpers::configSubstTagger("LooseSmoothTopTag", "SmoothCut_50");
+/*
 
-    //rel21 
-    //rel20 definition
+    //rel21 definition
       m_smoothedTopTaggerMT80 = nullptr;m_smoothedTopTaggerMT50 = nullptr;
       m_smoothedTopTaggerTS80 = nullptr;m_smoothedTopTaggerTS50 = nullptr;
       m_smoothedTopTaggerQT80 = nullptr;m_smoothedTopTaggerQT50 = nullptr;
@@ -58,7 +58,7 @@ NLargeJetTtresSTSelector::NLargeJetTtresSTSelector(const std::string& params) :
       top::check(m_dnnTopTagger80->initialize(),"Initializing failed");
       top::check(m_topoTopTagger->initialize(),"Initializing failed");
 
-
+*/
 
 }
 
@@ -72,18 +72,19 @@ bool NLargeJetTtresSTSelector::apply(const top::Event& event) const {
         // pt and eta should already have been applied in object definition
         // but re-apply just in case it has been lowered for CR studies
         int good = 0;
-        int good_sub_80=0,good_sub_50=0,good_smooth_mt80=0,good_smooth_mt50=0;
-        int good_smooth_ts80=0,good_smooth_ts50=0,good_smooth_qt80=0,good_smooth_qt50=0;
-        int good_bdt_80=0,good_dnn_80=0,good_topo=0;
+        int good_sub_90=0;
+        //good_sub_50=0,good_smooth_mt80=0,good_smooth_mt50=0;
+        //int good_smooth_ts80=0,good_smooth_ts50=0,good_smooth_qt80=0,good_smooth_qt50=0;
+        //int good_bdt_80=0,good_dnn_80=0,good_topo=0;
 
         //if (largeJet->pt() > value() &&
         //       std::fabs(largeJet->eta()) < 2.0 &&
         //        STL->isTagged(*largeJet) == true ) {
 
         if (largeJet->pt() > value() && std::fabs(largeJet->eta()) < 2.0) {
-            if (STL80->isTagged(*largeJet) == true ) good_sub_80 = 1;
-            if (STL50->isTagged(*largeJet) == true ) good_sub_50 = 1;
-            if(m_smoothedTopTaggerMT80->tag(*largeJet)) good_smooth_mt80 = 1; 
+            if (STL80->isTagged(*largeJet) == true ) good_sub_90 = 1;
+            //if (STL50->isTagged(*largeJet) == true ) good_sub_50 = 1;
+/*            if(m_smoothedTopTaggerMT80->tag(*largeJet)) good_smooth_mt80 = 1; 
             if(m_smoothedTopTaggerMT50->tag(*largeJet)) good_smooth_mt50 = 1; 
             if(m_smoothedTopTaggerTS80->tag(*largeJet)) good_smooth_ts80 = 1; 
             if(m_smoothedTopTaggerTS50->tag(*largeJet)) good_smooth_ts50 = 1; 
@@ -93,27 +94,16 @@ bool NLargeJetTtresSTSelector::apply(const top::Event& event) const {
             if(m_dnnTopTagger80->tag(*largeJet)) good_dnn_80 = 1; 
             if(m_topoTopTagger->tag(*largeJet)) good_topo = 1; 
 
-
-            if (good_sub_80 == 1 ||
-                good_sub_50 == 1 ||
-                good_smooth_mt80 == 1 ||
-                good_smooth_mt50 == 1 ||
-                good_smooth_ts80 == 1 ||
-                good_smooth_ts50 == 1 ||
-                good_smooth_qt80 == 1 ||
-                good_smooth_qt50 == 1 ||
-                good_bdt_80 == 1 ||
-                good_dnn_80 == 1 ||
-                good_topo == 1){
+*/
+            if (good_sub_90 == 1){
               ++nGoodJets;
               good = 1;
-
             }
 
         }
 
         largeJet->auxdecor<int>("topTagged") = good; // If it gets tagged by any of the algorithmes 
-        largeJet->auxdecor<int>("topTaggedSub80") = good_sub_80;
+/*        largeJet->auxdecor<int>("topTaggedSub80") = good_sub_80;
         largeJet->auxdecor<int>("topTaggedSub50") = good_sub_50;
         largeJet->auxdecor<int>("topTaggedSmoothMT80") = good_smooth_mt80;
         largeJet->auxdecor<int>("topTaggedSmoothMT50") = good_smooth_mt50;
@@ -124,7 +114,7 @@ bool NLargeJetTtresSTSelector::apply(const top::Event& event) const {
         largeJet->auxdecor<int>("topTaggedBDT80") = good_bdt_80;
         largeJet->auxdecor<int>("topTaggedDNN80") = good_dnn_80;
         largeJet->auxdecor<int>("topTaggedTopoCluster") = good_topo;
-
+*/
         //std::cout << "smoothed top tag MT80 result=" << m_smoothedTopTaggerMT80->tag(*largeJet) << std::endl; 
         //std::cout << "smoothed top tag TS80 result=" << m_smoothedTopTaggerTS80->tag(*largeJet) << std::endl; 
  
@@ -133,6 +123,8 @@ bool NLargeJetTtresSTSelector::apply(const top::Event& event) const {
         //float bdt_score = largeJet->auxdecor<float>("BDTScore_Score");
         //float dnn_score = largeJet->auxdecor<float>("DNNScore_Score");
         //float topo_score = largeJet->auxdecor<float>("TopoclusterTopTaggerTopQuark_Score");
+
+        //std::cout << "AUx : " << largeJet->auxdecor<int>("topTaggedDNN80") << std::endl;
 
     }
 

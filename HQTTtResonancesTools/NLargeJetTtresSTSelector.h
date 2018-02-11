@@ -29,8 +29,8 @@ public:
      //SubstructureTopTagger Variables
      //SubstructureTopTagger *STL;
      SubstructureTopTagger *STL80;
-     SubstructureTopTagger *STL50;
-
+     //SubstructureTopTagger *STL50;
+/*
      //Other taggers
      std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerMT80;//mass+tau32
      std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerMT50;//mass+tau32
@@ -41,7 +41,7 @@ public:
      std::unique_ptr<JSSWTopTaggerBDT> m_bdtTopTagger80;//BDT top tagger
      std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTagger80;//DNN top tagger
      std::unique_ptr<TopoclusterTopTagger> m_topoTopTagger;//Topo Cluster top tagger
-
+*/
 
 };
 
