@@ -72,7 +72,7 @@ bool NLargeJetTtresSTSelector::apply(const top::Event& event) const {
         // pt and eta should already have been applied in object definition
         // but re-apply just in case it has been lowered for CR studies
         int good = 0;
-        int good_sub_90=0;
+        int good_sub_80=0;
         //good_sub_50=0,good_smooth_mt80=0,good_smooth_mt50=0;
         //int good_smooth_ts80=0,good_smooth_ts50=0,good_smooth_qt80=0,good_smooth_qt50=0;
         //int good_bdt_80=0,good_dnn_80=0,good_topo=0;
@@ -82,7 +82,7 @@ bool NLargeJetTtresSTSelector::apply(const top::Event& event) const {
         //        STL->isTagged(*largeJet) == true ) {
 
         if (largeJet->pt() > value() && std::fabs(largeJet->eta()) < 2.0) {
-            if (STL80->isTagged(*largeJet) == true ) good_sub_90 = 1;
+            if (STL80->isTagged(*largeJet) == true ) good_sub_80 = 1;
             //if (STL50->isTagged(*largeJet) == true ) good_sub_50 = 1;
 /*            if(m_smoothedTopTaggerMT80->tag(*largeJet)) good_smooth_mt80 = 1; 
             if(m_smoothedTopTaggerMT50->tag(*largeJet)) good_smooth_mt50 = 1; 
@@ -95,7 +95,7 @@ bool NLargeJetTtresSTSelector::apply(const top::Event& event) const {
             if(m_topoTopTagger->tag(*largeJet)) good_topo = 1; 
 
 */
-            if (good_sub_90 == 1){
+            if (good_sub_80 == 1){
               ++nGoodJets;
               good = 1;
             }
