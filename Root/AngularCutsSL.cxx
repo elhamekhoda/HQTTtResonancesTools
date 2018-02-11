@@ -46,9 +46,7 @@ bool AngularCutsSL::apply(const top::Event& event) const {
     //protect against having no jets - just in case
     if (!selJet)
         return false;
-
-
-
+    
     //do stuff with large Jets
     int nGoodJets = 0;
     for (const auto* const largeJet : event.m_largeJets) {
@@ -62,17 +60,17 @@ bool AngularCutsSL::apply(const top::Event& event) const {
         }
         else{
             largeJet->auxdecor<int>("topTagged") = 0; 
-            largeJet->auxdecor<int>("topTaggedSub80") = 0;
-            largeJet->auxdecor<int>("topTaggedSub50") = 0;
-            largeJet->auxdecor<int>("topTaggedSmoothMT80") = 0;
-            largeJet->auxdecor<int>("topTaggedSmoothMT50") = 0;
-            largeJet->auxdecor<int>("topTaggedSmoothTS80") = 0;
-            largeJet->auxdecor<int>("topTaggedSmoothTS50") = 0;
-            largeJet->auxdecor<int>("topTaggedSmoothQT80") = 0;
-            largeJet->auxdecor<int>("topTaggedSmoothQT50") = 0;
-            largeJet->auxdecor<int>("topTaggedBDT80") = 0;
-            largeJet->auxdecor<int>("topTaggedDNN80") = 0;
-            largeJet->auxdecor<int>("topTaggedTopoCluster") = 0;
+            //largeJet->auxdecor<int>("topTaggedSub80") = 0;
+            //largeJet->auxdecor<int>("topTaggedSub50") = 0;
+            //largeJet->auxdecor<int>("topTaggedSmoothMT80") = 0;
+            //largeJet->auxdecor<int>("topTaggedSmoothMT50") = 0;
+            //largeJet->auxdecor<int>("topTaggedSmoothTS80") = 0;
+            //largeJet->auxdecor<int>("topTaggedSmoothTS50") = 0;
+            //largeJet->auxdecor<int>("topTaggedSmoothQT80") = 0;
+            //largeJet->auxdecor<int>("topTaggedSmoothQT50") = 0;
+            //largeJet->auxdecor<int>("topTaggedBDT80") = 0;
+            //largeJet->auxdecor<int>("topTaggedDNN80") = 0;
+            //largeJet->auxdecor<int>("topTaggedTopoCluster") = 0;
         }
 
     }
