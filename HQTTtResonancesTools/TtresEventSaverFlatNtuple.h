@@ -17,6 +17,13 @@
 #include "JetRec/JetRecTool.h"
 #include "BoostedJetTaggers/HEPTopTagger.h"
 
+#include "BoostedJetTaggers/SubstructureTopTaggerHelpers.h"
+#include "JetAnalysisInterfaces/IJetSelectorTool.h"
+#include "BoostedJetTaggers/SmoothedTopTagger.h"
+#include "BoostedJetTaggers/JSSWTopTaggerBDT.h"
+#include "BoostedJetTaggers/JSSWTopTaggerDNN.h"
+#include "BoostedJetTaggers/TopoclusterTopTagger.h"
+
 // EW corrections
 #include "TtResonancesTools/WeakCorrScaleFactorParam.h"
 
@@ -137,10 +144,56 @@ namespace top {
       std::vector<int>   m_ljet_good_bdt80;
       std::vector<int>   m_ljet_good_dnn80;
       std::vector<int>   m_ljet_good_topo;
-      std::vector<float> m_ljet_bdt_score;
-      std::vector<float> m_ljet_dnn_score;
+      std::vector<float> m_ljet_bdt_score80;
+      std::vector<float> m_ljet_dnn_score80;
       std::vector<float> m_ljet_topo_score;
 
+      SubstructureTopTagger *STL80;
+      SubstructureTopTagger *STL50;
+      std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerMT80;//mass+tau32
+      std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerMT50;//mass+tau32
+      std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerTS80;//tau32+Split23
+      std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerTS50;//tau32+Split23
+      std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerQT80;//Qw+tau32
+      std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerQT50;//Qw+tau32
+      std::unique_ptr<JSSWTopTaggerBDT> m_bdtTopTagger80;//BDT top tagger 80%
+      std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTagger80;//DNN top tagger 80%
+      std::unique_ptr<TopoclusterTopTagger> m_topoTopTagger;//Topo Cluster top tagger
+
+ /*    
+      m_smoothedTopTaggerMT80 = nullptr;m_smoothedTopTaggerMT50 = nullptr;
+      m_smoothedTopTaggerTS80 = nullptr;m_smoothedTopTaggerTS50 = nullptr;
+      m_smoothedTopTaggerQT80 = nullptr;m_smoothedTopTaggerQT50 = nullptr;
+      m_bdtTopTagger80 = nullptr;m_dnnTopTagger80 = nullptr;
+cd ../
+      m_smoothedTopTaggerMT80 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerMT80" ) );
+      m_smoothedTopTaggerMT50 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerMT50" ) );
+      m_smoothedTopTaggerTS80 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerTS80" ) );
+      m_smoothedTopTaggerTS50 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerTS50" ) );
+      m_smoothedTopTaggerQT80 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerQT80" ) );
+      m_smoothedTopTaggerQT50 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerQT50" ) );
+      m_bdtTopTagger80 = std::unique_ptr<JSSWTopTaggerBDT>( new JSSWTopTaggerBDT( "JSSWTopTaggerBDT80" ) );
+      m_dnnTopTagger80 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "JSSWTopTaggerDNN80" ) );
+      m_topoTopTagger = std::unique_ptr<TopoclusterTopTagger>( new TopoclusterTopTagger( "TopoclusterTopTagger" ) );
+      top::check(m_smoothedTopTaggerMT80->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_MassTau32FixedSignalEfficiency80_MC15c_20161209.dat"),"Failed to set property for ConfigFile");
+      top::check(m_smoothedTopTaggerMT50->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_MassTau32FixedSignalEfficiency50_MC15c_20161209.dat"),"Failed to set property for ConfigFile");
+      top::check(m_smoothedTopTaggerTS80->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_Tau32Split23FixedSignalEfficiency80_MC15c_20161209.dat"),"Failed to set property for ConfigFile");
+      top::check(m_smoothedTopTaggerTS50->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_Tau32Split23FixedSignalEfficiency50_MC15c_20161209.dat"),"Failed to set property for ConfigFile");
+      top::check(m_smoothedTopTaggerQT80->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_QwTau32FixedSignalEfficiency80_MC15c_20161209.dat"),"Failed to set property for ConfigFile");
+      top::check(m_smoothedTopTaggerQT50->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_QwTau32FixedSignalEfficiency50_MC15c_20161209.dat"),"Failed to set property for ConfigFile");
+      top::check(m_bdtTopTagger80->setProperty( "ConfigFile",   "JSSWTopTaggerBDT/JSSBDTTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup80Eff.dat"),"Failed to set property for ConfigFile");
+      top::check(m_dnnTopTagger80->setProperty( "ConfigFile",   "JSSWTopTaggerDNN/JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup80Eff.dat"),"Failed to set property for ConfigFile");
+      top::check(m_topoTopTagger->setProperty( "ConfigFile",   "TopoclusterTopTagger/TopoclusterTopTagger_AntiKt10LCTopoTrimmed_TopQuark_MC15c_20170511_NOTFORANALYSIS.dat"),"Failed to set property for ConfigFile");
+      top::check(m_smoothedTopTaggerMT80->initialize(),"Initializing failed");
+      top::check(m_smoothedTopTaggerMT50->initialize(),"Initializing failed");
+      top::check(m_smoothedTopTaggerTS80->initialize(),"Initializing failed");
+      top::check(m_smoothedTopTaggerTS50->initialize(),"Initializing failed");
+      top::check(m_smoothedTopTaggerQT80->initialize(),"Initializing failed");
+      top::check(m_smoothedTopTaggerQT50->initialize(),"Initializing failed");
+      top::check(m_bdtTopTagger80->initialize(),"Initializing failed");
+      top::check(m_dnnTopTagger80->initialize(),"Initializing failed");
+      top::check(m_topoTopTagger->initialize(),"Initializing failed");
+*/
 
       std::vector<float> m_part_ljet_tau32;
       std::vector<float> m_part_ljet_tau32_wta;
@@ -160,7 +213,7 @@ namespace top {
       std::vector<float>  m_el_z0;
       //std::vector<float>  m_el_d0sig;
       std::vector<float>  m_el_z0sig;
-      
+
       std::vector<float>  m_mu_d0;
       std::vector<float>  m_mu_z0;
       //std::vector<float>  m_mu_d0sig;
