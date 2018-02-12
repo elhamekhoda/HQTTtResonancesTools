@@ -285,6 +285,19 @@ cd ../
       std::vector<int> m_tjet_numConstituents;
       std::vector<int> m_tjet_label;
 
+      std::vector<float> m_tjet_mv2c10mu;
+      std::vector<float> m_tjet_mv2c10rnn;
+      std::vector<float> m_tjet_dl1_pu;
+      std::vector<float> m_tjet_dl1_pb;
+      std::vector<float> m_tjet_dl1_pc;
+      std::vector<float> m_tjet_dl1mu_pu;
+      std::vector<float> m_tjet_dl1mu_pb;
+      std::vector<float> m_tjet_dl1mu_pc;
+      std::vector<float> m_tjet_dl1rnn_pu;
+      std::vector<float> m_tjet_dl1rnn_pb;
+      std::vector<float> m_tjet_dl1rnn_pc;
+
+
       std::vector<float> m_tjet_bTagSF_70;
       std::vector<std::vector<float> > m_tjet_bTagSF_70_eigen_B_up;
       std::vector<std::vector<float> > m_tjet_bTagSF_70_eigen_B_down;

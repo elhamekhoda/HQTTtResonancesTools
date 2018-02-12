@@ -48,7 +48,7 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
     m_trackjetcollection = "AntiKt2PV0TrackJets";
     m_ghostjetcollection = "GhostAntiKt2TrackJet";
     m_trackjetPtCut = 10e3; // for AntiKt2-> 10 GeV, for AntiKt3 -> 7 GeV, but JVT needs (?) to be applied for jets with pt < 50 GeV, so raise this to avoid that, as JVT not available
-    m_trackjetMv2c10Cut = 0.6455; // for AntiKt2 @ 70% ->  0.6455 
+    m_trackjetMv2c10Cut = 0.66; // for AntiKt2 @ 70% ->  0.66
   }
   
   m_runHtt      = (configSettings->value("TtresRunHTT") =="True") ? true : false ;
@@ -268,6 +268,19 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_ljet_bdt_score80,   "ljet_bdt_score80");
         systematicTree->makeOutputVariable(m_ljet_dnn_score80,   "ljet_dnn_score80");
         systematicTree->makeOutputVariable(m_ljet_topo_score,   "ljet_topo_score");
+
+        //track jet b-tagging variables
+        systematicTree->makeOutputVariable(m_tjet_mv2c10mu,  "tjet_mv2c10mu");
+        systematicTree->makeOutputVariable(m_tjet_mv2c10rnn,  "tjet_mv2c10rnn");
+        systematicTree->makeOutputVariable(m_tjet_dl1_pu,  "tjet_dl1_pu");
+        systematicTree->makeOutputVariable(m_tjet_dl1_pb,  "tjet_dl1_pb");
+        systematicTree->makeOutputVariable(m_tjet_dl1_pc,  "tjet_dl1_pc");
+        systematicTree->makeOutputVariable(m_tjet_dl1mu_pu,  "tjet_dl1mu_pu");
+        systematicTree->makeOutputVariable(m_tjet_dl1mu_pb,  "tjet_dl1mu_pb");
+        systematicTree->makeOutputVariable(m_tjet_dl1mu_pc,  "tjet_dl1mu_pc");
+        systematicTree->makeOutputVariable(m_tjet_dl1rnn_pu,  "tjet_dl1rnn_pu");
+        systematicTree->makeOutputVariable(m_tjet_dl1rnn_pb,  "tjet_dl1rnn_pb");
+        systematicTree->makeOutputVariable(m_tjet_dl1rnn_pc,  "tjet_dl1rnn_pc");
 
 
         // book large-R calo jet trackjet b-tagging information
@@ -1014,7 +1027,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         m_ljet_good_smooth_qt80[i] = 0;
         m_ljet_good_smooth_qt50[i] = 0;
         m_ljet_good_bdt80[i] = 0;
-        //m_ljet_good_dnn80[i] = 0;
+        m_ljet_good_dnn80[i] = 0;
         m_ljet_good_topo[i] = 0;
 
         int good_sub_80=0,good_sub_50=0,good_smooth_mt80=0,good_smooth_mt50=0;
@@ -1114,6 +1127,53 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
         ++i;
     }
+
+
+    m_tjet_mv2c10mu.resize(event.m_trackJets.size());
+    m_tjet_mv2c10rnn.resize(event.m_trackJets.size());
+    m_tjet_dl1_pu.resize(event.m_trackJets.size());
+    m_tjet_dl1_pb.resize(event.m_trackJets.size());
+    m_tjet_dl1_pc.resize(event.m_trackJets.size());
+    m_tjet_dl1mu_pu.resize(event.m_trackJets.size());
+    m_tjet_dl1mu_pb.resize(event.m_trackJets.size());
+    m_tjet_dl1mu_pc.resize(event.m_trackJets.size());
+    m_tjet_dl1rnn_pu.resize(event.m_trackJets.size());
+    m_tjet_dl1rnn_pb.resize(event.m_trackJets.size());
+    m_tjet_dl1rnn_pc.resize(event.m_trackJets.size());
+
+
+    i = 0;
+
+    for (const auto* const jetPtr : event.m_trackJets) {
+
+      if (jetPtr->pt() > 10e3 && std::fabs(jetPtr->eta()) < 2.5 && jetPtr->numConstituents() >= 2){
+        const xAOD::BTagging* btag(nullptr);
+        btag = jetPtr->btagging();
+        double mvx = -999;
+
+   
+        if (btag) btag->MVx_discriminant("MV2c10mu", mvx);
+        m_tjet_mv2c10mu[i] = mvx;
+        mvx = -999;
+        if (btag) btag->MVx_discriminant("MV2c10rnn", mvx);
+        m_tjet_mv2c10rnn[i] = mvx;
+  
+        if(btag){
+          double pu=-999,pb=-999,pc=-999;
+          btag->pu("DL1", pu);btag->pb("DL1", pb);btag->pc("DL1", pc);
+          m_tjet_dl1_pu[i] = pu;m_tjet_dl1_pb[i] = pb;m_tjet_dl1_pc[i] = pc;
+          btag->pu("DL1mu", pu);btag->pb("DL1mu", pb);btag->pc("DL1mu", pc);
+          m_tjet_dl1mu_pu[i] = pu;m_tjet_dl1mu_pb[i] = pb;m_tjet_dl1mu_pc[i] = pc;
+          btag->pu("DL1rnn", pu);btag->pb("DL1rnn", pb);btag->pc("DL1rnn", pc);
+          m_tjet_dl1rnn_pu[i] = pu;m_tjet_dl1rnn_pb[i] = pb;m_tjet_dl1rnn_pc[i] = pc;
+          //std::cout << "dl1=" << m_tjet_dl1_pu[i] << std::endl;
+        }
+
+        ++i;
+      }
+    }
+
+
 
     if (m_runHtt) {
       // Execute HTT
@@ -1483,7 +1543,7 @@ if(hadtop_index==-1||lepjet_index==-1){
         jet->SetPtEtaPhiM(jetPtr->pt(),jetPtr->eta(),jetPtr->phi(),jetPtr->m());
         jetVector.push_back(jet);
         jetPtr->btagging()->MVx_discriminant("MV2c10",jmv2);
-        isJetBtagged.push_back(jmv2>0.6455);
+        isJetBtagged.push_back(jmv2>0.66);
   }
   int i_q1_W,i_q2_W,i_b_had,i_b_lep,ign1;
   bool pass = resolved_tt.findMinChiSquare(&Plepton,&jetVector,&isJetBtagged,&met,i_q1_W,i_q2_W,i_b_had,i_b_lep,ign1,m_chi2all,m_chi2had,m_chi2lep);
@@ -1501,7 +1561,7 @@ if(hadtop_index==-1||lepjet_index==-1){
     for (unsigned int k = 0; k < trackjets->size(); ++k) {
     const xAOD::Jet *trackjetPtr = trackjets->at(k);
     trackjetPtr->btagging()->MVx_discriminant("MV2c10",jmv2);
-    if (jmv2>0.6455){
+    if (jmv2>0.66){
          Pbjet.SetPtEtaPhiM(trackjetPtr->pt(),trackjetPtr->eta(),trackjetPtr->phi(),trackjetPtr->m());
          if ((Pbjet.DeltaR(Phadtop))<1.0){hadside=1; m_NB_hadside+=1;}
          if ((Pbjet.DeltaR(Pleptop))<1.0){lepside=1; m_NB_lepside+=1;}
