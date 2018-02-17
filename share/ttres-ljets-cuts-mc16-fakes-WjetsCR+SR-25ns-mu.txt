@@ -41,7 +41,7 @@ Systematics None
 #Systematics All
 BTaggingWP FixedCutBEff_70
 
-JetUncertainties_NPModel 21NP
+JetUncertainties_NPModel GlobalReduction
 #LargeRJESUncertaintyConfig TopTagging
 JetUncertainties_BunchSpacing 25ns
 
