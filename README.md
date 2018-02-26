@@ -4,7 +4,7 @@ This Tool is developed to fulfill the purpose of the exotics ttbar resonances se
 
 ## Current Version:
 
-**AanalysisTop, 21.2.17** 
+**AanalysisTop, 21.2.19** 
 
 ## Updates
 
@@ -13,6 +13,8 @@ This Tool is developed to fulfill the purpose of the exotics ttbar resonances se
 * The  NLargeJetTtresSLSelector class only calls ```SubstructureTopTagger```  with 80% WP
     * The "good" flag corresponds to this WP if one uses ```LARGEJETTTRESST_N 300000 >= 1``` in the config file
 * Differnt b-tagging discriminants for track jets are stored in the output Ntuple
+* Based on the recent jet uncertainty recommendation `JetUncertainties_NPModel 21NP` has been changed to `JetUncertainties_NPModel GlobalReduction`. (23 Nps)
+More info: [here](https://twiki.cern.ch/twiki/bin/view/AtlasProtected/JetUncertaintiesRel21Moriond2018SmallR)
 
 
 ## Useful pages
