@@ -4,9 +4,12 @@ This Tool is developed to fulfill the purpose of the exotics ttbar resonances se
 
 ## Current Version:
 
-**AanalysisTop, 21.2.19** 
+**AanalysisTop, 21.2.24** 
+### Latest release based updates
+* Due to a typo in the default config option in AnalysisTop, large-R jet JES/JMS config has been defined in our config text file like `LargeRJESJMSConfig CombMass`
+* Issue with b-tagging SF for track jets. Here is the [JIRA link](https://its.cern.ch/jira/browse/AFT-329)
 
-## Updates
+## General Updates
 
 * All the Top-tagging tools are initialized in ```TtresEventSaverFlatNtuple```
 * Available top-taggers are used and a corresponding good flag is saved in the output Ntuple

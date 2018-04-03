@@ -4,8 +4,8 @@ LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtRe
 GRLDir  GoodRunsLists
 GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml  data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20171130/data17_13TeV.periodAllYear_DetStatus-v97-pro21-13_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml 
 
-PRWConfigFiles HQTTtResonancesTools/PRW_Zp_mc16a.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v1/prw.merged.root  dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16c.FS.v1/prw.merged.root 
-PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root  GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root  GoodRunsLists/data17_13TeV/20171130/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-001.root
+PRWConfigFiles HQTTtResonancesTools/PRW_Zp_mc16a.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v1/prw.merged.root  #dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16c.FS.v1/prw.merged.root 
+PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root  GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root  #GoodRunsLists/data17_13TeV/20171130/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-001.root
 
 ElectronCollectionName Electrons
 MuonCollectionName Muons
@@ -16,6 +16,7 @@ LargeJetCollectionName AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets
 LargeJetSubstructure None
 #LargeJetCollectionName AntiKt10LCTopoJets
 #LargeJetSubstructure Trimmer
+LargeRJESJMSConfig CombMass
 TauCollectionName None
 PhotonCollectionName None
 TrackJetCollectionName AntiKt2PV0TrackJets
@@ -59,7 +60,7 @@ FakesControlRegionDoLooseMC False
 OverlapRemovalLeptonDef Tight
 ApplyElectronInJetSubtraction False
 
-#OverlapRemovalProcedure   BoostedSlidingDRMu
+OverlapRemovalProcedure   BoostedSlidingDRMu
 
 DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord
 
