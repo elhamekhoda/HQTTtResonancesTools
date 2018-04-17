@@ -1,5 +1,6 @@
 #include "HQTTtResonancesTools/HQTTtResonancesToolsLoader.h"
 #include "HQTTtResonancesTools/NLargeJetTtresSTSelector.h"
+#include "HQTTtResonancesTools/NLargeJetTtresSTmtSelector.h"
 #include "HQTTtResonancesTools/NLargeJetTtresMassOnlySelector.h"
 #include "HQTTtResonancesTools/NLargeJetTtresST50NoLeptonSelector.h"
 #include "HQTTtResonancesTools/NLargeJetTtresST80NoLeptonSelector.h"
@@ -80,6 +81,8 @@ top::EventSelectorBase* HQTTtResonancesToolsLoader::initTool(const std::string& 
         return new top::NLargeJetTtresST80NoLeptonSelector(param);
     else if (toolname == "ANGULARCUTSSL")
         return new top::AngularCutsSL(param);
+    else if (toolname == "LARGEJETTTRESSTMT_N")
+        return new top::NLargeJetTtresSTmtSelector(param);
 
 
 
