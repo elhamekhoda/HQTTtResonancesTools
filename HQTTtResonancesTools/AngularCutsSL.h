@@ -1,25 +1,23 @@
 #ifndef ANGULARCUTSSL_H_
 #define ANGULARCUTSSL_H_
 
-#include "TopEventSelectionTools/SignValueSelector.h"
+#include "AsgTools/AsgTool.h"
+#include "PATCore/TAccept.h"
+#include "TopEvent/EventTools.h"
+#include "BoostedJetTaggers/JSSTaggerBase.h"
+
 namespace top {
 
-/**
- * @brief Does some stuff
- */
-class AngularCutsSL : public SignValueSelector {
+class AngularCutsSL : public JSSTaggerBase {
+    ASG_TOOL_CLASS0(AngularCutsSL)
 public:
-    explicit AngularCutsSL(const std::string& params);
-
-    /**
-     * @brief Write a description ;)
-     *
-     * @param event The event to perform the operations on.
-     * @return True if the event passes the selection, false otherwise.
-     */
-     bool apply(const top::Event& event) const override;
-   
-
+    //Default - so root can load based on a name
+    AngularCutsSL(const std::string& name);
+    StatusCode initialize();
+    StatusCode finalize();
+    virtual Root::TAccept tag(const xAOD::Jet& largeJet) const;
+    mutable const xAOD::IParticle* m_lep;
+    mutable const xAOD::Jet* m_selJet;
 };
 
 }

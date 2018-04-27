@@ -29,7 +29,7 @@
 
 // Sherpa W-filter
 #include "HQTTtResonancesTools/WFilter.h"
-
+#include "HQTTtResonancesTools/AngularCutsSL.h"
 using namespace std;
 
 //#define ENABLE_BTAG_DEBUG 1
@@ -124,7 +124,7 @@ namespace top {
 
       //Store output PDF weights from LHAPDF
       std::unordered_map<std::string, std::vector<float> > m_PDF_eventWeights;
-      
+
       std::vector<int>   m_ljet_good;
       std::vector<int>   m_ljet_notgood;// for WCR
       std::vector<float> m_ljet_tau32;
@@ -147,6 +147,7 @@ namespace top {
       std::vector<float> m_ljet_bdt_score80;
       std::vector<float> m_ljet_dnn_score80;
       std::vector<float> m_ljet_topo_score;
+      std::vector<int>   m_ljet_angular_cuts;
 
       SubstructureTopTagger *STL80;
       SubstructureTopTagger *STL50;
@@ -159,8 +160,7 @@ namespace top {
       std::unique_ptr<JSSWTopTaggerBDT> m_bdtTopTagger80;//BDT top tagger 80%
       std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTagger80;//DNN top tagger 80%
       std::unique_ptr<TopoclusterTopTagger> m_topoTopTagger;//Topo Cluster top tagger
-
- /*    
+ /*   
       m_smoothedTopTaggerMT80 = nullptr;m_smoothedTopTaggerMT50 = nullptr;
       m_smoothedTopTaggerTS80 = nullptr;m_smoothedTopTaggerTS50 = nullptr;
       m_smoothedTopTaggerQT80 = nullptr;m_smoothedTopTaggerQT50 = nullptr;
