@@ -19,7 +19,7 @@
 #include "HQTTtResonancesTools/NLargeJetTtresFakesSelector.h"
 #include "HQTTtResonancesTools/NJetCloseLeptonSelector.h"
 #include "HQTTtResonancesTools/NLargeJetVHresSelector.h"
-#include "HQTTtResonancesTools/AngularCutsSL.h"
+#include "HQTTtResonancesTools/AngularCutsSLSelector.h"
 #include "TtResonancesTools/Chi2Selector.h"
 
 #include <iostream>
@@ -80,7 +80,7 @@ top::EventSelectorBase* HQTTtResonancesToolsLoader::initTool(const std::string& 
     else if (toolname == "LARGEJETTTRESST80NOLEPTON_N")
         return new top::NLargeJetTtresST80NoLeptonSelector(param);
     else if (toolname == "ANGULARCUTSSL")
-        return new top::AngularCutsSL(param);
+        return new top::AngularCutsSLSelector(param);
     else if (toolname == "LARGEJETTTRESSTMT_N")
         return new top::NLargeJetTtresSTmtSelector(param);
 
