@@ -15,7 +15,7 @@ This class will tag a large-R jets with the SmoothTopTagger using the mass and t
 
 
 */
-
+  
 namespace top {
 
 NLargeJetTtresSTmtSelector::NLargeJetTtresSTmtSelector(const std::string& params) :

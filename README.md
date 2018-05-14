@@ -4,10 +4,10 @@ This Tool is developed to fulfill the purpose of the exotics ttbar resonances se
 
 ## Current Version:
 
-**AanalysisTop, 21.2.25** 
+**AanalysisTop, 21.2.29** 
 ### Latest release based updates
 * Due to a typo in the default config option in AnalysisTop, large-R jet JES/JMS config has been defined in our config text file like `LargeRJESJMSConfig CombMass`
-* Issue with b-tagging SF for track jets. Here is the [JIRA link](https://its.cern.ch/jira/browse/AFT-329)
+<!--* Issue with b-tagging SF for track jets. Here is the [JIRA link](https://its.cern.ch/jira/browse/AFT-329) --!>
 * A new selection class for top-tagged large-jets is added in the tool: **NLargeJetTtresSTmtSelector**. Top tagging is done using SmoothTopTagger with 80% WP using mass and tau32 variable.
 
 ## General Updates
