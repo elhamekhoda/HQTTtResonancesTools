@@ -33,7 +33,7 @@ bool NLargeJetTtresFakesSelector::apply(const top::Event& event) const {
             good = 1;
         }
 
-        largeJet->auxdecor<char>("topTagged") = good;
+        largeJet->auxdecor<int>("topTagged") = good;
     }
 
     return checkInt(nGoodJets, (int) multiplicity());

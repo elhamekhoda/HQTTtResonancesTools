@@ -29,7 +29,7 @@ bool NLargeJetTtresSLSelector::apply(const top::Event& event) const {
     //This is given by the previous selection
     const xAOD::Jet* selJet = nullptr;
     for (const auto* const jet : event.m_jets) {
-        if (jet->auxdata<char>("closeToLepton") == 1) {
+        if (jet->auxdata<int>("closeToLepton") == 1) {
             selJet = jet;
             break;
         }

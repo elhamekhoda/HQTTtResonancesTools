@@ -32,7 +32,7 @@ bool NLargeJetVHresSelector::apply(const top::Event& event) const {
             good = 1;
         }
 
-        largeJet->auxdecor<char>("good") = good;
+        largeJet->auxdecor<int>("good") = good;
     }
 
     return checkInt(nGoodJets, (int) value());

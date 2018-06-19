@@ -67,7 +67,7 @@ bool NLargeJetTtresSTWjetsSelector::apply(const top::Event& event) const {
             good = 1;
         }
 
-        largeJet->auxdecor<char>("notTopTagged") = good;
+        largeJet->auxdecor<int>("notTopTagged") = good;
     }
 
     return checkInt(nGoodJets, (int) multiplicity());
