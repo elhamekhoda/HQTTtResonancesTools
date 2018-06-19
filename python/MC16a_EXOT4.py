@@ -3,7 +3,8 @@ import TopExamples.grid
 #ttbar backgrounds
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_ttbar_nonallhad").datasets = [
 #"mc16_13TeV.410501.PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_nonallhad.deriv.DAOD_EXOT4.e5458_s3126_r9364_r9315_p3306",
-"mc16_13TeV.410501.PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_nonallhad.deriv.DAOD_EXOT4.e5458_s3126_r9364_r9315_p3340"
+#"mc16_13TeV.410501.PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_nonallhad.deriv.DAOD_EXOT4.e5458_s3126_r9364_r9315_p3340"
+"mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.deriv.DAOD_EXOT4.e6337_e5984_s3126_r9364_r9315_p3500"
 ]
 
 #Single top samples
