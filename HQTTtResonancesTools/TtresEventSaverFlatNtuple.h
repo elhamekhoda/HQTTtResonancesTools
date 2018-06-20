@@ -261,6 +261,10 @@ cd ../
       int m_initial_type;
       double m_weight_EW;
 
+      //const std::vector<std::pair<std::string, std::string> > TaggerBtagWP;
+      std::string btaggingAlgWP = "";
+      std::string btag_outputVar ="";
+
       // small-R calo jet trackjet b-tagging information
       std::vector<std::vector<int> > m_jet_ghosttrackjet_idx;
       std::vector<int> m_jet_nghosttrackjet;
@@ -311,6 +315,8 @@ cd ../
       std::vector<float> m_tjet_bTagSF_70_syst_extrapolation_from_charm_up;
       std::vector<float> m_tjet_bTagSF_70_syst_extrapolation_from_charm_down;
 
+      std::vector<float> m_jet_bTagSF_70;
+
 #ifdef ENABLE_BTAG_DEBUG
       std::vector<float> m_tjet_bTagSF_70_syst_B_up;
       std::vector<float> m_tjet_bTagSF_70_syst_B_down;
@@ -329,7 +335,6 @@ cd ../
       float m_weight_trackjet_bTagSF_70_env_extrapolation_down;
       float m_weight_trackjet_bTagSF_70_env_extrapolation_from_charm_up;
       float m_weight_trackjet_bTagSF_70_env_extrapolation_from_charm_down;
-
 
       std::vector<float> m_jet_bTagSF_70;
       std::vector<float> m_jet_bTagSF_70_syst_B_up;

@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <iostream>
+#include <string>
 
 #include "TopPartons/PartonHistory.h"
 #include "TopEventReconstructionTools/TtresNeutrinoBuilder.h"
@@ -165,6 +166,15 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
       partTree->makeOutputVariable(m_part_ljet_tau32_wta, "ljet_tau32_wta");
     }
 
+    for (auto TaggerBtagWP : m_config->bTagWP()) {
+      //Default algorithms is mv2c10
+      std::string m_tagger = TaggerBtagWP.first;
+      std::string btagWP = TaggerBtagWP.second;
+      btaggingAlgWP = "btag_SF_"+m_tagger+"_"+btagWP+"_nom"; //variable to acceess the nominal b-tagging SF 
+      btag_outputVar = "btag_SF_"+m_tagger+"_"+btagWP.substr( btagWP.length()-2); //The b_tag SF gets saved with this name
+      }
+      
+
     for (auto systematicTree : treeManagers()) {
 
         if (m_LHAPDFSets.size() > 0) {
@@ -203,7 +213,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_tjet_label, "tjet_label");
         systematicTree->makeOutputVariable(m_tjet_numConstituents, "tjet_numConstituents");
 
-        systematicTree->makeOutputVariable(m_tjet_bTagSF_70, "tjet_bTagSF_70");
+        systematicTree->makeOutputVariable(m_tjet_bTagSF_70, "tjet_"+btag_outputVar);
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_eigen_B_up, "tjet_bTagSF_70_eigen_B_up");
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_eigen_B_down, "tjet_bTagSF_70_eigen_B_down");
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_eigen_C_up, "tjet_bTagSF_70_eigen_C_up");
@@ -304,6 +314,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_jet_closeToLepton, "jet_closeToLepton");
 
         // book small-R calo jet trackjet b-tagging information
+        systematicTree->makeOutputVariable(m_jet_bTagSF_70, "jet_"+btag_outputVar);
         systematicTree->makeOutputVariable(m_jet_ghosttrackjet_idx, "jet_ghosttrackjet_idx");
         systematicTree->makeOutputVariable(m_jet_nghosttrackjet, "jet_nghosttrackjet");
         systematicTree->makeOutputVariable(m_jet_nghosttrackjetb, "jet_nghosttrackjetb");
@@ -337,6 +348,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_truthparticle_eta,      "truthparticle_eta");
         systematicTree->makeOutputVariable(m_truthparticle_phi,      "truthparticle_phi");
         systematicTree->makeOutputVariable(m_truthparticle_m,      "truthparticle_m");
+
 
 #ifdef ENABLE_BTAG_DEBUG
         systematicTree->makeOutputVariable(m_jet_bTagSF_70, "jet_bTagSF_70");
@@ -1172,7 +1184,6 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
           m_tjet_dl1rnn_pu[i] = pu;m_tjet_dl1rnn_pb[i] = pb;m_tjet_dl1rnn_pc[i] = pc;
           //std::cout << "dl1=" << m_tjet_dl1_pu[i] << std::endl;
         }
-
         ++i;
       }
     }
@@ -1619,8 +1630,9 @@ if(hadtop_index==-1||lepjet_index==-1){
        trackjetPtr->getAttribute("HadronConeExclTruthLabelID", m_tjet_label[k]);
        m_tjet_numConstituents[k] = trackjetPtr->numConstituents();
 
-       if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_nom"))
-         m_tjet_bTagSF_70[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_nom");
+       if (trackjetPtr->isAvailable<float>(btaggingAlgWP))
+         m_tjet_bTagSF_70[k] = trackjetPtr->auxdataConst<float>(btaggingAlgWP);
+
 /*
        m_tjet_bTagSF_70_eigen_B_up[k].resize(n_b, 1);
        m_tjet_bTagSF_70_eigen_B_down[k].resize(n_b, 1);
@@ -1690,6 +1702,15 @@ if(hadtop_index==-1||lepjet_index==-1){
 #endif
     }
 
+    //storing the calojet btagging SF
+    m_jet_bTagSF_70.resize(event.m_jets.size(), 1);
+    for (unsigned int k = 0; k < event.m_jets.size(); ++k) {
+       const xAOD::Jet *jetPtr = event.m_jets.at(k);
+
+       if (jetPtr->isAvailable<float>(btaggingAlgWP))
+         m_jet_bTagSF_70[k] = jetPtr->auxdataConst<float>(btaggingAlgWP);
+     }
+
 #ifdef ENABLE_BTAG_DEBUG
     m_jet_bTagSF_70.resize(event.m_jets.size(), 1);
     m_jet_bTagSF_70_syst_B_up.resize(event.m_jets.size(), 1);
@@ -1716,8 +1737,8 @@ if(hadtop_index==-1||lepjet_index==-1){
     for (unsigned int k = 0; k < event.m_jets.size(); ++k) {
        const xAOD::Jet *jetPtr = event.m_jets.at(k);
 
-       if (jetPtr->isAvailable<float>("btag_SF_70_nom"))
-         m_jet_bTagSF_70[k] = jetPtr->auxdataConst<float>("btag_SF_70_nom");
+       if (jetPtr->isAvailable<float>(btaggingAlgWP))
+         m_jet_bTagSF_70[k] = jetPtr->auxdataConst<float>(btaggingAlgWP);
        if (jetPtr->isAvailable<float>("btag_SF_70_FT_EFF_B_systematics__1up"))
          m_jet_bTagSF_70_syst_B_up[k] = jetPtr->auxdataConst<float>("btag_SF_70_FT_EFF_B_systematics__1up");
        if (jetPtr->isAvailable<float>("btag_SF_70_FT_EFF_B_systematics__1down"))
