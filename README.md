@@ -4,7 +4,7 @@ This Tool is developed to fulfill the purpose of the exotics ttbar resonances se
 
 ## Current Version:
 
-**AanalysisTop, 21.2.34** 
+**AanalysisTop, 21.2.39** 
 ### Latest release based updates
 * Do not use AnalysisTop release 21.2.30 - 21.2.33. There are different bugs there.
 * Due to a typo in the default config option in AnalysisTop, large-R jet JES/JMS config has been defined in our config text file like `LargeRJESJMSConfig CombMass`
