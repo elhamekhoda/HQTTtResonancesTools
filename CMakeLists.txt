@@ -36,6 +36,24 @@ find_package( ROOT REQUIRED COMPONENTS Core Gpad Tree Hist RIO MathCore Graf )
 # Custom definitions needed for this package:
 add_definitions( -g )
 
+option(ENABLE_LJETSUBSTRUCTURE_DEBUG "This enables jet substructures debug outputs" OFF)
+option(ENABLE_BTAG_DEBUG "This enables b-tagging debug outputs" OFF)
+
+string(ASCII 27 ESC)
+if (ENABLE_LJETSUBSTRUCTURE_DEBUG)
+  message(WARNING "${ESC}[36;1mEnables jet substructure debug variables${ESC}[m")
+  add_definitions(-D ENABLE_LJETSUBSTRUCTURE_DEBUG)
+else()
+  message(WARNING "${ESC}[33;1mDisables jet substructure debug variables${ESC}[m")
+endif()
+
+if (ENABLE_BTAG_DEBUG)
+  message(WARNING "${ESC}[36;1mEnables b-tagging debug variables${ESC}[m")
+  add_definitions(-D ENABLE_BTAG_DEBUG)
+else()
+  message(WARNING "${ESC}[33;1mDisables b-tagging debug variables${ESC}[m")
+endif()
+
 # Generate a CINT dictionary source file:
 atlas_add_root_dictionary( HQTTtResonancesTools _cintDictSource
                            ROOT_HEADERS HQTTtResonancesTools/*.h Root/LinkDef.h

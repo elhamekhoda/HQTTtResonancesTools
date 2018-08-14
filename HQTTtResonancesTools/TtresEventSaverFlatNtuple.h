@@ -131,6 +131,17 @@ namespace top {
       std::vector<float> m_ljet_tau32_wta;
       std::vector<float> m_ljet_tau21;
       std::vector<float> m_ljet_tau21_wta;
+      #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
+      std::vector<float> m_ljet_D2;
+      std::vector<float> m_ljet_C2;
+      std::vector<float> m_ljet_ECF1;
+      std::vector<float> m_ljet_ECF2;
+      std::vector<float> m_ljet_ECF3;
+      std::vector<int> m_ljet_MClike;
+      #endif
+      std::vector<float> m_ljet_tau1_wta;
+      std::vector<float> m_ljet_tau2_wta;
+      std::vector<float> m_ljet_tau3_wta;
       std::vector<int>   m_jet_closeToLepton;
 
       std::vector<int>   m_ljet_good_sub80;
