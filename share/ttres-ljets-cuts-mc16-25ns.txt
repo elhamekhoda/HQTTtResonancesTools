@@ -65,7 +65,7 @@ DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSher
 
 TtresRunHTT False
 TtresSavePartons True
-TtresrunEWK True
+TtresrunEWK False
 isTOPQ False
 fakeLeptonSel False
 isSherpaW True
