@@ -59,7 +59,7 @@ FakesControlRegionDoLooseMC False
 OverlapRemovalLeptonDef Tight
 ApplyElectronInJetSubtraction False
 
-#OverlapRemovalProcedure BoostedSlidingDRMu
+OverlapRemovalProcedure BoostedSlidingDRMu
 
 DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord
 
