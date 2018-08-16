@@ -45,9 +45,12 @@ setup:
 
 build_image:
   stage: deploy
+  image: docker:latest
   except:
   - tags
+  tags:
+    - docker-image-build
   script:
-    - docker build -t gitlab-registry.cern.ch/atlas-phys/exot/hqt/r21-ttbar-1lep/hqtttresonancestools . --build-arg gitlab_ci_token=${gitlab_ci_token} --build-arg AtlasVersion=${AtlasVersion} 
+    - docker build --build-arg gitlab_ci_token=${gitlab_ci_token} --build-arg AtlasVersion=${AtlasVersion} -t gitlab-registry.cern.ch/atlas-phys/exot/hqt/r21-ttbar-1lep/hqtttresonancestools .
     - docker push gitlab-registry.cern.ch/atlas-phys/exot/hqt/r21-ttbar-1lep/hqtttresonancestools
   <<: *global
