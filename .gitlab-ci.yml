@@ -1,13 +1,3 @@
-image: lukasheinrich/recast_cvmfs_assisted:20161231
-
-variables:
-  PACKAGE_NAME: HQTTtResonancesTools
-
-.global: &global
-  only:
-    refs:
-      - master
-
 stages:
   - setup
   - build
@@ -15,40 +5,37 @@ stages:
   - test
   - deploy
 
-before_script:
-  - pwd
-  - ls
-  - mkdir -p ~/.ssh
-  - source ~/.bashrc || echo ignore alrb
-  - echo "${SERVICE_PASS}" | kinit ${CERN_USER}@CERN.CH
-  - klist
-  - echo -e "Host svn.cern.ch lxplus.cern.ch\n\tUser ${CERN_USER}\n\tStrictHostKeyChecking no\n\tGSSAPIAuthentication yes\n\tGSSAPIDelegateCredentials yes\n\tProtocol 2\n\tForwardX11 no\n\tIdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
-  - cat ~/.ssh/config
+variables:
+  PACKAGE_NAME: HQTTtResonancesTools
+  GIT_SSL_NO_VERIFY: "true"
 
-setup:
-  stage: setup
-  script: 
-    - mkdir -p source build
-    - cd build
-    - acmSetup AnalysisTop,${AtlasVersion} --sourcearea ../source || echo ignore alrb
-    - echo "Project Directory    ${CI_PROJECT_DIR}"
-    - echo "Current Directory    ${PWD}"
-  artifacts:
-    expire_in: 15 min
-    paths:
-      - ${CI_PROJECT_DIR}/run
-      - ${CI_PROJECT_DIR}/build
-      - ${CI_PROJECT_DIR}/source
+.global: &global
+  only:
+    refs:
+      - master
+
+.analysis_image: &image
+  image: lukasheinrich/recast_cvmfs_assisted:20161231
   tags:
     - cvmfs
-  <<: *global
+  before_script:
+    - pwd
+    - ls
+    - mkdir -p ~/.ssh
+    - source ~/.bashrc || echo ignore alrb
+    - echo "${SERVICE_PASS}" | kinit ${CERN_USER}@CERN.CH
+    - klist
+    - echo -e "Host svn.cern.ch lxplus.cern.ch\n\tUser ${CERN_USER}\n\tStrictHostKeyChecking no\n\tGSSAPIAuthentication yes\n\tGSSAPIDelegateCredentials yes\n\tProtocol 2\n\tForwardX11 no\n\tIdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+    - cat ~/.ssh/config
 
 build_image:
   stage: deploy
-  image: docker:latest
-  except:
-    - tags
   script:
-    - docker build --build-arg gitlab_ci_token=${gitlab_ci_token} --build-arg AtlasVersion=${AtlasVersion} -t gitlab-registry.cern.ch/atlas-phys/exot/hqt/r21-ttbar-1lep/hqtttresonancestools .
-    - docker push gitlab-registry.cern.ch/atlas-phys/exot/hqt/r21-ttbar-1lep/hqtttresonancestools
+    - ignore
+  variables:
+    FROM: atlas/analysistop:${AtlasVersion}
+    CONTEXT_DIR: /
+    BUILD_ARG_1: CI_JOB_TOKEN=${CI_JOB_TOKEN}
+  tags:
+    - docker-image-build
   <<: *global
