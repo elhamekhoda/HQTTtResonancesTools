@@ -29,7 +29,7 @@ TrackJetCollectionName AntiKt2PV0TrackJets
 TruthCollectionName TruthParticles
 #TruthCollectionName None
 TruthJetCollectionName AntiKt4TruthJets
-#TopPartonHistory ttbar
+TopPartonHistory ttbar
 TruthBlockInfo False
 PDFInfo False
 IsAFII False
@@ -69,8 +69,7 @@ OverlapRemovalProcedure BoostedSlidingDRMu
 DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord
 
 TtresRunHTT False
-TtresSavePartons False # Note that parton history (MC_*, MA_*) is currently not available for full-hadronic analysis
-                       # Turning it on will cause errors.
+TtresSavePartons True
 TtresrunEWK False
 isTOPQ False
 fakeLeptonSel False
