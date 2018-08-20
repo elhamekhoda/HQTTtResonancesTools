@@ -4,21 +4,11 @@
 #include "HQTTtResonancesTools/NLargeJetTtresMassOnlySelector.h"
 #include "HQTTtResonancesTools/NLargeJetTtresST50NoLeptonSelector.h"
 #include "HQTTtResonancesTools/NLargeJetTtresST80NoLeptonSelector.h"
-#include "HQTTtResonancesTools/NLargeJetTtresSTSimpleSelector.h"
-#include "HQTTtResonancesTools/NLargeJetTtresSTTau32Selector.h"
-#include "HQTTtResonancesTools/NLargeJetTtresSTMassSelector.h"
-#include "HQTTtResonancesTools/NLargeJetTtresSTWjetsSelector.h"
-#include "HQTTtResonancesTools/NLargeJetTtresSTTSelector.h"
-#include "HQTTtResonancesTools/NLargeJetTtresSTNoKinSelector.h"
 #include "HQTTtResonancesTools/TrackMV2c20Selector.h"
 #include "HQTTtResonancesTools/TrackMV2c10Selector.h"
-#include "HQTTtResonancesTools/NLargeJetTtresSLSelector.h"
-#include "HQTTtResonancesTools/NLargeJetTtresSTNoSJetSelector.h"
 #include "HQTTtResonancesTools/NLargeJetTtresLeptonicSelector.h"
-#include "HQTTtResonancesTools/NLargeJetTtresAHSelector.h"
 #include "HQTTtResonancesTools/NLargeJetTtresFakesSelector.h"
 #include "HQTTtResonancesTools/NJetCloseLeptonSelector.h"
-#include "HQTTtResonancesTools/NLargeJetVHresSelector.h"
 #include "HQTTtResonancesTools/AngularCutsSLSelector.h"
 #include "TtResonancesTools/Chi2Selector.h"
 
@@ -41,16 +31,8 @@ top::EventSelectorBase* HQTTtResonancesToolsLoader::initTool(const std::string& 
 
     if (toolname == "LARGEJETTTRESLEPTONIC_N")
         return new top::NLargeJetTtresLeptonicSelector(param);
-    else if (toolname == "LARGEJETTTRESSTNOSJET_N")
-        return new top::NLargeJetTtresSTNoSJetSelector(param);
-    else if (toolname == "LARGEJETTTRESSL_N")
-        return new top::NLargeJetTtresSLSelector(param);
-    else if (toolname == "LARGEJETTTRESAH_N")
-        return new top::NLargeJetTtresAHSelector(param);
     else if (toolname == "JETCLOSELEPTON_N")
         return new top::NJetCloseLeptonSelector(param);
-    else if (toolname == "LARGEJETVHRES_N")
-        return new top::NLargeJetVHresSelector(param);
     else if (toolname == "LOG10_CHI2")
         return new top::Chi2Selector(param);
     else if (toolname == "TRACKMV2C20_N")
@@ -61,20 +43,8 @@ top::EventSelectorBase* HQTTtResonancesToolsLoader::initTool(const std::string& 
         return new top::NLargeJetTtresSTSelector(param);
     else if (toolname == "LARGEJETTTRESMASSONLY_N")
         return new top::NLargeJetTtresMassOnlySelector(param);
-    else if (toolname == "LARGEJETTTRESSTSIMPLE_N")
-        return new top::NLargeJetTtresSTSimpleSelector(param);
-    else if (toolname == "LARGEJETTTRESSTT_N")
-        return new top::NLargeJetTtresSTTSelector(param);
     else if (toolname == "LARGEJETTTRESFAKES_N")
         return new top::NLargeJetTtresFakesSelector(param);	
-    else if (toolname == "LARGEJETTTRESSTWJETS_N")
-        return new top::NLargeJetTtresSTWjetsSelector(param);
-    else if (toolname == "LARGEJETTTRESSTTAU32_N")
-        return new top::NLargeJetTtresSTTau32Selector(param);
-    else if (toolname == "LARGEJETTTRESSTMASS_N")
-        return new top::NLargeJetTtresSTMassSelector(param);
-    else if (toolname == "LARGEJETTTRESSTNOKIN_N")
-        return new top::NLargeJetTtresSTNoKinSelector(param);
     else if (toolname == "LARGEJETTTRESST50NOLEPTON_N")
         return new top::NLargeJetTtresST50NoLeptonSelector(param);
     else if (toolname == "LARGEJETTTRESST80NOLEPTON_N")

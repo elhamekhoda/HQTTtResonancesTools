@@ -50,10 +50,7 @@ bool NLargeJetTtresMassOnlySelector::apply(const top::Event& event) const {
         // but re-apply just in case it has been lowered for CR studies
         int good = 0;
         if (largeJet->pt() > value() &&
-                std::fabs(largeJet->eta()) < 2.0 &&
-		largeJet->m() > 70e3 &&
-                std::fabs(top::deltaPhi(*largeJet, *lep)) > 2.3 &&
-                top::deltaR(*largeJet, *selJet) > 1.5) {
+            std::fabs(largeJet->eta()) < 2.0 && largeJet->m() > 70e3) {
 
             ++nGoodJets;
             good = 1;
