@@ -1,5 +1,6 @@
-#ifndef NLARGEJETTTRESST50NOLEPTONSELECTOR_H_
-#define NLARGEJETTTRESST50NOLEPTONSELECTOR_H_
+#ifndef NLARGEJETTTRESSUBSTRUCTURETOPTAG50SELECTOR_H_
+#define NLARGEJETTTRESSUBSTRUCTURETOPTAG50SELECTOR_H_
+
 
 #include "TopEventSelectionTools/SignValueSelector.h"
 #include "BoostedJetTaggers/SubstructureTopTaggerHelpers.h"
@@ -8,9 +9,9 @@ namespace top {
 /**
  * @brief Does some stuff
  */
-class NLargeJetTtresST50NoLeptonSelector : public SignValueSelector {
+class NLargeJetTtresSubstructureTogTag50Selector : public SignValueSelector {
 public:
-    explicit NLargeJetTtresST50NoLeptonSelector(const std::string& params);
+    explicit NLargeJetTtresSubstructureTogTag50Selector(const std::string& params);
 
     /**
      * @brief Write a description ;)
