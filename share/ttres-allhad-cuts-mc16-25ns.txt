@@ -143,21 +143,21 @@ EXAMPLEPLOTS
 ### boosted full-hadronic selections
 ########################
 
-SELECTION bJJ_2015
+SELECTION bFH_2015
 . BASIC
 . period_2015
 TRIGDEC HLT_j360_a10r_L1J100
 . boosted_common
 SAVE
 
-SELECTION bJJ_2016
+SELECTION bFH_2016
 . BASIC
 . period_2016
 TRIGDEC HLT_j420_a10r_L1J100
 . boosted_common
 SAVE
 
-SELECTION bJJ_2017
+SELECTION bFH_2017
 . BASIC
 . period_2017
 TRIGDEC HLT_j420_a10r_L1J100
