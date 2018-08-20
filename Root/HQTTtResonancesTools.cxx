@@ -46,9 +46,9 @@ top::EventSelectorBase* HQTTtResonancesToolsLoader::initTool(const std::string& 
     else if (toolname == "LARGEJETTTRESFAKES_N")
         return new top::NLargeJetTtresFakesSelector(param);
     else if (toolname == "NLARGEJETTTRESSUBTOPTAG50_N")
-        return new top::NLargeJetTtresSubstructureTogTag50Selector(param);
+        return new top::NLargeJetTtresSubstructureTopTag50Selector(param);
     else if (toolname == "NLARGEJETTTRESSUBTOPTAG80_N")
-        return new top::NLargeJetTtresSubstructureTogTag80Selector(param);
+        return new top::NLargeJetTtresSubstructureTopTag80Selector(param);
     else if (toolname == "ANGULARCUTSSL")
         return new top::AngularCutsSLSelector(param);
     else if (toolname == "LARGEJETTTRESSTMT_N")

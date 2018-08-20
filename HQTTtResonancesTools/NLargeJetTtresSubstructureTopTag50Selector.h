@@ -9,9 +9,9 @@ namespace top {
 /**
  * @brief Does some stuff
  */
-class NLargeJetTtresSubstructureTogTag50Selector : public SignValueSelector {
+class NLargeJetTtresSubstructureTopTag50Selector : public SignValueSelector {
 public:
-    explicit NLargeJetTtresSubstructureTogTag50Selector(const std::string& params);
+    explicit NLargeJetTtresSubstructureTopTag50Selector(const std::string& params);
 
     /**
      * @brief Write a description ;)
