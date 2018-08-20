@@ -1,4 +1,4 @@
-#include "HQTTtResonancesToolsNLargeJetTtresSubstructureTopTag50Selector.h"
+#include "HQTTtResonancesTools/NLargeJetTtresSubstructureTopTag50Selector.h"
 
 #include "TopEvent/EventTools.h"
 #include "TopEvent/Event.h"
@@ -18,7 +18,7 @@ A Large R Jet Class which passes the smooth pre-rec tagger requirements
 namespace top {
   
   NLargeJetTtresSubstructureTopTag50Selector::NLargeJetTtresSubstructureTopTag50Selector(const std::string& params) :
-    SignValueSelector("NLARGEJETTTRESSUBTOPTAG50_N", params) {
+    SignValueSelector("NLARGEJETTTRESSUBTOPTAG50_N", params, true) {
     checkValueIsInteger();
     STL = STTHelpers::configSubstTagger("TightSmoothTopTag", "SmoothCut_50");
     
@@ -32,7 +32,7 @@ namespace top {
       // pt and eta should already have been applied in object definition
       // but re-apply just in case it has been lowered for CR studies
       int good = 0;
-      if (largeJet->pt() > value &&
+      if (largeJet->pt() > value() &&
         std::fabs(largeJet->eta()) < 2.0 &&
         STL->isTagged(*largeJet) == true ){
 

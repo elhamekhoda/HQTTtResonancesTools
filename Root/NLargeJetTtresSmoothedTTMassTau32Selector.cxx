@@ -1,4 +1,4 @@
-#include "HQTTtResonancesTools/NLargeJetTtresSTmtSelector.h"
+#include "HQTTtResonancesTools/NLargeJetTtresSmoothedTTMassTau32Selector.h"
 
 #include "TopEvent/EventTools.h"
 #include "TopEvent/Event.h"
@@ -18,8 +18,8 @@ This class will tag a large-R jets with the SmoothTopTagger using the mass and t
   
 namespace top {
 
-NLargeJetTtresSTmtSelector::NLargeJetTtresSTmtSelector(const std::string& params) :
-        SignValueSelector("NLARGEJETTTRESSTMT_N", params, true) {
+NLargeJetTtresSmoothedTTMassTau32Selector::NLargeJetTtresSmoothedTTMassTau32Selector(const std::string& params) :
+        SignValueSelector("NLARGEJETTTRESSTTMT_N", params, true) {
     checkValueIsInteger();
     m_smoothedTopTaggerMT80 = nullptr;
     m_smoothedTopTaggerMT80 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerMT80" ) );
@@ -55,7 +55,7 @@ NLargeJetTtresSTmtSelector::NLargeJetTtresSTmtSelector(const std::string& params
 */
 //=========================================================================================================================================//
 
-bool NLargeJetTtresSTmtSelector::apply(const top::Event& event) const {
+bool NLargeJetTtresSmoothedTTMassTau32Selector::apply(const top::Event& event) const {
 
   int nGoodJets = 0;
   for (const auto* const largeJet : event.m_largeJets) {

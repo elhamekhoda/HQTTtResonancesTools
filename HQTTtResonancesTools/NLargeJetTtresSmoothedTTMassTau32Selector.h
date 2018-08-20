@@ -1,5 +1,6 @@
-#ifndef NLARGEJETTTRESSTMTSELECTOR_H_
-#define NLARGEJETTTRESSTMTSELECTOR_H_
+#ifndef NLARGEJETTTRESSMOOTHEDTTMASST32SELECTOR_H_
+#define NLARGEJETTTRESSMOOTHEDTTMASST32SELECTOR_H_
+
 
 #include "TopEventSelectionTools/SignValueSelector.h"
 #include "JetAnalysisInterfaces/IJetSelectorTool.h"
@@ -11,9 +12,9 @@ namespace top {
 /**
  * @brief Does some stuff
  */
-class NLargeJetTtresSTmtSelector : public SignValueSelector {
+class NLargeJetTtresSmoothedTTMassTau32Selector : public SignValueSelector {
 public:
-    explicit NLargeJetTtresSTmtSelector(const std::string& params);
+    explicit NLargeJetTtresSmoothedTTMassTau32Selector(const std::string& params);
 
     /**
      * @brief Write a description ;)
