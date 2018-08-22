@@ -17,12 +17,12 @@ A Large R Jet Class which passes the smooth pre-rec tagger requirements
 
 namespace top {
 
-NLargeJetTtresSTSelector::NLargeJetTtresSTSelector(const std::string& params) :
-        SignValueSelector("NLARGEJETTTRESST_N", params, true) {
-  checkValueIsInteger();
-  //STT = STTHelpers::configSubstTagger("TightSmoothTopTag", "SmoothCut_50");
-  STL80 = STTHelpers::configSubstTagger("LooseSmoothTopTag", "SmoothCut_80");
-  //STL50 = STTHelpers::configSubstTagger("LooseSmoothTopTag", "SmoothCut_50");
+  NLargeJetTtresSTSelector::NLargeJetTtresSTSelector(const std::string& params) :
+    SignValueSelector("NLARGEJETTTRESST_N", params, true) {
+    checkValueIsInteger();
+    //STT = STTHelpers::configSubstTagger("TightSmoothTopTag", "SmoothCut_50");
+    STL80 = STTHelpers::configSubstTagger("LooseSmoothTopTag", "SmoothCut_80");
+    //STL50 = STTHelpers::configSubstTagger("LooseSmoothTopTag", "SmoothCut_50");
 
 /*
   //rel21 definition

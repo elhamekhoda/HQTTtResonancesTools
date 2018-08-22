@@ -108,16 +108,16 @@ RUN_NUMBER <= 340453
 ########################
 
 SUB SubStructureMTTagger50
-NLARGEJETTTRESSUBTOPTAG50_N >= 1
-NLARGEJETTTRESSUBTOPTAG50_N >= 2
+LARGEJETTTRESSUBTOPTAG50_N 300000 >= 1
+LARGEJETTTRESSUBTOPTAG50_N 300000 >= 2
 
 SUB SubStructureMTTagger80 # used for rel. 20.7 analysis
-NLARGEJETTTRESSUBTOPTAG80_N >= 1
-NLARGEJETTTRESSUBTOPTAG80_N >= 2
+LARGEJETTTRESSUBTOPTAG80_N 300000 >= 1
+LARGEJETTTRESSUBTOPTAG80_N 300000 >= 2
 
 SUB SmoothMTTagger80 # rel. 21 recomm.
-LARGEJETTTRESSTMT_N 300000 >= 1
-LARGEJETTTRESSTMT_N 300000 >= 2
+LARGEJETTTRESSTTMT_N 300000 >= 1
+LARGEJETTTRESSTTMT_N 300000 >= 2
 
 # Note that currently other top-taggers (e.g. DNN/BDT) cannot be used as EventSelectors in the pre-selection stage.
 # Anyway, they will be stored as flags of largeJets in the output ttres n-tuple.
@@ -156,12 +156,13 @@ TRIGDEC HLT_j420_a10r_L1J100
 . boosted_common
 SAVE
 
-SELECTION bFH_2017
-. BASIC
-. period_2017
-TRIGDEC HLT_j420_a10r_L1J100
-. boosted_common
-SAVE
+#commenting out the 2017 data selection part for now
+#SELECTION bFH_2017
+#. BASIC
+#. period_2017
+#TRIGDEC HLT_j420_a10r_L1J100
+#. boosted_common
+#SAVE
 
 ########################
 ### No Cuts

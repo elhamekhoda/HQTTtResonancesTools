@@ -11,6 +11,8 @@
 /*
 
 A Large R Jet Class which passes the smooth pre-rec tagger requirements
+It uses an old tagger class baed on not-fully contained smoothed toptagging. This was used in rel20.7 analysis
+Here we intialize the tool with 50% WP based on mass and tau32
 
 
 */
@@ -20,7 +22,8 @@ namespace top {
   NLargeJetTtresSubstructureTopTag50Selector::NLargeJetTtresSubstructureTopTag50Selector(const std::string& params) :
     SignValueSelector("NLARGEJETTTRESSUBTOPTAG50_N", params, true) {
     checkValueIsInteger();
-    STL = STTHelpers::configSubstTagger("TightSmoothTopTag", "SmoothCut_50");
+    //STL = STTHelpers::configSubstTagger("TightSmoothTopTag", "SmoothCut_50");
+    STL = STTHelpers::configSubstTagger("LooseSmoothTopTag", "SmoothCut_50");
     
   }
   
@@ -43,7 +46,7 @@ namespace top {
       largeJet->auxdecor<int>("topTagged") = good;
     }
     
-    return checkInt(nGoodJets, (int) value());
+    return checkInt(nGoodJets, (int) multiplicity());
   }
   
 }
