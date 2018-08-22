@@ -146,57 +146,57 @@ TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zjets221").datasets = [
 
 #Z' signal samples
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime400").datasets = [
-'mc16_13TeV.301322.Pythia8EvtGen_A14NNPDF23LO_zprime400_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301322.Pythia8EvtGen_A14NNPDF23LO_zprime400_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_p3565',
 ]
 
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime500").datasets = [
-'mc16_13TeV.301323.Pythia8EvtGen_A14NNPDF23LO_zprime500_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301323.Pythia8EvtGen_A14NNPDF23LO_zprime500_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_p3565',
 ]
 
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime750").datasets = [
-'mc16_13TeV.301324.Pythia8EvtGen_A14NNPDF23LO_zprime750_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301324.Pythia8EvtGen_A14NNPDF23LO_zprime750_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_p3565',
 ]
 
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime1000").datasets = [
-'mc16_13TeV.301325.Pythia8EvtGen_A14NNPDF23LO_zprime1000_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301325.Pythia8EvtGen_A14NNPDF23LO_zprime1000_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_p3565',
 ]
 
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime1250").datasets = [
-'mc16_13TeV.301326.Pythia8EvtGen_A14NNPDF23LO_zprime1250_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301326.Pythia8EvtGen_A14NNPDF23LO_zprime1250_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_p3565',
 ]
 
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime1500").datasets = [
-'mc16_13TeV.301327.Pythia8EvtGen_A14NNPDF23LO_zprime1500_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301327.Pythia8EvtGen_A14NNPDF23LO_zprime1500_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_p3565',
 ]
 
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime1750").datasets = [
-'mc16_13TeV.301328.Pythia8EvtGen_A14NNPDF23LO_zprime1750_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301328.Pythia8EvtGen_A14NNPDF23LO_zprime1750_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_p3565',
 ]
 
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime2000").datasets = [
-'mc16_13TeV.301329.Pythia8EvtGen_A14NNPDF23LO_zprime2000_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301329.Pythia8EvtGen_A14NNPDF23LO_zprime2000_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_p3565',
 ]
 
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime2250").datasets = [
-'mc16_13TeV.301330.Pythia8EvtGen_A14NNPDF23LO_zprime2250_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301330.Pythia8EvtGen_A14NNPDF23LO_zprime2250_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_p3565',
 ]
 
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime2500").datasets = [
-'mc16_13TeV.301331.Pythia8EvtGen_A14NNPDF23LO_zprime2500_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301331.Pythia8EvtGen_A14NNPDF23LO_zprime2500_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_p3565',
 ]
 
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime2750").datasets = [
-'mc16_13TeV.301332.Pythia8EvtGen_A14NNPDF23LO_zprime2750_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301332.Pythia8EvtGen_A14NNPDF23LO_zprime2750_tt.deriv.DAOD_EXOT4.e4061_s3126_r9364_p3565',
 ]
 
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime3000").datasets = [
-'mc16_13TeV.301333.Pythia8EvtGen_A14NNPDF23LO_zprime3000_tt.deriv.DAOD_EXOT4.e3723_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301333.Pythia8EvtGen_A14NNPDF23LO_zprime3000_tt.deriv.DAOD_EXOT4.e3723_s3126_r9364_p3565',
 ]
 
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime4000").datasets = [
-'mc16_13TeV.301334.Pythia8EvtGen_A14NNPDF23LO_zprime4000_tt.deriv.DAOD_EXOT4.e3723_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301334.Pythia8EvtGen_A14NNPDF23LO_zprime4000_tt.deriv.DAOD_EXOT4.e3723_s3126_r9364_p3565',
 ]
 
 TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT4_Zprime5000").datasets = [
-'mc16_13TeV.301335.Pythia8EvtGen_A14NNPDF23LO_zprime5000_tt.deriv.DAOD_EXOT4.e3723_s3126_r9364_r9315_p3390',
+'mc16_13TeV.301335.Pythia8EvtGen_A14NNPDF23LO_zprime5000_tt.deriv.DAOD_EXOT4.e3723_s3126_r9364_p3565',
 ]
