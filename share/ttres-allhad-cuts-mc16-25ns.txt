@@ -137,7 +137,7 @@ JETCLEAN LooseBad
 #turning off the top-tagging selector for now. We will do it in the NtupleAnalysis 
 #. SmoothMTTagger80 # put your large-R jet selection here!
 #turning off the b-tagging selector as well. We will do in the NtupleAnalysis 
-TRACKMV2C10_N 0.66 >= 1
+#TRACKMV2C10_N 0.66 >= 1
 EXAMPLEPLOTS
 
 ########################
