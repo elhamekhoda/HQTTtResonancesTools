@@ -1,7 +1,7 @@
 import TopExamples.grid
 
 #ttbar backgrounds
-TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT7_ttbar_nonallhad").datasets = [
+TopExamples.grid.Add("MC16_13TeV_25ns_FS_EXOT7_ttbar_allhad").datasets = [
 'mc16_13TeV.410471.PhPy8EG_A14_ttbar_hdamp258p75_allhad.deriv.DAOD_EXOT7.e6337_s3126_r9364_p3596',
 ]
 
