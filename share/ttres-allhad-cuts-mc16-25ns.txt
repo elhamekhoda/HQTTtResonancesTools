@@ -134,7 +134,7 @@ SUB boosted_common
 EL_N 25000 == 0
 MU_N 25000 == 0
 JETCLEAN LooseBad
-. SubStructureMTTagger80 # put your large-R jet selection here!
+. SmoothMTTagger80 # put your large-R jet selection here!
 TRACKMV2C10_N 0.66 >= 1
 EXAMPLEPLOTS
 
