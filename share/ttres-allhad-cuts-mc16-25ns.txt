@@ -19,6 +19,8 @@ TauCollectionName None
 JetCollectionName AntiKt4EMTopoJets
 # original xAOD without trimmed jets
 LargeJetCollectionName AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets
+LargeRJetPt 100000.
+TruthLargeRJetPt 100000.
 TruthLargeRJetCollectionName AntiKt10TruthTrimmedPtFrac5SmallR20Jets
 LargeJetSubstructure None
 #LargeJetCollectionName AntiKt10LCTopoJets

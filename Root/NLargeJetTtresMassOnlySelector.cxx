@@ -18,12 +18,8 @@ NLargeJetTtresMassOnlySelector::NLargeJetTtresMassOnlySelector(const std::string
 
 bool NLargeJetTtresMassOnlySelector::apply(const top::Event& event) const {
     //Get the lepton - use ptr to avoid copy
-    const xAOD::IParticle* lep = nullptr;
-    if (event.m_electrons.size() == 1)
-        lep = event.m_electrons.front();
-    else if (event.m_muons.size() == 1)
-        lep = event.m_muons.front();
-    else
+    //I don't see why it is needed to get the lepton @Yu-Heng
+    if (event.m_electrons.size() + event.m_muons.size() != 1)
         return false;
 
     //Get the highest pT narrow jet "near" the lepton
