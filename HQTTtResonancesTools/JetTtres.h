@@ -20,9 +20,8 @@ public:
      *
      * @param ptcut The minimum pT to accept good jets.
      * @param etamax The maximum eta cut.
-     * @param jvtmin The minimum cut on the jet vertex fraction
      */
-    JetTtres(double ptcut, double etamax, double jvtmin, const std::string &ghostCollectionName);
+    JetTtres(const double ptcut, const double etamax, const bool doJVTCut, const std::string fwdJetSel, const double ghostjetPtmin = 7000., const std::string &ghostCollectionName = "");
 
     ///Does nothing.
     ~JetTtres();
@@ -42,6 +41,7 @@ private:
 
     ///The name of the ghost collection
     std::string m_ghostCollectionName;
+    double m_ghostjetPtmin;
 
 };
 

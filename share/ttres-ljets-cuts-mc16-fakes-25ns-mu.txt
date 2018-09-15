@@ -18,6 +18,8 @@ PhotonCollectionName None
 JetCollectionName AntiKt4EMTopoJets
 # original xAOD without trimmed jets
 LargeJetCollectionName AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets
+LargeRJetPt 100000.
+TruthLargeRJetPt 100000.
 LargeJetSubstructure None
 #LargeJetCollectionName AntiKt10LCTopoJets
 #LargeJetSubstructure Trimmer

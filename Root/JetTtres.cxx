@@ -1,20 +1,20 @@
 #include "HQTTtResonancesTools/JetTtres.h"
-
+#include "TopConfiguration/TopConfig.h"
 #include <vector>
 #include <cmath>
 #include <string>
 
 namespace top {
 
-JetTtres::JetTtres(double ptcut, double etamax, double jvtmin, const std::string &ghostCollectionName)
-  : JetMC15( ptcut, etamax, jvtmin),
+JetTtres::JetTtres(const double ptcut, const double etamax, const bool doJVTCut, const std::string fwdJetSel, const double ghostjetPtmin, const std::string &ghostCollectionName)
+  : JetMC15(ptcut, etamax, doJVTCut, fwdJetSel),
+    m_ghostjetPtmin(ghostjetPtmin),
     m_ghostCollectionName(ghostCollectionName) {
 }
 
 JetTtres::~JetTtres() {}
 
 bool JetTtres::passSelection(const xAOD::Jet& jet) {
-
     jet.auxdecor<char>("good") = 0;
     if( !JetMC15::passSelection(jet) ) {
        return false;
@@ -50,7 +50,7 @@ bool JetTtres::passSelection(const xAOD::Jet& jet) {
             const xAOD::Jet *ghostjet = dynamic_cast<const xAOD::Jet*>(*link);
 
             // make sure the ghost jets will be taggable
-            if (ghostjet->pt() < 7000)
+            if (ghostjet->pt() < m_ghostjetPtmin)
                 continue;
 
             nGhostJets++;
