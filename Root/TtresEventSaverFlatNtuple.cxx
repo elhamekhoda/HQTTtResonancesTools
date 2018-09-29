@@ -284,9 +284,9 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_ljet_good_bdt80, "ljet_good_bdt80");
         systematicTree->makeOutputVariable(m_ljet_good_dnn80, "ljet_good_dnn80");
         systematicTree->makeOutputVariable(m_ljet_good_topo, "ljet_good_topo");
-        systematicTree->makeOutputVariable(m_ljet_bdt_score80,   "ljet_bdt_score80");
-        systematicTree->makeOutputVariable(m_ljet_dnn_score80,   "ljet_dnn_score80");
-        systematicTree->makeOutputVariable(m_ljet_topo_score,   "ljet_topo_score");
+        systematicTree->makeOutputVariable(m_ljet_bdt_score,   "ljet_BDTTopTag_score");
+        systematicTree->makeOutputVariable(m_ljet_dnn_score,   "ljet_DNNTopTag_score");
+        systematicTree->makeOutputVariable(m_ljet_topo_score,   "ljet_topoDNNTopTag_score");
         systematicTree->makeOutputVariable(m_ljet_angular_cuts, "ljet_angular_cuts"); // large-R jet angular cuts
         //track jet b-tagging variables
         systematicTree->makeOutputVariable(m_tjet_mv2c10mu,  "tjet_mv2c10mu");
@@ -1017,8 +1017,8 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     m_ljet_good_bdt80.resize(largeJets_size);
     m_ljet_good_dnn80.resize(largeJets_size);
     m_ljet_good_topo.resize(largeJets_size);
-    m_ljet_bdt_score80.resize(largeJets_size);
-    m_ljet_dnn_score80.resize(largeJets_size);
+    m_ljet_bdt_score.resize(largeJets_size);
+    m_ljet_dnn_score.resize(largeJets_size);
     m_ljet_topo_score.resize(largeJets_size);
 
 
@@ -1097,8 +1097,8 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         if (good_bdt_80) m_ljet_good_bdt80[i] = good_bdt_80;
         if (good_dnn_80) m_ljet_good_dnn80[i] = good_dnn_80;
         if (good_topo) m_ljet_good_topo[i] = good_topo;
-        if (jetPtr->isAvailable<float>("BDTTaggerTopQuark80_Score")) m_ljet_bdt_score80[i] = jetPtr->auxdata<float>("BDTTaggerTopQuark80_Score");
-        if (jetPtr->isAvailable<float>("DNNTaggerTopQuark80_Score")) m_ljet_dnn_score80[i] = jetPtr->auxdata<float>("DNNTaggerTopQuark80_Score");
+        if (jetPtr->isAvailable<float>("BDTTaggerTopQuark80_Score")) m_ljet_bdt_score[i] = jetPtr->auxdata<float>("BDTTaggerTopQuark80_Score");
+        if (jetPtr->isAvailable<float>("DNNTaggerTopQuark80_Score")) m_ljet_dnn_score[i] = jetPtr->auxdata<float>("DNNTaggerTopQuark80_Score");
         if (jetPtr->isAvailable<float>("TopoclusterTopTaggerTopQuark_Score")) m_ljet_topo_score[i] = jetPtr->auxdata<float>("TopoclusterTopTaggerTopQuark_Score");
         if (jetPtr->isAvailable<int> ("angular_cuts")) m_ljet_angular_cuts[i] = jetPtr->auxdecor<int>("angular_cuts");
 

@@ -155,8 +155,8 @@ namespace top {
       std::vector<int>   m_ljet_good_bdt80;
       std::vector<int>   m_ljet_good_dnn80;
       std::vector<int>   m_ljet_good_topo;
-      std::vector<float> m_ljet_bdt_score80;
-      std::vector<float> m_ljet_dnn_score80;
+      std::vector<float> m_ljet_bdt_score;
+      std::vector<float> m_ljet_dnn_score;
       std::vector<float> m_ljet_topo_score;
       std::vector<int>   m_ljet_angular_cuts;
 
