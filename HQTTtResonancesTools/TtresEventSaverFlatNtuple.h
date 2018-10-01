@@ -154,7 +154,7 @@ namespace top {
       std::vector<int>   m_ljet_good_smooth_qt50;
       std::vector<int>   m_ljet_good_bdt80;
       std::vector<int>   m_ljet_good_dnn80;
-      std::vector<int>   m_ljet_good_topo;
+      std::vector<int>   m_ljet_good_topo80;
       std::vector<float> m_ljet_bdt_score;
       std::vector<float> m_ljet_dnn_score;
       std::vector<float> m_ljet_topo_score;
@@ -170,7 +170,7 @@ namespace top {
       std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerQT50;//Qw+tau32
       std::unique_ptr<JSSWTopTaggerBDT> m_bdtTopTagger80;//BDT top tagger 80%
       std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTagger80;//DNN top tagger 80%
-      std::unique_ptr<TopoclusterTopTagger> m_topoTopTagger;//Topo Cluster top tagger
+      std::unique_ptr<TopoclusterTopTagger> m_topoTopTagger80;//Topo Cluster top tagger 80%
  /*   
       m_smoothedTopTaggerMT80 = nullptr;m_smoothedTopTaggerMT50 = nullptr;
       m_smoothedTopTaggerTS80 = nullptr;m_smoothedTopTaggerTS50 = nullptr;

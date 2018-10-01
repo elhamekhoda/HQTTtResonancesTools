@@ -103,7 +103,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     m_smoothedTopTaggerQT50 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerQT50" ) );
     m_bdtTopTagger80 = std::unique_ptr<JSSWTopTaggerBDT>( new JSSWTopTaggerBDT( "JSSWTopTaggerBDT80" ) );
     m_dnnTopTagger80 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "JSSWTopTaggerDNN80" ) );
-    m_topoTopTagger = std::unique_ptr<TopoclusterTopTagger>( new TopoclusterTopTagger( "TopoclusterTopTagger" ) );
+    m_topoTopTagger80 = std::unique_ptr<TopoclusterTopTagger>( new TopoclusterTopTagger( "TopoclusterTopTagger80" ) );
 
     top::check(m_smoothedTopTaggerMT80->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_MassTau32FixedSignalEfficiency80_MC15c_20161209.dat"), "Failed to set property for ConfigFile");
     top::check(m_smoothedTopTaggerMT50->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_MassTau32FixedSignalEfficiency50_MC15c_20161209.dat"), "Failed to set property for ConfigFile");
@@ -113,7 +113,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     top::check(m_smoothedTopTaggerQT50->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_QwTau32FixedSignalEfficiency50_MC15c_20161209.dat"), "Failed to set property for ConfigFile");
     top::check(m_bdtTopTagger80->setProperty( "ConfigFile",   "JSSWTopTaggerBDT/JSSBDTTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup80Eff.dat"), "Failed to set property for ConfigFile");
     top::check(m_dnnTopTagger80->setProperty( "ConfigFile",   "JSSWTopTaggerDNN/JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup80Eff.dat"), "Failed to set property for ConfigFile");
-    top::check(m_topoTopTagger->setProperty( "ConfigFile",   "TopoclusterTopTagger/TopoclusterTopTagger_AntiKt10LCTopoTrimmed_TopQuark_MC15c_20170511_NOTFORANALYSIS.dat"), "Failed to set property for ConfigFile");
+    top::check(m_topoTopTagger80->setProperty( "ConfigFile",   "TopoclusterTopTagger/TopoclusterTopTagger_AntiKt10LCTopoTrimmed_TopQuark_MC15c_20170511_ptweighted80Eff.dat"), "Failed to set property for ConfigFile");
 
     top::check(m_smoothedTopTaggerMT80->initialize(), "Initializing failed");
     top::check(m_smoothedTopTaggerMT50->initialize(), "Initializing failed");
@@ -123,7 +123,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     top::check(m_smoothedTopTaggerQT50->initialize(), "Initializing failed");
     top::check(m_bdtTopTagger80->initialize(), "Initializing failed");
     top::check(m_dnnTopTagger80->initialize(), "Initializing failed");
-    top::check(m_topoTopTagger->initialize(), "Initializing failed");
+    top::check(m_topoTopTagger80->initialize(), "Initializing failed");
 
     if (config->isMC()) {
         //cout<< "I am here" <<endl;
@@ -283,7 +283,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_ljet_good_smooth_qt50, "ljet_good_smooth_qt50");
         systematicTree->makeOutputVariable(m_ljet_good_bdt80, "ljet_good_bdt80");
         systematicTree->makeOutputVariable(m_ljet_good_dnn80, "ljet_good_dnn80");
-        systematicTree->makeOutputVariable(m_ljet_good_topo, "ljet_good_topo");
+        systematicTree->makeOutputVariable(m_ljet_good_topo80, "ljet_good_topo80");
         systematicTree->makeOutputVariable(m_ljet_bdt_score,   "ljet_BDTTopTag_score");
         systematicTree->makeOutputVariable(m_ljet_dnn_score,   "ljet_DNNTopTag_score");
         systematicTree->makeOutputVariable(m_ljet_topo_score,   "ljet_topoDNNTopTag_score");
@@ -1016,7 +1016,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     m_ljet_good_smooth_qt50.resize(largeJets_size);
     m_ljet_good_bdt80.resize(largeJets_size);
     m_ljet_good_dnn80.resize(largeJets_size);
-    m_ljet_good_topo.resize(largeJets_size);
+    m_ljet_good_topo80.resize(largeJets_size);
     m_ljet_bdt_score.resize(largeJets_size);
     m_ljet_dnn_score.resize(largeJets_size);
     m_ljet_topo_score.resize(largeJets_size);
@@ -1058,7 +1058,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         m_ljet_good_smooth_qt50[i] = 0;
         m_ljet_good_bdt80[i] = 0;
         m_ljet_good_dnn80[i] = 0;
-        m_ljet_good_topo[i] = 0;
+        m_ljet_good_topo80[i] = 0;
         m_ljet_angular_cuts[i] = 0;
 #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
         m_ljet_D2[i] = 0;
@@ -1070,7 +1070,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 #endif
         int good_sub_80 = 0, good_sub_50 = 0, good_smooth_mt80 = 0, good_smooth_mt50 = 0;
         int good_smooth_ts80 = 0, good_smooth_ts50 = 0, good_smooth_qt80 = 0, good_smooth_qt50 = 0;
-        int good_bdt_80 = 0, good_dnn_80 = 0, good_topo = 0;
+        int good_bdt_80 = 0, good_dnn_80 = 0, good_topo_80 = 0;
 
         if (jetPtr->pt() > 300000 && std::fabs(jetPtr->eta()) < 2.0) {
             if (STL80->isTagged(*jetPtr) == true ) good_sub_80 = 1;
@@ -1083,7 +1083,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             if (m_smoothedTopTaggerQT50->tag(*jetPtr)) good_smooth_qt50 = 1;
             if (m_bdtTopTagger80->tag(*jetPtr)) good_bdt_80 = 1;
             if (m_dnnTopTagger80->tag(*jetPtr)) good_dnn_80 = 1;
-            if (m_topoTopTagger->tag(*jetPtr)) good_topo = 1;
+            if (m_topoTopTagger80->tag(*jetPtr)) good_topo_80 = 1;
         }
 
         if (good_sub_80) m_ljet_good_sub80[i] = good_sub_80;
@@ -1096,10 +1096,10 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         if (good_smooth_qt50) m_ljet_good_smooth_qt50[i] = good_smooth_qt50;
         if (good_bdt_80) m_ljet_good_bdt80[i] = good_bdt_80;
         if (good_dnn_80) m_ljet_good_dnn80[i] = good_dnn_80;
-        if (good_topo) m_ljet_good_topo[i] = good_topo;
+        if (good_topo_80) m_ljet_good_topo80[i] = good_topo_80;
         if (jetPtr->isAvailable<float>("BDTTaggerTopQuark80_Score")) m_ljet_bdt_score[i] = jetPtr->auxdata<float>("BDTTaggerTopQuark80_Score");
         if (jetPtr->isAvailable<float>("DNNTaggerTopQuark80_Score")) m_ljet_dnn_score[i] = jetPtr->auxdata<float>("DNNTaggerTopQuark80_Score");
-        if (jetPtr->isAvailable<float>("TopoclusterTopTaggerTopQuark_Score")) m_ljet_topo_score[i] = jetPtr->auxdata<float>("TopoclusterTopTaggerTopQuark_Score");
+        if (jetPtr->isAvailable<float>("TopotaggerTopQuark80_Score")) m_ljet_topo_score[i] = jetPtr->auxdata<float>("TopotaggerTopQuark80_Score");
         if (jetPtr->isAvailable<int> ("angular_cuts")) m_ljet_angular_cuts[i] = jetPtr->auxdecor<int>("angular_cuts");
 
 
