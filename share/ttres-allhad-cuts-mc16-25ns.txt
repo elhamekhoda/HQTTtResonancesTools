@@ -19,9 +19,9 @@ TauCollectionName None
 JetCollectionName AntiKt4EMTopoJets
 # original xAOD without trimmed jets
 LargeJetCollectionName AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets
+TruthLargeRJetCollectionName AntiKt10TruthTrimmedPtFrac5SmallR20Jets
 LargeRJetPt 100000.
 TruthLargeRJetPt 100000.
-TruthLargeRJetCollectionName AntiKt10TruthTrimmedPtFrac5SmallR20Jets
 LargeJetSubstructure None
 #LargeJetCollectionName AntiKt10LCTopoJets
 #LargeJetSubstructure Trimmer
@@ -38,6 +38,8 @@ IsAFII False
 OutputFileSetAutoFlushZero True
 #NEvents 1000
 
+UseGlobalLeptonTriggerSF False
+
 ObjectSelectionName top::ObjectLoaderTtres
 OutputFormat top::TtresEventSaverFlatNtuple
 OutputEvents SelectedEvents
@@ -47,7 +49,12 @@ PerfStats No
 CalculateSF True
 #Systematics All
 Systematics Nominal
-BTaggingWP FixedCutBEff_70
+
+#B-tagging configuration
+BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_85 DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 MV2c10:HybBEff_60 MV2c10:HybBEff_70 MV2c10:HybBEff_77 MV2c10:HybBEff_85 DL1:HybBEff_60 DL1:HybBEff_70 DL1:HybBEff_77 DL1:HybBEff_85 MV2c10:Continuous DL1:Continuous
+
+# Different algorithms of 70% WP
+#BTaggingWP MV2c10:FixedCutBEff_70 MV2c10mu:FixedCutBEff_70 MV2c10rnn:FixedCutBEff_70 MV2c10:HybBEff_70 MV2c10mu:HybBEff_70 MV2c10rnn:HybBEff_70 DL1:FixedCutBEff_70 DL1mu:FixedCutBEff_70 DL1rnn:FixedCutBEff_70 DL1:HybBEff_70 DL1mu:HybBEff_70 DL1rnn:HybBEff_70 
 
 JetUncertainties_NPModel GlobalReduction
 #LargeRJESUncertaintyConfig TopTagging
@@ -72,7 +79,7 @@ DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSher
 
 TtresRunHTT False
 TtresSavePartons True
-TtresrunEWK False
+TtresrunEWK True
 isTOPQ False
 fakeLeptonSel False
 isSherpaW True
@@ -138,7 +145,9 @@ MU_N 25000 == 0
 JETCLEAN LooseBad
 #turning off the top-tagging selector for now. We will do it in the NtupleAnalysis 
 #. SmoothMTTagger80 # put your large-R jet selection here!
-#turning off the b-tagging selector as well. We will do in the NtupleAnalysis 
+# Making sure at least two large-R jets in the event
+. NoTopTagging
+#turning off the b-tagging selector as well. We will do in the NtupleAnalysis
 #TRACKMV2C10_N 0.66 >= 1
 EXAMPLEPLOTS
 
