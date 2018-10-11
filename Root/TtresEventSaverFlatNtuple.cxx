@@ -1423,10 +1423,11 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
     m_initial_type = 0;
     if (event.m_truth) {
+        const xAOD::TruthParticle* initialparton0 = nullptr;
+        const xAOD::TruthParticle* initialparton1 = nullptr;
         const xAOD::TruthParticle * mc_top = 0;
         const xAOD::TruthParticle * mc_antitop = 0;
         for (const auto* const mcPtr : *event.m_truth) {
-            // std::cout << *mcPtr << std::endl;
             if (mcPtr->status() != 3 /*Pythia6*/ && mcPtr->status() != 22 /*Pythia8*/) {
                 continue;
             }
@@ -1436,19 +1437,29 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                     break;
                 }
             }
-            if (mcPtr->pdgId() == -6) {
+            else if (mcPtr->pdgId() == -6) {
                 mc_antitop = mcPtr;
                 if (mc_top != NULL) {
                     break;
                 }
             }
+            else {
+                initialparton0 = mcPtr;
+            }
+
         }
         if (mc_top != NULL && mc_antitop != NULL) {
-            const xAOD::TruthParticle * initialparton0 = mc_top->parent(0);
-            const xAOD::TruthParticle * initialparton1 = mc_top->parent(1);
-            if ( mc_top->nParents() < 2) {
-                std::cout << "ERROR: Could not get top parents!" << std::endl;
+            if (initialparton0 != nullptr) {
+                if ( initialparton0->nParents() < 2) { std::cout << "ERROR: Could not get top parents!" << std::endl; }
+                initialparton1 = initialparton0->parent(1);
+                initialparton0 = initialparton0->parent(0);
             }
+            else {
+                if ( mc_top->nParents() < 2) { std::cout << "ERROR: Could not get top parents!" << std::endl; }
+                initialparton0 = mc_top->parent(0);
+                initialparton1 = mc_top->parent(1);
+            }
+
             if (initialparton0 && initialparton1) {
                 m_MC_i1_px = initialparton0->px();
                 m_MC_i1_py = initialparton0->py();

@@ -45,12 +45,12 @@ namespace top {
 
       virtual ~TtresEventSaverFlatNtuple();
       
-      virtual void initialize(std::shared_ptr<top::TopConfig> config, TFile* file, const std::vector<std::string>& extraBranches) override;
+      virtual void initialize(std::shared_ptr<top::TopConfig> config, TFile* file, const std::vector<std::string>& extraBranches);
       virtual StatusCode initialize() {return StatusCode::SUCCESS;};
-      virtual void finalize() override;
+      virtual void finalize();
 
-      void saveEvent(const top::Event& event) override;
-      void saveParticleLevelEvent(const top::ParticleLevelEvent& event) override;
+      void saveEvent(const top::Event& event);
+      void saveParticleLevelEvent(const top::ParticleLevelEvent& event);
       
       void DeltaR_min(TLorentzVector p1, TLorentzVector p2, int i, float & tmp_dr, int & truth_idx);
 
