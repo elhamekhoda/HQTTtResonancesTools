@@ -40,8 +40,16 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
     top::ConfigurationSettings* configSettings = top::ConfigurationSettings::get();
     //weak = new WeakCorr::WeakCorrScaleFactorParam(PathResolverFindCalibFile("TtResonancesTools/EWcorr_param.root"));
 
-    m_isTOPQ      = (configSettings->value("isTOPQ") == "True") ? true : false ;
-    m_isSherpaW = (configSettings->value("isSherpaW") == "True") ? true : false;
+    m_isTOPQ              = (configValueDefault("isTOPQ") == "True") ? true : false ;
+    m_isSherpaW           = (configValueDefault("isSherpaW") == "True") ? true : false;
+    m_runHtt              = (configValueDefault("TtresRunHTT", "False") == "True") ? true : false ;
+#ifndef USE_HTT
+    m_runHtt              = false;
+#endif
+    m_savePartons         = (configValueDefault("TtresSavePartons", "False") == "True") ? true : false ;
+    m_saveFullTruthRecord = (configValueDefault("SaveFullTruthRecord", "True") == "True") ? true : false ;
+    m_runEWK              = (configValueDefault("TtresrunEWK", "False") == "True") ? true : false ;
+    m_dumpToolConfigTo    = configValueDefault("DumpToolConfigTo", "False"); // A string!
 
     if (m_isTOPQ) {
         m_trackjetcollection = "";
@@ -53,13 +61,6 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
         m_trackjetMv2c10Cut = 0.66; // for AntiKt2 @ 70% ->  0.66
     }
 
-    m_runHtt      = (configSettings->value("TtresRunHTT") == "True") ? true : false ;
-#ifndef USE_HTT
-    m_runHtt = false;
-#endif
-    m_savePartons = (configSettings->value("TtresSavePartons") == "True") ? true : false ;
-    m_runEWK = (configSettings->value("TtresrunEWK") == "True") ? true : false ;
-    m_dumpToolConfigTo = configSettings->value("DumpToolConfigTo");
     m_savePdfWeight = false;
 
     m_akt4truthjetcollection = "AntiKt4TruthWZJets";
@@ -72,12 +73,6 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
     m_saveTruthJets = true;
     m_isMC = true;
     m_chi2Sel = new top::Chi2Selector(" < 6");
-
-    m_saveFullTruthRecord = false;
-    try {
-        m_saveFullTruthRecord = (configSettings->value("SaveFullTruthRecord") == "True") ? true : false ;
-    } catch (...) {
-    }
 }
 
 TtresEventSaverFlatNtuple::~TtresEventSaverFlatNtuple() {
@@ -1428,12 +1423,11 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
     m_initial_type = 0;
     if (event.m_truth) {
-        std::cout << "HERE1" << std::endl;
         const xAOD::TruthParticle * mc_top = 0;
         const xAOD::TruthParticle * mc_antitop = 0;
         for (const auto* const mcPtr : *event.m_truth) {
-            std::cout << *mcPtr << std::endl;
-            if (mcPtr->status() != 3) {
+            // std::cout << *mcPtr << std::endl;
+            if (mcPtr->status() != 3 /*Pythia6*/ && mcPtr->status() != 22 /*Pythia8*/) {
                 continue;
             }
             if (mcPtr->pdgId() == 6) {
@@ -1450,14 +1444,12 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             }
         }
         if (mc_top != NULL && mc_antitop != NULL) {
-            std::cout << "HERE2" << std::endl;
             const xAOD::TruthParticle * initialparton0 = mc_top->parent(0);
             const xAOD::TruthParticle * initialparton1 = mc_top->parent(1);
             if ( mc_top->nParents() < 2) {
                 std::cout << "ERROR: Could not get top parents!" << std::endl;
             }
             if (initialparton0 && initialparton1) {
-                std::cout << "HERE3" << std::endl;
                 m_MC_i1_px = initialparton0->px();
                 m_MC_i1_py = initialparton0->py();
                 m_MC_i1_pz = initialparton0->pz();
@@ -1470,14 +1462,13 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                 m_MC_i2_pid = initialparton1->pdgId();
             }
             if (mc_top->nParents() > 1 && m_runEWK) {
-                std::cout << "HERE4" << std::endl;
                 const int pdg1 = abs(initialparton0->pdgId());
                 const int pdg2 = abs(initialparton1->pdgId());
                 const xAOD::TruthParticle * incomingQuark = 0;
                 const xAOD::TruthParticle * outgoingParton = 0;
                 for (unsigned int ii = 0; ii < initialparton0->nChildren(); ii++) {
                     const int pdgID = abs(initialparton0->child(ii)->pdgId());
-                    cout << "THE outgoing particle PDG ID:     " << pdgID << endl; //Elham
+                    // cout << "THE outgoing particle PDG ID:     " << pdgID << endl; //Elham
                     if (pdgID != 6) {
                         outgoingParton = initialparton0->child(ii);
                         if (!(pdgID == 1 || pdgID == 3 || pdgID == 5 || pdgID == 2 || pdgID == 4 || pdgID == 21)) {
@@ -1491,8 +1482,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                 }
                 if (outgoingParton != NULL || initialparton0->nChildren() == 2) {
                     int eventType = 0;
-                    std::cout << "HERE5" << std::endl;
-                    if (pdg1 == pdg2) {
+                    if (pdg1 == pdg2) { // if gg/qqbar -> ttbar
                         switch (pdg1) {
                         case 21:
                             eventType = 1;
@@ -1507,9 +1497,8 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                             eventType = 2;
                             break;
                         }
-                        std::cout << "HERE6" << std::endl;
                         m_initial_type = eventType;
-                    } else {
+                    } else { // if gq -> ttbar
                         int pdgQ = pdg1;
                         if (pdg1 == 21) {
                             pdgQ = pdg2;
@@ -1532,21 +1521,9 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                         default:
                             std::cout << "ERROR: Could not determine type of initial state!" << std::endl;
                         }
-                        TLorentzVector incomingQuarkMomentum;
-                        incomingQuarkMomentum.SetPtEtaPhiM( incomingQuark->pt() * 0.001,
-                                                            incomingQuark->eta(),
-                                                            incomingQuark->phi(),
-                                                            incomingQuark->m() * 0.001  );
-                        TLorentzVector hadronMomentum(0., 0., -8000., 8000.);
-                        if (incomingQuarkMomentum.Z() > 0.) {
-                            hadronMomentum.SetZ(8000.);
-                        }
-                        TLorentzVector outgoingPartonMomentum;
-                        outgoingPartonMomentum.SetPtEtaPhiM( outgoingParton->pt() * 0.001,
-                                                             outgoingParton->eta(),
-                                                             outgoingParton->phi(),
-                                                             outgoingParton->m() * 0.001  );
-                        const double thetaQ = hadronMomentum.Angle(outgoingPartonMomentum.Vect());
+
+                        TVector3 hadronMomentumZDir(0., 0., TMath::Sign(1, incomingQuark->pz()));
+                        const double thetaQ = hadronMomentumZDir.Angle(outgoingParton->p4().Vect());
                         if (thetaQ < (TMath::Pi() * 0.5)) {
                             m_initial_type = 1;
                         } else {
@@ -2325,18 +2302,14 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         MC_bh_p4.SetPtEtaPhiM(m_MC_bh_pt, m_MC_bh_eta, m_MC_bh_phi, m_MC_bh_m);
         MC_w1h_p4.SetPtEtaPhiM(m_MC_w1h_pt, m_MC_w1h_eta, m_MC_w1h_phi, m_MC_w1h_m);
         MC_w2h_p4.SetPtEtaPhiM(m_MC_w2h_pt, m_MC_w2h_eta, m_MC_w2h_phi, m_MC_w2h_m);
-        for (const auto* const jetPtr : event.m_largeJets) {
-            if ((MC_w1h_p4.DeltaR(jetPtr->p4()) < Rmatch) && (MC_w2h_p4.DeltaR(jetPtr->p4()) < Rmatch)) {
-                if (MC_bh_p4.DeltaR(jetPtr->p4()) < Rmatch) {
-                    m_ljet_MClike[k] = 2;
-                }
-                else {
-                    m_ljet_MClike[k] = 1;
-                }
+        for (const auto* const jetPtr : event.m_largeJets)
+        {
+            if ((MC_w1h_p4.DeltaR(jetPtr->p4()) < Rmatch) && (MC_w2h_p4.DeltaR(jetPtr->p4()) < Rmatch))
+            {
+                if (MC_bh_p4.DeltaR(jetPtr->p4()) < Rmatch) {m_ljet_MClike[k] = 2; }
+                else {m_ljet_MClike[k] = 1; }
             }
-            else {
-                m_ljet_MClike[k] = 0;
-            }
+            else { m_ljet_MClike[k] = 0; }
             k++;
         }
 #endif
@@ -4088,21 +4061,30 @@ void TtresEventSaverFlatNtuple::FillME(const xAOD::TruthParticleContainer* truth
 
 void TtresEventSaverFlatNtuple::finalize() {
     EventSaverFlatNtuple::finalize();
-    if (m_dumpToolConfigTo.size() != 0) {
+    if ( m_dumpToolConfigTo != "False") {
     std::cout << ">>> dumping ToolConig to" << " \"" << m_dumpToolConfigTo << "\" "  "<<<" << std::endl;
     dumpToolConfig(m_dumpToolConfigTo);
     }
   }
 
 void TtresEventSaverFlatNtuple::dumpToolConfig(std::string fname) {
-  	std::ofstream out(fname);
-  	std::streambuf *coutbuf = std::cout.rdbuf();
-  	std::cout.rdbuf(out.rdbuf());
-  	asg::ToolStore::dumpToolConfig();
-  	std::cout.rdbuf(coutbuf);
+    std::ofstream out(fname);
+    std::streambuf *coutbuf = std::cout.rdbuf();
+    std::cout.rdbuf(out.rdbuf());
+    asg::ToolStore::dumpToolConfig();
+    std::cout.rdbuf(coutbuf);
   }
 
-
+const std::string& TtresEventSaverFlatNtuple::configValueDefault(const std::string& key, const std::string& default_value) const {
+    // To be nice to other analysis, I think it is neccessary to give those dynamic keys a default value so that it behave like vanilla AnalysisTop,
+    //  and don't throw non-neccessary errors.
+    try {
+        return top::ConfigurationSettings::get()->value(key);
+    }
+    catch (...) {
+        return default_value;
+    }
+    }
 
 }//namespace top
 

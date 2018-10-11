@@ -86,6 +86,7 @@ namespace top {
 
       void calculateWjets(const top::Event &event);
       virtual void dumpToolConfig(std::string fname);
+      const std::string& configValueDefault(const std::string& key, const std::string& default_value="False") const;
       std::string m_dumpToolConfigTo;
       bool m_isMC;
 
