@@ -9,6 +9,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include "TopPartons/PartonHistory.h"
 #include "TopEventReconstructionTools/TtresNeutrinoBuilder.h"
@@ -58,6 +59,7 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
 #endif
     m_savePartons = (configSettings->value("TtresSavePartons") == "True") ? true : false ;
     m_runEWK = (configSettings->value("TtresrunEWK") == "True") ? true : false ;
+    m_dumpToolConfigTo = configSettings->value("DumpToolConfigTo");
     m_savePdfWeight = false;
 
     m_akt4truthjetcollection = "AntiKt4TruthWZJets";
@@ -126,6 +128,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     top::check(m_topoTopTagger80->initialize(), "Initializing failed");
 
     if (config->isMC()) {
+        std::cout << "GENERATOR:" << config->getGenerators() << std::endl;
         //cout<< "I am here" <<endl;
         //n_b = config->btagging_num_B_eigenvars("MV2c10","FixedCutBEff_70");
         //n_b =0;
@@ -1425,9 +1428,11 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
     m_initial_type = 0;
     if (event.m_truth) {
+        std::cout << "HERE1" << std::endl;
         const xAOD::TruthParticle * mc_top = 0;
         const xAOD::TruthParticle * mc_antitop = 0;
         for (const auto* const mcPtr : *event.m_truth) {
+            std::cout << *mcPtr << std::endl;
             if (mcPtr->status() != 3) {
                 continue;
             }
@@ -1445,12 +1450,14 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             }
         }
         if (mc_top != NULL && mc_antitop != NULL) {
+            std::cout << "HERE2" << std::endl;
             const xAOD::TruthParticle * initialparton0 = mc_top->parent(0);
             const xAOD::TruthParticle * initialparton1 = mc_top->parent(1);
             if ( mc_top->nParents() < 2) {
                 std::cout << "ERROR: Could not get top parents!" << std::endl;
             }
             if (initialparton0 && initialparton1) {
+                std::cout << "HERE3" << std::endl;
                 m_MC_i1_px = initialparton0->px();
                 m_MC_i1_py = initialparton0->py();
                 m_MC_i1_pz = initialparton0->pz();
@@ -1463,6 +1470,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                 m_MC_i2_pid = initialparton1->pdgId();
             }
             if (mc_top->nParents() > 1 && m_runEWK) {
+                std::cout << "HERE4" << std::endl;
                 const int pdg1 = abs(initialparton0->pdgId());
                 const int pdg2 = abs(initialparton1->pdgId());
                 const xAOD::TruthParticle * incomingQuark = 0;
@@ -1483,6 +1491,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                 }
                 if (outgoingParton != NULL || initialparton0->nChildren() == 2) {
                     int eventType = 0;
+                    std::cout << "HERE5" << std::endl;
                     if (pdg1 == pdg2) {
                         switch (pdg1) {
                         case 21:
@@ -1498,6 +1507,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                             eventType = 2;
                             break;
                         }
+                        std::cout << "HERE6" << std::endl;
                         m_initial_type = eventType;
                     } else {
                         int pdgQ = pdg1;
@@ -4075,6 +4085,24 @@ void TtresEventSaverFlatNtuple::FillME(const xAOD::TruthParticleContainer* truth
         }
     }
 }
+
+void TtresEventSaverFlatNtuple::finalize() {
+    EventSaverFlatNtuple::finalize();
+    if (m_dumpToolConfigTo.size() != 0) {
+    std::cout << ">>> dumping ToolConig to" << " \"" << m_dumpToolConfigTo << "\" "  "<<<" << std::endl;
+    dumpToolConfig(m_dumpToolConfigTo);
+    }
+  }
+
+void TtresEventSaverFlatNtuple::dumpToolConfig(std::string fname) {
+  	std::ofstream out(fname);
+  	std::streambuf *coutbuf = std::cout.rdbuf();
+  	std::cout.rdbuf(out.rdbuf());
+  	asg::ToolStore::dumpToolConfig();
+  	std::cout.rdbuf(coutbuf);
+  }
+
+
 
 }//namespace top
 
