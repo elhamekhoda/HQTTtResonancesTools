@@ -68,7 +68,7 @@ ApplyElectronInJetSubtraction False
 
 OverlapRemovalProcedure BoostedSlidingDRMu
 
-DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord
+DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord,DumpToolConfigTo
 
 TtresRunHTT False
 TtresSavePartons True
@@ -77,6 +77,7 @@ isTOPQ False
 fakeLeptonSel False
 isSherpaW True
 SaveFullTruthRecord True
+DumpToolConfigTo toolConfig.txt
 
 ########################
 ### basic selection with mandatory cuts for reco level
