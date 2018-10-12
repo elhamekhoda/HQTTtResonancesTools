@@ -1425,6 +1425,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     if (event.m_truth) {
         const xAOD::TruthParticle* initialparton0 = nullptr;
         const xAOD::TruthParticle* initialparton1 = nullptr;
+        const xAOD::TruthParticle* mediator = nullptr;
         const xAOD::TruthParticle * mc_top = 0;
         const xAOD::TruthParticle * mc_antitop = 0;
         for (const auto* const mcPtr : *event.m_truth) {
@@ -1444,15 +1445,15 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                 }
             }
             else {
-                initialparton0 = mcPtr;
+                mediator = mcPtr;
             }
 
         }
         if (mc_top != NULL && mc_antitop != NULL) {
-            if (initialparton0 != nullptr) {
-                if ( initialparton0->nParents() < 2) { std::cout << "ERROR: Could not get top parents!" << std::endl; }
-                initialparton1 = initialparton0->parent(1);
-                initialparton0 = initialparton0->parent(0);
+            if (mediator != nullptr) {
+                if ( mediator->nParents() < 2) { std::cout << "ERROR: Could not get top parents!" << std::endl; }
+                initialparton0 = mediator->parent(0);
+                initialparton1 = mediator->parent(1);
             }
             else {
                 if ( mc_top->nParents() < 2) { std::cout << "ERROR: Could not get top parents!" << std::endl; }
