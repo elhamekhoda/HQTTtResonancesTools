@@ -1883,7 +1883,9 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         top::check(evtStore()->event()->retrieve(akt4truthjets, "AntiKt4TruthJets"), "FAILURE");
 
         const xAOD::JetContainer *akt10truthjets = nullptr;
-        top::check(evtStore()->event()->retrieve(akt10truthjets, m_akt10truthjetcollection), "FAILURE");
+        if (m_akt10truthjetcollection != "") {
+            top::check(evtStore()->event()->retrieve(akt10truthjets, m_akt10truthjetcollection), "FAILURE");
+        }
 
         const xAOD::PartonHistoryContainer* topPartonCont = nullptr;
         //top::check(evtStore()->event()->retrieve(topPartonCont, m_config->sgKeyTopPartonHistory()), "FAILURE"); //m_config is private ...
