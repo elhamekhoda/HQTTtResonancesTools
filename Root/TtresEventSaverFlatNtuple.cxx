@@ -68,7 +68,7 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
     if (configSettings->value("TruthLargeRJetCollectionName") != "None") {
         m_akt10truthjetcollection = configSettings->value("TruthLargeRJetCollectionName");
     } else {
-        m_akt10truthjetcollection = "AntiKt10TruthJets";
+        m_akt10truthjetcollection = "";
     }
     m_saveTruthJets = true;
     m_isMC = true;
