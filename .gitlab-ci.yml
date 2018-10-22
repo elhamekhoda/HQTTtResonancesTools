@@ -41,6 +41,7 @@ build_image:
   <<: *global
 
 deploy_ttresfullhad:
+  image: lukasheinrich/recast_cvmfs_assisted:20161231
   stage: deploy
   script:
     - source ~/.bashrc || echo ignore alrb
