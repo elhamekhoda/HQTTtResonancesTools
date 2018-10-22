@@ -39,3 +39,17 @@ build_image:
   tags:
     - docker-image-build
   <<: *global
+
+deploy_ttresfullhad:
+  stage: deploy
+  script:
+    - source ~/.bashrc || echo ignore alrb
+    - lsetup git
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.cern.ch/atlas-phys/exot/hqt/tt_tb_Resonances_Run2/ttResFullHad.git -b latest
+    - cd ttResFullHad
+    - git submodule update --remote source/$PACKAGE_NAME
+    - git commit -m "Canary build: ${PACKAGE_NAME}" -m "atlas-phys/exot/hqt/R21-ttbar-1lep/HQTTtResonancesTools@${CI_COMMIT_REF_SLUG}"
+    - git push -u origin canary
+  tags:
+    - cvmfs
+  <<: *global
