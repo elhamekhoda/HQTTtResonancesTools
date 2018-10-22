@@ -45,7 +45,7 @@ deploy_ttresfullhad:
   stage: deploy
   script:
     - source ~/.bashrc || echo ignore alrb
-    - lsetup git
+    - lsetup git || echo ignore alrb
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.cern.ch/atlas-phys/exot/hqt/tt_tb_Resonances_Run2/ttResFullHad.git -b latest
     - cd ttResFullHad
     - git submodule update --remote source/$PACKAGE_NAME
