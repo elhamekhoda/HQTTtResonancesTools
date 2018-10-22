@@ -52,7 +52,7 @@ deploy-ttresfullhad:
     - git add source/$PACKAGE_NAME
     - git config user.email "ttreshad@cern.ch"
     - git config user.name "ttResFullHad" 
-    - git commit -m "Canary Build - ${PACKAGE_NAME}" -m "atlas-phys/exot/hqt/R21-ttbar-1lep/HQTTtResonancesTools@${CI_COMMIT_REF_SLUG}"
+    - git commit -m "Auto Build - ${PACKAGE_NAME}" -m "atlas-phys/exot/hqt/R21-ttbar-1lep/HQTTtResonancesTools@${CI_COMMIT_REF_SLUG}"
     - git push -u origin canary
   tags:
     - cvmfs
