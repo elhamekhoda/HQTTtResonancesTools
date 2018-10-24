@@ -4,7 +4,7 @@ LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtRe
 GRLDir  GoodRunsLists
 GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml  data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20171130/data17_13TeV.periodAllYear_DetStatus-v97-pro21-13_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml 
 
-PRWConfigFiles HQTTtResonancesTools/PRW_Zp_mc16a.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v1/prw.merged.root
+PRWConfigFiles dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root
 #for mc16c:
 #dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16c.FS.v2/prw.merged.root 
 #for mc16d:
