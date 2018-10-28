@@ -1,15 +1,40 @@
 LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtResonancesTools libTtResonancesTools libBoostedJetTaggersLib
 
 # http://atlas.web.cern.ch/Atlas/GROUPS/DATABASE/GroupData/GoodRunsLists/data16_13TeV/
+# 2015 data: (Runs: 276262 - 284484) --> 3219.56 pb-1
+# 2016 data: (Runs: 297730 - 311481) --> 32988.1 pb-1 
+# 2017 data: (Runs: 325713 - 340453) --> 44307.4 pb-1 
+# 2018 data: (Runs: 348885 - 360402) --> 47824.7 pb-1 [Latest GRL]
+
 GRLDir  GoodRunsLists
-GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20180618/data17_13TeV.periodAllYear_DetStatus-v97-pro21-17_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml data18_13TeV/20180924/data18_13TeV.periodAllYear_DetStatus-v102-pro22-03_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml
+GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.xml data18_13TeV/20180924/physics_25ns_Triggerno17e33prim.xml
 
-PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
-PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root
-#for mc16c:
-#dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16c.FS.v2/prw.merged.root 
 
-PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root GoodRunsLists/data17_13TeV/20180618/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root
+######################################## PRW Files ###################################################
+
+## Pile-up reweighting tool - Metadata determines which to use
+# MC16a configuration to compare with 2015-16
+PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root
+PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root
+PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root
+
+# MC16d configuration to compare with 2017-only
+#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
+#PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root
+#PRWLumiCalcFiles GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root
+
+# MC16a and MC16d configuration to compare (2015+2016+2017) data
+#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
+#PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root
+#PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root
+
+# MC16e configuration to comapre with 2018-only
+#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root
+#PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
+#PRWLumiCalcFiles GoodRunsLists/data18_13TeV/20180924/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-001.root
+
+######################################################################################################
+
 ElectronCollectionName Electrons
 MuonCollectionName Muons
 PhotonCollectionName None
