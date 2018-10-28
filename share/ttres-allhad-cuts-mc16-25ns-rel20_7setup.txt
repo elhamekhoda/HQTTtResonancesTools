@@ -1,0 +1,188 @@
+LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtResonancesTools libTtResonancesTools libBoostedJetTaggersLib
+
+# http://atlas.web.cern.ch/Atlas/GROUPS/DATABASE/GroupData/GoodRunsLists/data16_13TeV/
+GRLDir  GoodRunsLists
+GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml  data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20171130/data17_13TeV.periodAllYear_DetStatus-v97-pro21-13_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml 
+
+PRWConfigFiles dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root
+#for mc16c:
+#dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16c.FS.v2/prw.merged.root 
+#for mc16d:
+#dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
+
+PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root  GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root  #GoodRunsLists/data17_13TeV/20171130/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-001.root
+
+ElectronCollectionName Electrons
+MuonCollectionName Muons
+PhotonCollectionName None
+TauCollectionName None
+JetCollectionName AntiKt4EMTopoJets
+# original xAOD without trimmed jets
+LargeJetCollectionName AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets
+TruthLargeRJetCollectionName AntiKt10TruthTrimmedPtFrac5SmallR20Jets
+LargeRJetPt 100000.
+TruthLargeRJetPt 100000.
+LargeJetSubstructure None
+#LargeJetCollectionName AntiKt10LCTopoJets
+#LargeJetSubstructure Trimmer
+LargeRJESJMSConfig CombMass
+TrackJetCollectionName AntiKt2PV0TrackJets
+
+TruthCollectionName TruthParticles
+#TruthCollectionName None
+TruthJetCollectionName AntiKt4TruthJets
+TopPartonHistory ttbar
+TruthBlockInfo False
+PDFInfo False
+IsAFII False
+OutputFileSetAutoFlushZero True
+#NEvents 1000
+
+UseGlobalLeptonTriggerSF False
+
+ObjectSelectionName top::ObjectLoaderTtres
+OutputFormat top::TtresEventSaverFlatNtuple
+OutputEvents SelectedEvents
+OutputFilename output.root
+PerfStats No
+
+CalculateSF True
+#Systematics All
+Systematics Nominal
+
+#B-tagging configuration
+BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_85 DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 MV2c10:HybBEff_60 MV2c10:HybBEff_70 MV2c10:HybBEff_77 MV2c10:HybBEff_85 DL1:HybBEff_60 DL1:HybBEff_70 DL1:HybBEff_77 DL1:HybBEff_85 MV2c10:Continuous DL1:Continuous
+
+# Different algorithms of 70% WP
+#BTaggingWP MV2c10:FixedCutBEff_70 MV2c10mu:FixedCutBEff_70 MV2c10rnn:FixedCutBEff_70 MV2c10:HybBEff_70 MV2c10mu:HybBEff_70 MV2c10rnn:HybBEff_70 DL1:FixedCutBEff_70 DL1mu:FixedCutBEff_70 DL1rnn:FixedCutBEff_70 DL1:HybBEff_70 DL1mu:HybBEff_70 DL1rnn:HybBEff_70 
+
+JetUncertainties_NPModel GlobalReduction
+#LargeRJESUncertaintyConfig TopTagging
+JetUncertainties_BunchSpacing 25ns
+
+ElectronID TightLH
+ElectronIDLoose MediumLH
+MuonQuality Medium
+MuonQualityLoose Loose
+ElectronIsolation FixedCutTightTrackOnly
+MuonIsolation FixedCutTightTrackOnly
+ElectronIsolationLoose None
+MuonIsolationLoose None
+
+FakesControlRegionDoLooseMC False
+OverlapRemovalLeptonDef Tight
+ApplyElectronInJetSubtraction False
+
+OverlapRemovalProcedure BoostedSlidingDRMu
+
+DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord,DumpToolConfigTo
+
+TtresRunHTT False
+TtresSavePartons True
+TtresrunEWK True
+isTOPQ False
+fakeLeptonSel False
+isSherpaW True
+SaveFullTruthRecord True
+DumpToolConfigTo toolConfig.txt
+
+########################
+### basic selection with mandatory cuts for reco level
+########################
+
+SUB BASIC
+INITIAL
+GRL
+GOODCALO
+PRIVTX
+# RECO_LEVEL
+
+########################
+### definition of the data periods
+########################
+
+SUB period_2015
+RUN_NUMBER >= 276262
+RUN_NUMBER <= 284484
+
+SUB period_2016
+RUN_NUMBER >= 297730
+RUN_NUMBER <= 311481
+
+SUB period_2017
+RUN_NUMBER >= 325713
+RUN_NUMBER <= 340453
+
+########################
+### available top-taggers
+########################
+
+SUB SubStructureMTTagger50
+LARGEJETTTRESSUBTOPTAG50_N 300000 >= 1
+LARGEJETTTRESSUBTOPTAG50_N 300000 >= 2
+
+SUB SubStructureMTTagger80 # used for rel. 20.7 analysis
+LARGEJETTTRESSUBTOPTAG80_N 300000 >= 1
+LARGEJETTTRESSUBTOPTAG80_N 300000 >= 2
+
+SUB SmoothMTTagger80 # rel. 21 recomm.
+LARGEJETTTRESSTTMT_N 300000 >= 1
+LARGEJETTTRESSTTMT_N 300000 >= 2
+
+# Note that currently other top-taggers (e.g. DNN/BDT) cannot be used as EventSelectors in the pre-selection stage.
+# Anyway, they will be stored as flags of largeJets in the output ttres n-tuple.
+# So, use this "NoTopTagging" and you can apply those top-taggers in the analysis without discarding interesting events
+SUB NoTopTagging 
+LJET_N 300000 >= 1
+LJET_N 300000 >= 2
+
+########################
+### offline cuts for reco-level selections
+########################
+
+SUB boosted_common
+EL_N 25000 == 0
+MU_N 25000 == 0
+JETCLEAN LooseBad
+#turning off the top-tagging selector for now. We will do it in the NtupleAnalysis 
+#. SmoothMTTagger80 # put your large-R jet selection here!
+# Making sure at least two large-R jets in the event
+. NoTopTagging
+#turning off the b-tagging selector as well. We will do in the NtupleAnalysis
+#TRACKMV2C10_N 0.66 >= 1
+EXAMPLEPLOTS
+
+########################
+### boosted full-hadronic selections
+########################
+
+SELECTION bFH_2015
+. BASIC
+. period_2015
+TRIGDEC HLT_j360_a10r_L1J100
+. boosted_common
+SAVE
+
+SELECTION bFH_2016
+. BASIC
+. period_2016
+TRIGDEC HLT_j420_a10r_L1J100
+. boosted_common
+SAVE
+
+#commenting out the 2017 data selection part for now
+#SELECTION bFH_2017
+#. BASIC
+#. period_2017
+#TRIGDEC HLT_j420_a10r_L1J100
+#. boosted_common
+#SAVE
+
+########################
+### No Cuts
+### Uncomment this one if you're also interested in those not-selected events
+### Note that it will make the file size significantly larger.
+########################
+# SELECTION NoCuts
+# . BASIC
+# SAVE
