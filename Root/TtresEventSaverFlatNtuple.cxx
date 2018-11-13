@@ -50,6 +50,7 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
     m_saveFullTruthRecord = (configValueDefault("SaveFullTruthRecord", "True") == "True") ? true : false ;
     m_runEWK              = (configValueDefault("TtresrunEWK", "False") == "True") ? true : false ;
     m_dumpToolConfigTo    = configValueDefault("DumpToolConfigTo", "False"); // A string!
+    m_ttresFHExtra    = (configValueDefault("TtresFHExtraBranches", "False") == "True") ? true : false ;
 
     if (m_isTOPQ) {
         m_trackjetcollection = "";
@@ -286,6 +287,11 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_ljet_dnn_score,   "ljet_DNNTopTag_score");
         systematicTree->makeOutputVariable(m_ljet_topo_score,   "ljet_topoDNNTopTag_score");
         systematicTree->makeOutputVariable(m_ljet_angular_cuts, "ljet_angular_cuts"); // large-R jet angular cuts
+        if (m_ttresFHExtra){
+        systematicTree->makeOutputVariable(m_ljet_good_dnn_ttres0l0b, "ljet_good_dnn_ttres0l0b");
+        systematicTree->makeOutputVariable(m_ljet_good_dnn_ttres0l1b, "ljet_good_dnn_ttres0l1b");
+        systematicTree->makeOutputVariable(m_ljet_good_dnn_ttres0l2b, "ljet_good_dnn_ttres0l2b");
+        }
         //track jet b-tagging variables
         systematicTree->makeOutputVariable(m_tjet_mv2c10mu,  "tjet_mv2c10mu");
         systematicTree->makeOutputVariable(m_tjet_mv2c10rnn,  "tjet_mv2c10rnn");
@@ -1054,6 +1060,11 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     m_ljet_bdt_score.resize(largeJets_size);
     m_ljet_dnn_score.resize(largeJets_size);
     m_ljet_topo_score.resize(largeJets_size);
+    if (m_ttresFHExtra){
+    m_ljet_good_dnn_ttres0l0b.resize(largeJets_size);
+    m_ljet_good_dnn_ttres0l1b.resize(largeJets_size);
+    m_ljet_good_dnn_ttres0l2b.resize(largeJets_size);
+    }
 
 
 
@@ -1094,6 +1105,11 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         m_ljet_good_dnn80[i] = 0;
         m_ljet_good_topo80[i] = 0;
         m_ljet_angular_cuts[i] = 0;
+        if (m_ttresFHExtra){
+        m_ljet_good_dnn_ttres0l0b[i] = 0;
+        m_ljet_good_dnn_ttres0l1b[i] = 0;
+        m_ljet_good_dnn_ttres0l2b[i] = 0;
+        }
 #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
         m_ljet_D2[i] = 0;
         m_ljet_C2[i] = 0;
@@ -1135,6 +1151,11 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         if (jetPtr->isAvailable<float>("DNNTaggerTopQuark80_Score")) m_ljet_dnn_score[i] = jetPtr->auxdata<float>("DNNTaggerTopQuark80_Score");
         if (jetPtr->isAvailable<float>("TopotaggerTopQuark80_Score")) m_ljet_topo_score[i] = jetPtr->auxdata<float>("TopotaggerTopQuark80_Score");
         if (jetPtr->isAvailable<int> ("angular_cuts")) m_ljet_angular_cuts[i] = jetPtr->auxdecor<int>("angular_cuts");
+        if (m_ttresFHExtra){
+        if (jetPtr->isAvailable<int>("DNNTaggerTopQuarkTtres0L0B")) m_ljet_good_dnn_ttres0l0b[i] = jetPtr->auxdecor<int>("DNNTaggerTopQuarkTtres0L0B");
+        if (jetPtr->isAvailable<int>("DNNTaggerTopQuarkTtres0L1B")) m_ljet_good_dnn_ttres0l1b[i] = jetPtr->auxdecor<int>("DNNTaggerTopQuarkTtres0L1B");
+        if (jetPtr->isAvailable<int>("DNNTaggerTopQuarkTtres0L2B")) m_ljet_good_dnn_ttres0l2b[i] = jetPtr->auxdecor<int>("DNNTaggerTopQuarkTtres0L2B");
+        }
 
 
 //==================================== End Elham ================================================

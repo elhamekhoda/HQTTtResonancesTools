@@ -9,6 +9,8 @@
 #include "HQTTtResonancesTools/NLargeJetTtresLeptonicSelector.h"
 #include "HQTTtResonancesTools/NLargeJetTtresFakesSelector.h"
 #include "HQTTtResonancesTools/NJetCloseLeptonSelector.h"
+#include "HQTTtResonancesTools/NLargeJetTtresFHDNNTopTagSelector.h"
+#include "HQTTtResonancesTools/NLargeJetAnyTopTagSelector.h"
 #include "HQTTtResonancesTools/AngularCutsSLSelector.h"
 #include "TtResonancesTools/Chi2Selector.h"
 
@@ -53,9 +55,14 @@ top::EventSelectorBase* HQTTtResonancesToolsLoader::initTool(const std::string& 
         return new top::AngularCutsSLSelector(param);
     else if (toolname == "LARGEJETTTRESSTTMT_N")
         return new top::NLargeJetTtresSmoothedTTMassTau32Selector(param);
-
-
-
+    else if (toolname == "LARGEJETTTRES0L0BDNNTOPTAG_N")
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "0L0B");
+    else if (toolname == "LARGEJETTTRES0L1BDNNTOPTAG_N")
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "0L1B");
+    else if (toolname == "LARGEJETTTRES0L2BDNNTOPTAG_N")
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "0L2B");
+    else if (toolname == "NLARGEJETANYTOPTAG_N")
+        return new top::NLargeJetAnyTopTagSelector(param);
 
     return nullptr;
 }

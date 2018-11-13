@@ -98,10 +98,11 @@ ApplyElectronInJetSubtraction False
 
 OverlapRemovalProcedure BoostedSlidingDRMu
 
-DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord,DumpToolConfigTo
+DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord,DumpToolConfigTo,TtresFHExtraBranches
 
 TtresRunHTT False
 TtresSavePartons True
+TtresFHExtraBranches True
 TtresrunEWK True
 isTOPQ False
 fakeLeptonSel False
@@ -161,6 +162,9 @@ LARGEJETTTRESSTTMT_N 300000 >= 2
 SUB NoTopTagging 
 LJET_N 300000 >= 1
 LJET_N 300000 >= 2
+LARGEJETTTRES0L0BDNNTOPTAG_N 300000 >= 0
+LARGEJETTTRES0L1BDNNTOPTAG_N 300000 >= 0
+LARGEJETTTRES0L2BDNNTOPTAG_N 300000 >= 0
 
 ########################
 ### offline cuts for reco-level selections

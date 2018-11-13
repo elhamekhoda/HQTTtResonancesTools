@@ -88,6 +88,7 @@ namespace top {
       virtual void dumpToolConfig(std::string fname);
       const std::string& configValueDefault(const std::string& key, const std::string& default_value="False") const;
       std::string m_dumpToolConfigTo;
+      bool m_ttresFHExtra;
       bool m_isMC;
 
       bool m_isTOPQ;
@@ -162,6 +163,10 @@ namespace top {
       std::vector<float> m_ljet_dnn_score;
       std::vector<float> m_ljet_topo_score;
       std::vector<int>   m_ljet_angular_cuts;
+
+      std::vector<int>   m_ljet_good_dnn_ttres0l0b;
+      std::vector<int>   m_ljet_good_dnn_ttres0l1b;
+      std::vector<int>   m_ljet_good_dnn_ttres0l2b;
 
       SubstructureTopTagger *STL80;
       SubstructureTopTagger *STL50;
