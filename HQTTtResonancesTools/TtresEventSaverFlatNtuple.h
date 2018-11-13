@@ -228,10 +228,18 @@ cd ../
       //std::vector<float>  m_el_d0sig;
       std::vector<float>  m_el_z0sig;
 
+      std::vector<float> m_el_ptvarcone20_TightTTVA_pt1000;
+      std::vector<float> m_el_ptcone20_ttres;
+      std::vector<float> m_el_ptvarcone20_ttres;
+
       std::vector<float>  m_mu_d0;
       std::vector<float>  m_mu_z0;
       //std::vector<float>  m_mu_d0sig;
       std::vector<float>  m_mu_z0sig;
+      std::vector<float>  m_mu_ptvarcone30_TightTTVA_pt1000;
+      std::vector<float> m_mu_ptcone20_ttres;
+
+      std::vector<float> m_mu_ptvarcone30_ttres;
 
       std::vector<int>  m_truthparticle_type;
       std::vector<int>  m_truthparticle_origin;

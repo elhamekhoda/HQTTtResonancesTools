@@ -341,11 +341,17 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_el_z0,      "el_z0");
         //systematicTree->makeOutputVariable(m_el_d0sig,   "el_d0sig");
         systematicTree->makeOutputVariable(m_el_z0sig,   "el_z0sig");
+        systematicTree->makeOutputVariable(m_el_ptvarcone20_TightTTVA_pt1000, "el_ptvarcone20_TightTTVA_pt1000");
+        systematicTree->makeOutputVariable(m_el_ptcone20_ttres, "el_ptcone20_ttres");
+        systematicTree->makeOutputVariable(m_el_ptvarcone20_ttres, "el_ptvarcone20_ttres");
 
         systematicTree->makeOutputVariable(m_mu_d0,      "mu_d0");
         systematicTree->makeOutputVariable(m_mu_z0,      "mu_z0");
         //systematicTree->makeOutputVariable(m_mu_d0sig,   "mu_d0sig");
         systematicTree->makeOutputVariable(m_mu_z0sig,   "mu_z0sig");
+        systematicTree->makeOutputVariable(m_mu_ptvarcone30_TightTTVA_pt1000, "mu_ptvarcone30_TightTTVA_pt1000");
+        systematicTree->makeOutputVariable(m_mu_ptcone20_ttres, "mu_ptcone20_ttres");
+        systematicTree->makeOutputVariable(m_mu_ptvarcone30_ttres, "mu_ptvarcone30_ttres");
 
         systematicTree->makeOutputVariable(m_truthparticle_type,      "truthparticle_type");
         systematicTree->makeOutputVariable(m_truthparticle_origin,      "truthparticle_origin");
@@ -783,34 +789,34 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
                 systematicTree->makeOutputVariable(m_chi2_bl_phi,     "chi2_bl_phi");
                 systematicTree->makeOutputVariable(m_chi2_bl_m, "chi2_bl_m");
 
-//        systematicTree->makeOutputVariable(m_chi2_w1h_pt,      "chi2_w1h_pt");
-//             systematicTree->makeOutputVariable(m_chi2_w1h_eta,     "chi2_w1h_eta");
-//             systematicTree->makeOutputVariable(m_chi2_w1h_phi,     "chi2_w1h_phi");
-//             systematicTree->makeOutputVariable(m_chi2_w1h_m,       "chi2_w1h_m");
-//        systematicTree->makeOutputVariable(m_chi2_w1h_pdgId,   "chi2_w1h_pdgId");
+//              systematicTree->makeOutputVariable(m_chi2_w1h_pt,      "chi2_w1h_pt");
+//              systematicTree->makeOutputVariable(m_chi2_w1h_eta,     "chi2_w1h_eta");
+//              systematicTree->makeOutputVariable(m_chi2_w1h_phi,     "chi2_w1h_phi");
+//              systematicTree->makeOutputVariable(m_chi2_w1h_m,       "chi2_w1h_m");
+//              systematicTree->makeOutputVariable(m_chi2_w1h_pdgId,   "chi2_w1h_pdgId");
 //
-//        systematicTree->makeOutputVariable(m_chi2_w2h_pt,      "chi2_w2h_pt");
-//             systematicTree->makeOutputVariable(m_chi2_w2h_eta,     "chi2_w2h_eta");
-//             systematicTree->makeOutputVariable(m_chi2_w2h_phi,     "chi2_w2h_phi");
-//             systematicTree->makeOutputVariable(m_chi2_w2h_m,       "chi2_w2h_m");
-//        systematicTree->makeOutputVariable(m_chi2_w2h_pdgId,   "chi2_w2h_pdgId");
+//              systematicTree->makeOutputVariable(m_chi2_w2h_pt,      "chi2_w2h_pt");
+//              systematicTree->makeOutputVariable(m_chi2_w2h_eta,     "chi2_w2h_eta");
+//              systematicTree->makeOutputVariable(m_chi2_w2h_phi,     "chi2_w2h_phi");
+//              systematicTree->makeOutputVariable(m_chi2_w2h_m,       "chi2_w2h_m");
+//              systematicTree->makeOutputVariable(m_chi2_w2h_pdgId,   "chi2_w2h_pdgId");
 
                 systematicTree->makeOutputVariable(m_chi2_wh_pt,      "chi2_wh_pt");
                 systematicTree->makeOutputVariable(m_chi2_wh_eta,     "chi2_wh_eta");
                 systematicTree->makeOutputVariable(m_chi2_wh_phi,     "chi2_wh_phi");
                 systematicTree->makeOutputVariable(m_chi2_wh_m,       "chi2_wh_m");
+
+//              systematicTree->makeOutputVariable(m_chi2_w1l_pt,      "chi2_w1l_pt");
+//              systematicTree->makeOutputVariable(m_chi2_w1l_eta,     "chi2_w1l_eta");
+//              systematicTree->makeOutputVariable(m_chi2_w1l_phi,     "chi2_w1l_phi");
+//              systematicTree->makeOutputVariable(m_chi2_w1l_m,       "chi2_w1l_m");
+//              systematicTree->makeOutputVariable(m_chi2_w1l_pdgId,   "chi2_w1l_pdgId");
 //
-//        systematicTree->makeOutputVariable(m_chi2_w1l_pt,      "chi2_w1l_pt");
-//             systematicTree->makeOutputVariable(m_chi2_w1l_eta,     "chi2_w1l_eta");
-//             systematicTree->makeOutputVariable(m_chi2_w1l_phi,     "chi2_w1l_phi");
-//             systematicTree->makeOutputVariable(m_chi2_w1l_m,       "chi2_w1l_m");
-//        systematicTree->makeOutputVariable(m_chi2_w1l_pdgId,   "chi2_w1l_pdgId");
-//
-//        systematicTree->makeOutputVariable(m_chi2_w2l_pt,      "chi2_w2l_pt");
-//             systematicTree->makeOutputVariable(m_chi2_w2l_eta,     "chi2_w2l_eta");
-//             systematicTree->makeOutputVariable(m_chi2_w2l_phi,     "chi2_w2l_phi");
-//             systematicTree->makeOutputVariable(m_chi2_w2l_m,       "chi2_w2l_m");
-//        systematicTree->makeOutputVariable(m_chi2_w2l_pdgId,   "chi2_w2l_pdgId");
+//              systematicTree->makeOutputVariable(m_chi2_w2l_pt,      "chi2_w2l_pt");
+//              systematicTree->makeOutputVariable(m_chi2_w2l_eta,     "chi2_w2l_eta");
+//              systematicTree->makeOutputVariable(m_chi2_w2l_phi,     "chi2_w2l_phi");
+//              systematicTree->makeOutputVariable(m_chi2_w2l_m,       "chi2_w2l_m");
+//              systematicTree->makeOutputVariable(m_chi2_w2l_pdgId,   "chi2_w2l_pdgId");
 
                 systematicTree->makeOutputVariable(m_chi2_wl_pt,      "chi2_wl_pt");
                 systematicTree->makeOutputVariable(m_chi2_wl_eta,     "chi2_wl_eta");
@@ -885,6 +891,11 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     //m_el_d0sig.resize(event.m_electrons.size());
     m_el_z0sig.resize(event.m_electrons.size());
 
+    // electron Isolation variables:
+    m_el_ptvarcone20_TightTTVA_pt1000.resize(event.m_electrons.size());
+    m_el_ptcone20_ttres.resize(event.m_electrons.size());
+    m_el_ptvarcone20_ttres.resize(event.m_electrons.size());
+
 
     unsigned int k(0);
     for (const auto* const elPtr : event.m_electrons) {//loop on electrons
@@ -898,6 +909,17 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         const xAOD::ParametersCovMatrix_t elcov = eltrack->definingParametersCovMatrix();
         //m_el_d0sig[k] = m_el_d0[k]/sqrt(elcov(0,0));
         m_el_z0sig[k] = m_el_z0[k] / sqrt(elcov(1, 1));
+
+        if (elPtr->isAvailable<float>("ptvarcone20_TightTTVA_pt1000")) {
+            //ATH_MSG_INFO("\e[1;34m(ptvarcone20_TightTTVA_pt1000)" << elPtr->auxdata<float>("ptvarcone20_TightTTVA_pt1000")<< "   pT   " << elPtr->pt() << "\e[0m");
+            //ATH_MSG_INFO("\e[1;33m(ptvarcone30_TightTTVA_pt1000)" << elPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000")<< "   pT   " << elPtr->pt() << "\e[0m");
+            m_el_ptvarcone20_TightTTVA_pt1000[k] = elPtr->auxdata<float>("ptvarcone20_TightTTVA_pt1000");
+        } //if loop
+        if (elPtr->auxdata<float>("ptvarcone20")){
+            m_el_ptvarcone20_ttres[k] =  elPtr->auxdata<float>("ptvarcone20");
+        }
+        elPtr->isolationValue( m_el_ptcone20_ttres[k] , xAOD::Iso::ptcone20 );
+
     }//for
 
     //muons
@@ -905,6 +927,11 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     m_mu_z0.resize(event.m_muons.size());
     //m_mu_d0sig.resize(event.m_muons.size());
     m_mu_z0sig.resize(event.m_muons.size());
+    // Isolation variables
+    m_mu_ptvarcone30_TightTTVA_pt1000.resize(event.m_muons.size());
+    m_mu_ptcone20_ttres.resize(event.m_muons.size());
+    m_mu_ptvarcone30_ttres.resize(event.m_muons.size());
+
 
     k = 0;
     for (const auto* const muPtr : event.m_muons) {//loop on muons
@@ -920,6 +947,15 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             const xAOD::ParametersCovMatrix_t mucov = mutrack->definingParametersCovMatrix();
             //m_mu_d0sig[k] = mutrack->d0()/sqrt(mucov(0,0));
             m_mu_z0sig[k] = m_mu_z0[k] / sqrt(mucov(1, 1));
+        }
+        if (muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000")){
+            m_mu_ptvarcone30_TightTTVA_pt1000[k] = muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000");
+            //ATH_MSG_INFO("\e[1;31m(ptvarcone30_TightTTVA_pt1000)" << muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000") << "   pT   " << muPtr->pt() << "\e[0m");
+            //m_mu_ptvarcone30_HQT[k] = muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000");
+        }
+        muPtr->isolation( m_mu_ptcone20_ttres[k] , xAOD::Iso::ptcone20 );
+        if (muPtr->auxdata<float>("ptvarcone30")){
+            m_mu_ptvarcone30_ttres[k] =  muPtr->auxdata<float>("ptvarcone30");
         }
     }//for
 
