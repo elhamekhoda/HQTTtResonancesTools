@@ -87,7 +87,7 @@ ElectronID TightLH
 ElectronIDLoose MediumLH
 MuonQuality Medium
 MuonQualityLoose Loose
-ElectronIsolation FixedCutTightTrackOnly
+ElectronIsolation None #FixedCutTightTrackOnly  #setting up to NONE for now, FCTTO is not avaialble
 MuonIsolation FixedCutTightTrackOnly
 ElectronIsolationLoose None
 MuonIsolationLoose None
