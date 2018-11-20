@@ -7,7 +7,7 @@ stages:
 
 variables:
   PACKAGE_NAME: HQTTtResonancesTools
-  AtlasVersion: 21.2.53
+  AtlasVersion: 21.2.52
   GIT_SSL_NO_VERIFY: "true"
 
 .global: &global
