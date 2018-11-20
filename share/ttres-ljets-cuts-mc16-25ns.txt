@@ -71,7 +71,16 @@ PerfStats No
 CalculateSF True
 #Systematics All
 Systematics Nominal
+
+#Just of Btagging WP
 BTaggingWP FixedCutBEff_70
+
+#B-tagging configuration for multiple WP
+BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_85 DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 MV2c10:HybBEff_60 MV2c10:HybBEff_70 MV2c10:HybBEff_77 MV2c10:HybBEff_85 DL1:HybBEff_60 DL1:HybBEff_70 DL1:HybBEff_77 DL1:HybBEff_85 MV2c10:Continuous DL1:Continuous
+
+#Different algorithms of 70% WP
+#BTaggingWP MV2c10:FixedCutBEff_70 MV2c10mu:FixedCutBEff_70 MV2c10rnn:FixedCutBEff_70 MV2c10:HybBEff_70 MV2c10mu:HybBEff_70 MV2c10rnn:HybBEff_70 DL1:FixedCutBEff_70 DL1mu:FixedCutBEff_70 DL1rnn:FixedCutBEff_70 DL1:HybBEff_70 DL1mu:HybBEff_70 DL1rnn:HybBEff_70
+
 
 JetUncertainties_NPModel GlobalReduction
 #LargeRJESUncertaintyConfig TopTagging
@@ -155,7 +164,7 @@ JET_N 25000 >= 2
 JET_N 25000 >= 3
 JET_N 25000 >= 4
 TRACKMV2C10_N 0.66 >= 1
-LOG10_CHI2 < 0.9
+#LOG10_CHI2 < 0.9
 NOBADMUON
 EXAMPLEPLOTS
 
