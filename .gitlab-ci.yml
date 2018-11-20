@@ -56,4 +56,5 @@ deploy-ttresfullhad:
     - git push -u origin canary
   tags:
     - cvmfs
+  allow_failure: true
   <<: *global
