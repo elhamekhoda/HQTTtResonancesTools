@@ -14,7 +14,7 @@ GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/phy
 
 ## Pile-up reweighting tool - Metadata determines which to use
 # MC16a configuration to compare with 2015-16
-PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root
+PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root # HQTTtResonancesTools/PRW_mttSlicedTtbar_mc16a.root
 PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root
 PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root
 
@@ -58,7 +58,7 @@ TopPartonHistory ttbar
 TruthBlockInfo False
 PDFInfo False
 IsAFII False
-OutputFileSetAutoFlushZero True
+OutputFileNEventAutoFlush 100
 #NEvents 10000
 
 UseGlobalLeptonTriggerSF False
@@ -71,6 +71,7 @@ PerfStats No
 
 CalculateSF True
 #Systematics All
+#Systematics LARGERJET_Strong_JET_Comb_Baseline_All__1down,LARGERJET_Strong_JET_Comb_Baseline_All__1up,LARGERJET_Strong_JET_Comb_Modelling_All__1down,LARGERJET_Strong_JET_Comb_Modelling_All__1up,LARGERJET_Strong_JET_Comb_TotalStat_All__1down,LARGERJET_Strong_JET_Comb_TotalStat_All__1up,LARGERJET_Strong_JET_Comb_Tracking_All__1down,LARGERJET_Strong_JET_Comb_Tracking_All__1up,LARGERJET_Strong_JET_MassRes_Top__1down,LARGERJET_Strong_JET_MassRes_Top__1up
 Systematics Nominal
 
 #B-tagging configuration
