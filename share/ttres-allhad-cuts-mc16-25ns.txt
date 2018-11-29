@@ -82,6 +82,7 @@ BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 
 
 JetUncertainties_NPModel GlobalReduction
 #LargeRJESUncertaintyConfig TopTagging
+LargeRJESUncertaintyConfig MassRes
 JetUncertainties_BunchSpacing 25ns
 
 ElectronID TightLH
