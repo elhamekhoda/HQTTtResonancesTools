@@ -162,7 +162,7 @@ LARGEJETTTRESSTTMT_N 300000 >= 2
 # Anyway, they will be stored as flags of largeJets in the output ttres n-tuple.
 # So, use this "NoTopTagging" and you can apply those top-taggers in the analysis without discarding interesting events
 SUB NoTopTagging 
-LJET_N 300000 >= 1
+LJET_N 500000 >= 1
 LJET_N 300000 >= 2
 LARGEJETTTRES0L0BDNNTOPTAG_N 300000 >= 0
 LARGEJETTTRES0L1BDNNTOPTAG_N 300000 >= 0
