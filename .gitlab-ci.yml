@@ -52,7 +52,7 @@ deploy-ttresfullhad:
     - git add source/$PACKAGE_NAME
     - git config user.email "${CERN_USER}@cern.ch"
     - git config user.name "${CERN_USER}" 
-    - git commit -m "Auto Build - ${PACKAGE_NAME}" -m "atlas-phys/exot/hqt/R21-ttbar-1lep/HQTTtResonancesTools@${CI_COMMIT_REF_SLUG}"
+    - git commit -m "Auto Build - ${PACKAGE_NAME}" -m "See atlas-phys/exot/hqt/R21-ttbar-1lep/HQTTtResonancesTools@${CI_COMMIT_SHA}"
     - git push -u origin canary
   allow_failure: true
   <<: *global
