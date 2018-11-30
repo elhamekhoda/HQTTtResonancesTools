@@ -15,7 +15,7 @@ variables:
     refs:
       - master
 
-.login: &image
+.login: &login
   image: lukasheinrich/recast_cvmfs_assisted:20161231
   tags:
     - cvmfs
