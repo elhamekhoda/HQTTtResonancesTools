@@ -12,6 +12,7 @@
 #include "HQTTtResonancesTools/NLargeJetTtresFHDNNTopTagSelector.h"
 #include "HQTTtResonancesTools/NLargeJetAnyTopTagSelector.h"
 #include "HQTTtResonancesTools/AngularCutsSLSelector.h"
+#include "HQTTtResonancesTools/TruthMttSelector.h"
 #include "TtResonancesTools/Chi2Selector.h"
 
 #include <iostream>
@@ -20,7 +21,7 @@
 
 namespace top {
 
-top::EventSelectorBase* HQTTtResonancesToolsLoader::initTool(const std::string& /*name*/, const std::string& line, TFile* /*outputFile*/, std::shared_ptr<top::TopConfig> /*config*/, EL::Worker* /*wk*/) {
+top::EventSelectorBase* HQTTtResonancesToolsLoader::initTool(const std::string& /*name*/, const std::string& line, TFile* /*outputFile*/, std::shared_ptr<top::TopConfig> config, EL::Worker* /*wk*/) {
     //get the first bit of the string and store it in toolname
     std::istringstream iss(line);
     std::string toolname;
@@ -63,6 +64,8 @@ top::EventSelectorBase* HQTTtResonancesToolsLoader::initTool(const std::string& 
         return new top::NLargeJetTtresFHDNNTopTagSelector(param, "0L2B");
     else if (toolname == "NLARGEJETANYTOPTAG_N")
         return new top::NLargeJetAnyTopTagSelector(param);
+    else if (toolname == "TRUTH_TTBARMASS")
+        return new top::TruthMttSelector(param, config);
 
     return nullptr;
 }
