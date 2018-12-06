@@ -34,12 +34,12 @@ TopExamples.grid.Add("MC16a_13TeV_25ns_FS_EXOT4_ttbarV").datasets = [
 ]
 #Di-boson
 TopExamples.grid.Add("MC16a_13TeV_25ns_FS_EXOT4_VV").datasets = [
-'mc16_13TeV.363355.Sherpa_221_NNPDF30NNLO_ZqqZvv.deriv.DAOD_EXOT4.e5525_s3126_r9364_r9315_p3596',
-'mc16_13TeV.363356.Sherpa_221_NNPDF30NNLO_ZqqZll.deriv.DAOD_EXOT4.e5525_s3126_r9364_r9315_p3596',
-'mc16_13TeV.363357.Sherpa_221_NNPDF30NNLO_WqqZvv.deriv.DAOD_EXOT4.e5525_s3126_r9364_r9315_p3596',
-'mc16_13TeV.363358.Sherpa_221_NNPDF30NNLO_WqqZll.deriv.DAOD_EXOT4.e5525_s3126_r9364_r9315_p3596',
-'mc16_13TeV.363359.Sherpa_221_NNPDF30NNLO_WpqqWmlv.deriv.DAOD_EXOT4.e5583_s3126_r9364_r9315_p3596',
-'mc16_13TeV.363360.Sherpa_221_NNPDF30NNLO_WplvWmqq.deriv.DAOD_EXOT4.e5983_s3126_r9364_r9315_p3596',
+'mc16_13TeV.363355.Sherpa_221_NNPDF30NNLO_ZqqZvv.deriv.DAOD_EXOT4.e5525_s3126_r9364_p3596',
+'mc16_13TeV.363356.Sherpa_221_NNPDF30NNLO_ZqqZll.deriv.DAOD_EXOT4.e5525_s3126_r9364_p3596',
+'mc16_13TeV.363357.Sherpa_221_NNPDF30NNLO_WqqZvv.deriv.DAOD_EXOT4.e5525_s3126_r9364_p3596',
+'mc16_13TeV.363358.Sherpa_221_NNPDF30NNLO_WqqZll.deriv.DAOD_EXOT4.e5525_s3126_r9364_p3596',
+'mc16_13TeV.363359.Sherpa_221_NNPDF30NNLO_WpqqWmlv.deriv.DAOD_EXOT4.e5583_s3126_r9364_p3596',
+'mc16_13TeV.363360.Sherpa_221_NNPDF30NNLO_WplvWmqq.deriv.DAOD_EXOT4.e5983_s3126_r9364_p3596',
 'mc16_13TeV.363489.Sherpa_221_NNPDF30NNLO_WlvZqq.deriv.DAOD_EXOT4.e5525_s3126_r9364_p3596',
 ]
 
@@ -226,6 +226,17 @@ TopExamples.grid.availableDatasets['MC16a_13TeV_25ns_FS_EXOT4_ZprimeAll'].datase
 TopExamples.grid.availableDatasets['MC16a_13TeV_25ns_FS_EXOT4_ZprimeAll'].datasets += TopExamples.grid.availableDatasets['MC16a_13TeV_25ns_FS_EXOT4_Zprime4000'].datasets
 TopExamples.grid.availableDatasets['MC16a_13TeV_25ns_FS_EXOT4_ZprimeAll'].datasets += TopExamples.grid.availableDatasets['MC16a_13TeV_25ns_FS_EXOT4_Zprime5000'].datasets
 
+TopExamples.grid.Add("MC16a_13TeV_25ns_EXOT4_HVT1000").datasets = [
+'mc16_13TeV.310493.MadGraphPythia8EvtGen_A14NNPDF23LO_HVT_Agv1_Vztt_ljet_m1000.deriv.DAOD_EXOT4.e6916_s3126_r9364_p3654',
+]
+
+opExamples.grid.Add("MC16a_13TeV_25ns_EXOT4_HVT4000").datasets = [
+'mc16_13TeV.310494.MadGraphPythia8EvtGen_A14NNPDF23LO_HVT_Agv1_Vztt_ljet_m4000.deriv.DAOD_EXOT4.e6916_s3126_r9364_p3654',
+]
+
+opExamples.grid.Add("MC16a_13TeV_25ns_EXOT4_HVT8000").datasets = [
+'mc16_13TeV.310495.MadGraphPythia8EvtGen_A14NNPDF23LO_HVT_Agv1_Vztt_ljet_m8000.deriv.DAOD_EXOT4.e6916_s3126_r9364_p3654',
+]
 
 TopExamples.grid.Add("MC16a_13TeV_25ns_EXOT4_HVTcombSamples").datasets = [
 #'mc16_13TeV.302136.MadGraphPythia8EvtGen_A14NNPDF23LO_HVT_Agv1_VzWW_lvqq_m3000.deriv.DAOD_EXOT4.e4069_s3126_r10201_p3652',
