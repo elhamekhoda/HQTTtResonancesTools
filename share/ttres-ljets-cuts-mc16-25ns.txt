@@ -33,6 +33,11 @@ PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_2
 #PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
 #PRWLumiCalcFiles GoodRunsLists/data18_13TeV/20180924/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-001.root
 
+# MC16a, MC16d and MC16e configuration to compare (2015+2016+2017+2018) data
+#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root PRW_ExotComb_mc16a.root  PRW_ExotComb_mc16d.root  PRW_ExotComb_mc16e.root
+#PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
+#PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root GoodRunsLists/data18_13TeV/20180924/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-001.root
+
 ######################################################################################################
 
 
@@ -139,6 +144,9 @@ SUB period_2017
 RUN_NUMBER >= 325713
 RUN_NUMBER <= 340453
 
+SUB period_2018
+RUN_NUMBER >= 348885
+
 ########################
 ### offline cuts for reco-level selections
 ########################
@@ -209,6 +217,15 @@ TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_
 . boosted_common
 SAVE
 
+SELECTION bejets_2018
+. BASIC
+. period_2018
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+. single_el
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+. boosted_common
+SAVE
+
 ########################
 ### resolved e+jets selections
 ########################
@@ -234,6 +251,15 @@ SAVE
 SELECTION rejets_2017
 . BASIC
 . period_2017
+TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+. single_el
+TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+. resolved_common
+SAVE
+
+SELECTION rejets_2018
+. BASIC
+. period_2018
 TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
 . single_el
 TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
@@ -271,6 +297,15 @@ TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
 . boosted_common
 SAVE
 
+SELECTION bmujets_2018
+. BASIC
+. period_2018
+TRIGDEC HLT_mu26_ivarmedium HLT_mu50 
+. single_mu
+TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+. boosted_common
+SAVE
+
 ########################
 ### resolved mu+jets selections
 ########################
@@ -296,6 +331,15 @@ SAVE
 SELECTION rmujets_2017
 . BASIC
 . period_2017
+TRIGDEC HLT_mu26_ivarmedium HLT_mu50 
+. single_mu
+TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+. resolved_common
+SAVE
+
+SELECTION rmujets_2018
+. BASIC
+. period_2018
 TRIGDEC HLT_mu26_ivarmedium HLT_mu50 
 . single_mu
 TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
