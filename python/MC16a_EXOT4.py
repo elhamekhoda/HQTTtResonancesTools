@@ -230,16 +230,16 @@ TopExamples.grid.Add("MC16a_13TeV_25ns_EXOT4_HVT1000").datasets = [
 'mc16_13TeV.310493.MadGraphPythia8EvtGen_A14NNPDF23LO_HVT_Agv1_Vztt_ljet_m1000.deriv.DAOD_EXOT4.e6916_s3126_r9364_p3654',
 ]
 
-opExamples.grid.Add("MC16a_13TeV_25ns_EXOT4_HVT4000").datasets = [
+TopExamples.grid.Add("MC16a_13TeV_25ns_EXOT4_HVT4000").datasets = [
 'mc16_13TeV.310494.MadGraphPythia8EvtGen_A14NNPDF23LO_HVT_Agv1_Vztt_ljet_m4000.deriv.DAOD_EXOT4.e6916_s3126_r9364_p3654',
 ]
 
-opExamples.grid.Add("MC16a_13TeV_25ns_EXOT4_HVT8000").datasets = [
+TopExamples.grid.Add("MC16a_13TeV_25ns_EXOT4_HVT8000").datasets = [
 'mc16_13TeV.310495.MadGraphPythia8EvtGen_A14NNPDF23LO_HVT_Agv1_Vztt_ljet_m8000.deriv.DAOD_EXOT4.e6916_s3126_r9364_p3654',
 ]
 
 TopExamples.grid.Add("MC16a_EXOT4_combination").datasets = [
-'mc16_13TeV.301826.Pythia8EvtGen_A14NNPDF23LO_Wprime_qq_3000.deriv.DAOD_EXOT4.e4446_a875_r9364_p3652',
+#'mc16_13TeV.301826.Pythia8EvtGen_A14NNPDF23LO_Wprime_qq_3000.deriv.DAOD_EXOT4.e4446_a875_r9364_p3652',
 'mc16_13TeV.302719.MadGraphPythia8EvtGen_A14NNPDF23LO_WpR_tblep_M2000.deriv.DAOD_EXOT4.e4200_a875_r9364_p3652',
 'mc16_13TeV.302482.ProtosLHEFPythia8EvtGen_A14NNPDF23LO_TTS_M1400.deriv.DAOD_EXOT4.e4112_s3126_r9364_p3652',
 'mc16_13TeV.306136.MadGraphPythia8EvtGen_A14NNPDF23LO_WpR_tbhad_M2000.deriv.DAOD_EXOT4.e5354_s3126_r9364_p3652',

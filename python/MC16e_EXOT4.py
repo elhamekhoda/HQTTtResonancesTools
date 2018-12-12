@@ -1,3 +1,6 @@
+import TopExamples.grid
+
+
 TopExamples.grid.Add("MC16e_EXOT4_combination").datasets = [
 'mc16_13TeV.301216.Pythia8EvtGen_A14NNPDF23LO_Zprime_NoInt_ee_E6Chi3000.deriv.DAOD_EXOT4.e3795_s3126_r10724_p3652',
 'mc16_13TeV.301221.Pythia8EvtGen_A14NNPDF23LO_Zprime_NoInt_mumu_E6Chi3000.deriv.DAOD_EXOT4.e3990_e5984_s3126_r10724_r10726_p3652',
