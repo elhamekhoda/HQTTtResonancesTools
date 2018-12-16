@@ -110,7 +110,9 @@ DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSher
 
 TtresRunHTT False
 TtresSavePartons True
-TtresrunEWK False
+# Note that turning `TtresrunEWK` on when running ttbar samples is necessary in order to apply EWKCorrection in the later stage.
+# However, it may increase the running time significantly when running non-ttbar samples. Therefore, it must be only turned OFF with caution.
+TtresrunEWK True 
 isTOPQ False
 fakeLeptonSel False
 isSherpaW True
