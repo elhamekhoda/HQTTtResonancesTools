@@ -293,17 +293,17 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_ljet_good_dnn_ttres0l2b, "ljet_good_dnn_ttres0l2b");
         }
         //track jet b-tagging variables
-        systematicTree->makeOutputVariable(m_tjet_mv2c10mu,  "tjet_mv2c10mu");
-        systematicTree->makeOutputVariable(m_tjet_mv2c10rnn,  "tjet_mv2c10rnn");
+        systematicTree->makeOutputVariable(m_tjet_mv2c10rmu,  "tjet_mv2c10rmu");
+        systematicTree->makeOutputVariable(m_tjet_mv2c10r,  "tjet_mv2c10r");
         systematicTree->makeOutputVariable(m_tjet_dl1_pu,  "tjet_dl1_pu");
         systematicTree->makeOutputVariable(m_tjet_dl1_pb,  "tjet_dl1_pb");
         systematicTree->makeOutputVariable(m_tjet_dl1_pc,  "tjet_dl1_pc");
-        systematicTree->makeOutputVariable(m_tjet_dl1mu_pu,  "tjet_dl1mu_pu");
-        systematicTree->makeOutputVariable(m_tjet_dl1mu_pb,  "tjet_dl1mu_pb");
-        systematicTree->makeOutputVariable(m_tjet_dl1mu_pc,  "tjet_dl1mu_pc");
-        systematicTree->makeOutputVariable(m_tjet_dl1rnn_pu,  "tjet_dl1rnn_pu");
-        systematicTree->makeOutputVariable(m_tjet_dl1rnn_pb,  "tjet_dl1rnn_pb");
-        systematicTree->makeOutputVariable(m_tjet_dl1rnn_pc,  "tjet_dl1rnn_pc");
+        systematicTree->makeOutputVariable(m_tjet_dl1rmu_pu,  "tjet_dl1rmu_pu");
+        systematicTree->makeOutputVariable(m_tjet_dl1rmu_pb,  "tjet_dl1rmu_pb");
+        systematicTree->makeOutputVariable(m_tjet_dl1rmu_pc,  "tjet_dl1rmu_pc");
+        systematicTree->makeOutputVariable(m_tjet_dl1r_pu,  "tjet_dl1r_pu");
+        systematicTree->makeOutputVariable(m_tjet_dl1r_pb,  "tjet_dl1r_pb");
+        systematicTree->makeOutputVariable(m_tjet_dl1r_pc,  "tjet_dl1r_pc");
 
 
         // book large-R calo jet trackjet b-tagging information
@@ -1241,17 +1241,17 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     }
 
 
-    m_tjet_mv2c10mu.resize(event.m_trackJets.size());
-    m_tjet_mv2c10rnn.resize(event.m_trackJets.size());
+    m_tjet_mv2c10rmu.resize(event.m_trackJets.size());
+    m_tjet_mv2c10r.resize(event.m_trackJets.size());
     m_tjet_dl1_pu.resize(event.m_trackJets.size());
     m_tjet_dl1_pb.resize(event.m_trackJets.size());
     m_tjet_dl1_pc.resize(event.m_trackJets.size());
-    m_tjet_dl1mu_pu.resize(event.m_trackJets.size());
-    m_tjet_dl1mu_pb.resize(event.m_trackJets.size());
-    m_tjet_dl1mu_pc.resize(event.m_trackJets.size());
-    m_tjet_dl1rnn_pu.resize(event.m_trackJets.size());
-    m_tjet_dl1rnn_pb.resize(event.m_trackJets.size());
-    m_tjet_dl1rnn_pc.resize(event.m_trackJets.size());
+    m_tjet_dl1rmu_pu.resize(event.m_trackJets.size());
+    m_tjet_dl1rmu_pb.resize(event.m_trackJets.size());
+    m_tjet_dl1rmu_pc.resize(event.m_trackJets.size());
+    m_tjet_dl1r_pu.resize(event.m_trackJets.size());
+    m_tjet_dl1r_pb.resize(event.m_trackJets.size());
+    m_tjet_dl1r_pc.resize(event.m_trackJets.size());
 
 
     i = 0;
@@ -1261,23 +1261,35 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         if (jetPtr->pt() > 10e3 && std::fabs(jetPtr->eta()) < 2.5 && jetPtr->numConstituents() >= 2) {
             const xAOD::BTagging* btag(nullptr);
             btag = jetPtr->btagging();
+
+            m_tjet_mv2c10r[i] = -999;
+            m_tjet_mv2c10rmu[i] = -999;
+
             double mvx = -999;
-
-
             if (btag) btag->MVx_discriminant("MV2c10mu", mvx);
-            m_tjet_mv2c10mu[i] = mvx;
+            m_tjet_mv2c10rmu[i] = mvx;
             mvx = -999;
-            if (btag) btag->MVx_discriminant("MV2c10rnn", mvx);
-            m_tjet_mv2c10rnn[i] = mvx;
+            if (btag) btag->MVx_discriminant("MV2c10r", mvx);
+            m_tjet_mv2c10r[i] = mvx;
+
+            m_tjet_dl1_pu[i] = -999;
+            m_tjet_dl1_pc[i] = -999;
+            m_tjet_dl1_pb[i] = -999;
+            m_tjet_dl1r_pu[i] = -999;
+            m_tjet_dl1r_pc[i] = -999;
+            m_tjet_dl1r_pb[i] = -999;
+            m_tjet_dl1rmu_pu[i] = -999;
+            m_tjet_dl1rmu_pc[i] = -999;
+            m_tjet_dl1rmu_pb[i] = -999;
 
             if (btag) {
                 double pu = -999, pb = -999, pc = -999;
                 btag->pu("DL1", pu); btag->pb("DL1", pb); btag->pc("DL1", pc);
                 m_tjet_dl1_pu[i] = pu; m_tjet_dl1_pb[i] = pb; m_tjet_dl1_pc[i] = pc;
-                btag->pu("DL1mu", pu); btag->pb("DL1mu", pb); btag->pc("DL1mu", pc);
-                m_tjet_dl1mu_pu[i] = pu; m_tjet_dl1mu_pb[i] = pb; m_tjet_dl1mu_pc[i] = pc;
-                btag->pu("DL1rnn", pu); btag->pb("DL1rnn", pb); btag->pc("DL1rnn", pc);
-                m_tjet_dl1rnn_pu[i] = pu; m_tjet_dl1rnn_pb[i] = pb; m_tjet_dl1rnn_pc[i] = pc;
+                btag->pu("DL1rmu", pu); btag->pb("DL1rmu", pb); btag->pc("DL1rmu", pc);
+                m_tjet_dl1rmu_pu[i] = pu; m_tjet_dl1rmu_pb[i] = pb; m_tjet_dl1rmu_pc[i] = pc;
+                btag->pu("DL1r", pu); btag->pb("DL1r", pb); btag->pc("DL1r", pc);
+                m_tjet_dl1r_pu[i] = pu; m_tjet_dl1r_pb[i] = pb; m_tjet_dl1r_pc[i] = pc;
                 //std::cout << "dl1=" << m_tjet_dl1_pu[i] << std::endl;
             }
             ++i;
@@ -1321,7 +1333,6 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         int i = 0;
         int top_cands = 0;
         int top_cands_masswindow = 0;
-
         int n_CA15 = 0;
 
         i = 0; // restart counter
