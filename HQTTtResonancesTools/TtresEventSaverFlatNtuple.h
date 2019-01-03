@@ -179,40 +179,6 @@ namespace top {
       std::unique_ptr<JSSWTopTaggerBDT> m_bdtTopTagger80;//BDT top tagger 80%
       std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTagger80;//DNN top tagger 80%
       std::unique_ptr<TopoclusterTopTagger> m_topoTopTagger80;//Topo Cluster top tagger 80%
- /*   
-      m_smoothedTopTaggerMT80 = nullptr;m_smoothedTopTaggerMT50 = nullptr;
-      m_smoothedTopTaggerTS80 = nullptr;m_smoothedTopTaggerTS50 = nullptr;
-      m_smoothedTopTaggerQT80 = nullptr;m_smoothedTopTaggerQT50 = nullptr;
-      m_bdtTopTagger80 = nullptr;m_dnnTopTagger80 = nullptr;
-cd ../
-      m_smoothedTopTaggerMT80 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerMT80" ) );
-      m_smoothedTopTaggerMT50 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerMT50" ) );
-      m_smoothedTopTaggerTS80 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerTS80" ) );
-      m_smoothedTopTaggerTS50 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerTS50" ) );
-      m_smoothedTopTaggerQT80 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerQT80" ) );
-      m_smoothedTopTaggerQT50 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "SmoothedTopTaggerQT50" ) );
-      m_bdtTopTagger80 = std::unique_ptr<JSSWTopTaggerBDT>( new JSSWTopTaggerBDT( "JSSWTopTaggerBDT80" ) );
-      m_dnnTopTagger80 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "JSSWTopTaggerDNN80" ) );
-      m_topoTopTagger = std::unique_ptr<TopoclusterTopTagger>( new TopoclusterTopTagger( "TopoclusterTopTagger" ) );
-      top::check(m_smoothedTopTaggerMT80->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_MassTau32FixedSignalEfficiency80_MC15c_20161209.dat"),"Failed to set property for ConfigFile");
-      top::check(m_smoothedTopTaggerMT50->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_MassTau32FixedSignalEfficiency50_MC15c_20161209.dat"),"Failed to set property for ConfigFile");
-      top::check(m_smoothedTopTaggerTS80->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_Tau32Split23FixedSignalEfficiency80_MC15c_20161209.dat"),"Failed to set property for ConfigFile");
-      top::check(m_smoothedTopTaggerTS50->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_Tau32Split23FixedSignalEfficiency50_MC15c_20161209.dat"),"Failed to set property for ConfigFile");
-      top::check(m_smoothedTopTaggerQT80->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_QwTau32FixedSignalEfficiency80_MC15c_20161209.dat"),"Failed to set property for ConfigFile");
-      top::check(m_smoothedTopTaggerQT50->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_QwTau32FixedSignalEfficiency50_MC15c_20161209.dat"),"Failed to set property for ConfigFile");
-      top::check(m_bdtTopTagger80->setProperty( "ConfigFile",   "JSSWTopTaggerBDT/JSSBDTTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup80Eff.dat"),"Failed to set property for ConfigFile");
-      top::check(m_dnnTopTagger80->setProperty( "ConfigFile",   "JSSWTopTaggerDNN/JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup80Eff.dat"),"Failed to set property for ConfigFile");
-      top::check(m_topoTopTagger->setProperty( "ConfigFile",   "TopoclusterTopTagger/TopoclusterTopTagger_AntiKt10LCTopoTrimmed_TopQuark_MC15c_20170511_NOTFORANALYSIS.dat"),"Failed to set property for ConfigFile");
-      top::check(m_smoothedTopTaggerMT80->initialize(),"Initializing failed");
-      top::check(m_smoothedTopTaggerMT50->initialize(),"Initializing failed");
-      top::check(m_smoothedTopTaggerTS80->initialize(),"Initializing failed");
-      top::check(m_smoothedTopTaggerTS50->initialize(),"Initializing failed");
-      top::check(m_smoothedTopTaggerQT80->initialize(),"Initializing failed");
-      top::check(m_smoothedTopTaggerQT50->initialize(),"Initializing failed");
-      top::check(m_bdtTopTagger80->initialize(),"Initializing failed");
-      top::check(m_dnnTopTagger80->initialize(),"Initializing failed");
-      top::check(m_topoTopTagger->initialize(),"Initializing failed");
-*/
 
       std::vector<float> m_part_ljet_tau32;
       std::vector<float> m_part_ljet_tau32_wta;
@@ -262,25 +228,25 @@ cd ../
 
       int HTT_masswindow_n;
       int HTT_n;
-      std::vector<TLorentzVector> TLorentzHTT;           
+      std::vector<TLorentzVector> TLorentzHTT;
 
-      std::vector<float> HTT_pt;           
-      std::vector<float> HTT_m;           
-      std::vector<float> HTT_eta;           
-      std::vector<float> HTT_phi;           
+      std::vector<float> HTT_pt;
+      std::vector<float> HTT_m;
+      std::vector<float> HTT_eta;
+      std::vector<float> HTT_phi;
       
-      std::vector<float> HTT_m23m123;           
-      std::vector<float> HTT_atan1312;           
+      std::vector<float> HTT_m23m123;
+      std::vector<float> HTT_atan1312;
       
       std::vector<float> HTT_tt_m;
-      std::vector<float> HTT_tt_pt;      
+      std::vector<float> HTT_tt_pt;
 
       int CA15_n;
       std::vector<float> CA15_pt;
       std::vector<float> CA15_eta;
       std::vector<float> CA15_phi;
-      std::vector<float> CA15_m;      
-      std::vector<TLorentzVector> TLorentzCA15;           
+      std::vector<float> CA15_m;
+      std::vector<TLorentzVector> TLorentzCA15;
       std::vector<int> CA15_trk_bjets_n;
 
       // initial state inofrmation for EWK corr
@@ -316,17 +282,17 @@ cd ../
       std::vector<int> m_tjet_numConstituents;
       std::vector<int> m_tjet_label;
 
-      std::vector<float> m_tjet_mv2c10mu;
-      std::vector<float> m_tjet_mv2c10rnn;
+      std::vector<float> m_tjet_mv2c10rmu;
+      std::vector<float> m_tjet_mv2c10r;
       std::vector<float> m_tjet_dl1_pu;
       std::vector<float> m_tjet_dl1_pb;
       std::vector<float> m_tjet_dl1_pc;
-      std::vector<float> m_tjet_dl1mu_pu;
-      std::vector<float> m_tjet_dl1mu_pb;
-      std::vector<float> m_tjet_dl1mu_pc;
-      std::vector<float> m_tjet_dl1rnn_pu;
-      std::vector<float> m_tjet_dl1rnn_pb;
-      std::vector<float> m_tjet_dl1rnn_pc;
+      std::vector<float> m_tjet_dl1rmu_pu;
+      std::vector<float> m_tjet_dl1rmu_pb;
+      std::vector<float> m_tjet_dl1rmu_pc;
+      std::vector<float> m_tjet_dl1r_pu;
+      std::vector<float> m_tjet_dl1r_pb;
+      std::vector<float> m_tjet_dl1r_pc;
 
 
       std::vector<float> m_tjet_bTagSF_70;
@@ -563,13 +529,13 @@ cd ../
       float m_MA_W_from_tbar_phi;
       float m_MA_W_from_tbar_m;
       float m_MA_W_from_tbar_Njets;
-      	    
+             
       float m_MA_t_pt;
       float m_MA_t_eta;
       float m_MA_t_phi;
       float m_MA_t_m;
       float m_MA_t_Njets;
-      	    
+             
       float m_MA_tFJ_pt;
       float m_MA_tFJ_eta;
       float m_MA_tFJ_phi;
@@ -607,7 +573,7 @@ cd ../
       int   m_MA_bh_idx;
       float m_MA_bh_dr;
       float m_MA_bh_tdr; 
-	        
+           
       float m_MA_bl_pt;
       float m_MA_bl_eta;
       float m_MA_bl_phi;
@@ -639,7 +605,7 @@ cd ../
       int   m_MA_w2h_idx;
       float m_MA_w2h_dr;
       float m_MA_w2h_tdr; 
-	   
+      
       float m_MA_wl_pt;
       float m_MA_wl_eta;
       float m_MA_wl_phi;
