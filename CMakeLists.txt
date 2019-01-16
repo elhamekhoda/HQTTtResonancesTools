@@ -22,6 +22,7 @@ atlas_depends_on_subdirs( PUBLIC
                           TopPartons
                           TopEventReconstructionTools
                           TtResonancesTools
+                          ZprimeRWGT
                           PhysicsAnalysis/JetTagging/JetTagPerformanceCalibration/xAODBTaggingEfficiency
                           BoostedJetTaggers 
                           PhysicsAnalysis/MuonID/MuonSelectorTools/MuonSelectorTools/MuonSelectorTools
@@ -32,26 +33,40 @@ atlas_depends_on_subdirs( PUBLIC
 # This package uses ROOT:
 find_package( ROOT REQUIRED COMPONENTS Core Gpad Tree Hist RIO MathCore Graf )
 
-
 # Custom definitions needed for this package:
 add_definitions( -g )
 
+# Optinal Libraries
+list(APPEND OPT_LIBRARIES)
+
+# Configurable Options
 option(ENABLE_LJETSUBSTRUCTURE_DEBUG "This enables jet substructures debug outputs" OFF)
 option(ENABLE_BTAG_DEBUG "This enables b-tagging debug outputs" OFF)
 
+atlas_is_package_selected(ZprimeRWGT ENABLE_ZPRIMERWGT_DEFAULT)
+option(ENABLE_ZPRIMERWGT "This enables SSM Z' to HVT Z' reweighting" ${ENABLE_ZPRIMERWGT_DEFAULT})
+
 string(ASCII 27 ESC)
 if (ENABLE_LJETSUBSTRUCTURE_DEBUG)
-  message(WARNING "${ESC}[36;1mEnables jet substructure debug variables${ESC}[m")
+  message(STATUS "${ESC}[36;1mEnables jet substructure debug variables${ESC}[m")
   add_definitions(-D ENABLE_LJETSUBSTRUCTURE_DEBUG)
 else()
-  message(WARNING "${ESC}[33;1mDisables jet substructure debug variables${ESC}[m")
+  message(STATUS "${ESC}[33;1mDisables jet substructure debug variables${ESC}[m")
 endif()
 
 if (ENABLE_BTAG_DEBUG)
-  message(WARNING "${ESC}[36;1mEnables b-tagging debug variables${ESC}[m")
+  message(STATUS "${ESC}[36;1mEnables b-tagging debug variables${ESC}[m")
   add_definitions(-D ENABLE_BTAG_DEBUG)
 else()
-  message(WARNING "${ESC}[33;1mDisables b-tagging debug variables${ESC}[m")
+  message(STATUS "${ESC}[33;1mDisables b-tagging debug variables${ESC}[m")
+endif()
+
+if (ENABLE_ZPRIMERWGT)
+  message(STATUS "${ESC}[36;1mEnables SSM Z' to HVT Z' reweighting${ESC}[m")
+  add_definitions(-D ENABLE_ZPRIMERWGT)
+  list(APPEND OPT_LIBRARIES ZprimeRWGT)
+else()
+  message(STATUS "${ESC}[33;1mDisables SSM Z' to HVT Z' reweighting${ESC}[m")
 endif()
 
 # Generate a CINT dictionary source file:
@@ -88,6 +103,7 @@ atlas_add_library( HQTTtResonancesTools Root/*.cxx Root/*.h Root/*.icc
                                   JetCalibToolsLib
                                   PathResolver
                                   ${ROOT_LIBRARIES}
+                                  ${OPT_LIBRARIES}
                    INCLUDE_DIRS ${ROOT_INCLUDE_DIRS} )
 
 # Install data files from the package:
@@ -95,4 +111,3 @@ atlas_install_data( share/* )
 
 # Install the Python modules of the package:
 atlas_install_python_modules( python/*.py )
-
