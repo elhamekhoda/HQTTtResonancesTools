@@ -282,8 +282,8 @@ namespace top {
       std::vector<int> m_tjet_numConstituents;
       std::vector<int> m_tjet_label;
 
-      std::vector<float> m_tjet_mv2c10rmu;
-      std::vector<float> m_tjet_mv2c10r;
+      std::vector<float> m_tjet_mv2rmu;
+      std::vector<float> m_tjet_mv2r;
       std::vector<float> m_tjet_dl1_pu;
       std::vector<float> m_tjet_dl1_pb;
       std::vector<float> m_tjet_dl1_pc;
