@@ -49,8 +49,11 @@ LargeJetSubstructure None
 #LargeJetCollectionName AntiKt10LCTopoJets
 #LargeJetSubstructure Trimmer
 LargeRJESJMSConfig CombMass
+# https://twiki.cern.ch/twiki/bin/viewauth/AtlasProtected/BTaggingBenchmarksRelease21
+# Note that different JetCollections may have different recommended pT thresholds
 #TrackJetCollectionName AntiKt2PV0TrackJets
 TrackJetCollectionName AntiKtVR30Rmax4Rmin02TrackJets
+TrackJetPt 7000
 
 TruthCollectionName TruthParticles
 #TruthCollectionName None
