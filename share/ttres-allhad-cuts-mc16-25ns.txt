@@ -49,7 +49,8 @@ LargeJetSubstructure None
 #LargeJetCollectionName AntiKt10LCTopoJets
 #LargeJetSubstructure Trimmer
 LargeRJESJMSConfig CombMass
-TrackJetCollectionName AntiKt2PV0TrackJets
+#TrackJetCollectionName AntiKt2PV0TrackJets
+TrackJetCollectionName AntiKtVR30Rmax4Rmin02TrackJets
 
 TruthCollectionName TruthParticles
 #TruthCollectionName None
@@ -59,7 +60,7 @@ TruthBlockInfo False
 PDFInfo False
 IsAFII False
 OutputFileNEventAutoFlush 100
-#NEvents 10000
+#NEvents 1000
 
 UseGlobalLeptonTriggerSF False
 
@@ -75,10 +76,10 @@ CalculateSF True
 Systematics Nominal
 
 #B-tagging configuration
-BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_85 DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 MV2c10:HybBEff_60 MV2c10:HybBEff_70 MV2c10:HybBEff_77 MV2c10:HybBEff_85 DL1:HybBEff_60 DL1:HybBEff_70 DL1:HybBEff_77 DL1:HybBEff_85 MV2c10:Continuous DL1:Continuous
+#BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_85 DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 MV2c10:HybBEff_60 MV2c10:HybBEff_70 MV2c10:HybBEff_77 MV2c10:HybBEff_85 DL1:HybBEff_60 DL1:HybBEff_70 DL1:HybBEff_77 DL1:HybBEff_85 MV2c10:Continuous DL1:Continuous
 
-# Different algorithms of 70% WP
-#BTaggingWP MV2c10:FixedCutBEff_70 MV2c10mu:FixedCutBEff_70 MV2c10rnn:FixedCutBEff_70 MV2c10:HybBEff_70 MV2c10mu:HybBEff_70 MV2c10rnn:HybBEff_70 DL1:FixedCutBEff_70 DL1mu:FixedCutBEff_70 DL1rnn:FixedCutBEff_70 DL1:HybBEff_70 DL1mu:HybBEff_70 DL1rnn:HybBEff_70 
+#Different algorithms of 70% WP
+BTaggingWP MV2c10:FixedCutBEff_70 MV2rmu:FixedCutBEff_70 MV2r:FixedCutBEff_70 MV2c10:HybBEff_70 MV2rmu:HybBEff_70 MV2r:HybBEff_70 DL1:FixedCutBEff_70 DL1rmu:FixedCutBEff_70 DL1r:FixedCutBEff_70 DL1:HybBEff_70 DL1rmu:HybBEff_70 DL1r:HybBEff_70
 
 JetUncertainties_NPModel GlobalReduction
 #LargeRJESUncertaintyConfig TopTagging
@@ -163,10 +164,10 @@ LARGEJETTTRESSTTMT_N 300000 >= 2
 # So, use this "NoTopTagging" and you can apply those top-taggers in the analysis without discarding interesting events
 SUB NoTopTagging 
 LJET_N 500000 >= 1
-LJET_N 300000 >= 2
-LARGEJETTTRES0L0BDNNTOPTAG_N 300000 >= 0
-LARGEJETTTRES0L1BDNNTOPTAG_N 300000 >= 0
-LARGEJETTTRES0L2BDNNTOPTAG_N 300000 >= 0
+LJET_N 350000 >= 2
+LARGEJETTTRES0L0BDNNTOPTAG_N 350000 >= 0
+LARGEJETTTRES0L1BDNNTOPTAG_N 350000 >= 0
+LARGEJETTTRES0L2BDNNTOPTAG_N 350000 >= 0
 
 ########################
 ### offline cuts for reco-level selections
