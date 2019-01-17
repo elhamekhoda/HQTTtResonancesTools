@@ -14,6 +14,20 @@ TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT7_ttbar_allhad_mttsliced").dataset
 'mc16_13TeV.410288.PhPy8EG_A14_ttbar_hdamp258p75_allhad_mtt_2000_14000.deriv.DAOD_EXOT7.e6686_s3126_r10201_p3729',
 ]
 
+#ttbar backgrounds: nonallhad inclusive
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT7_ttbar_nonallhad").datasets = [
+'mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.deriv.DAOD_EXOT7.e6337_s3126_r10201_p3729',
+]
+
+#ttbar backgrounds: nonallhad mtt sliced samples
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT7_ttbar_nonallhad_mttsliced").datasets = [
+'mc16_13TeV.410633.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad_1100_1300.deriv.DAOD_EXOT7.e6602_s3126_r10201_p3729',
+'mc16_13TeV.410634.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad_1300_1500.deriv.DAOD_EXOT7.e6602_s3126_r10201_p3729',
+'mc16_13TeV.410635.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad_1500_1700.deriv.DAOD_EXOT7.e6685_s3126_r10201_p3729',
+'mc16_13TeV.410636.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad_1700_2000.deriv.DAOD_EXOT7.e6685_s3126_r10201_p3729',
+'mc16_13TeV.410637.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad_2000_14000.deriv.DAOD_EXOT7.e6685_s3126_r10201_p3729',
+]
+
 #Single top samples
 TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT7_singletop").datasets = [
 
