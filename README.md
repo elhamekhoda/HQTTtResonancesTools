@@ -4,7 +4,7 @@ This Tool is developed to fulfill the purpose of the exotics ttbar resonances se
 
 ## Current Version:
 
-**AanalysisTop, 21.2.53** 
+**AanalysisTop, 21.2.58** 
 
 ### Latest release based updates
 * Do not use AnalysisTop release 21.2.30 - 21.2.33. There are different bugs there.

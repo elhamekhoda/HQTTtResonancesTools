@@ -298,17 +298,17 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_ljet_good_dnn_ttres0l2b, "ljet_good_dnn_ttres0l2b");
         }
         //track jet b-tagging variables
-        systematicTree->makeOutputVariable(m_tjet_mv2c10rmu,  "tjet_mv2c10rmu");
-        systematicTree->makeOutputVariable(m_tjet_mv2c10r,  "tjet_mv2c10r");
-        systematicTree->makeOutputVariable(m_tjet_dl1_pu,  "tjet_dl1_pu");
-        systematicTree->makeOutputVariable(m_tjet_dl1_pb,  "tjet_dl1_pb");
-        systematicTree->makeOutputVariable(m_tjet_dl1_pc,  "tjet_dl1_pc");
-        systematicTree->makeOutputVariable(m_tjet_dl1rmu_pu,  "tjet_dl1rmu_pu");
-        systematicTree->makeOutputVariable(m_tjet_dl1rmu_pb,  "tjet_dl1rmu_pb");
-        systematicTree->makeOutputVariable(m_tjet_dl1rmu_pc,  "tjet_dl1rmu_pc");
-        systematicTree->makeOutputVariable(m_tjet_dl1r_pu,  "tjet_dl1r_pu");
-        systematicTree->makeOutputVariable(m_tjet_dl1r_pb,  "tjet_dl1r_pb");
-        systematicTree->makeOutputVariable(m_tjet_dl1r_pc,  "tjet_dl1r_pc");
+        systematicTree->makeOutputVariable(m_tjet_mv2rmu,  "tjet_MV2rmu");
+        systematicTree->makeOutputVariable(m_tjet_mv2r,  "tjet_MV2r");
+        systematicTree->makeOutputVariable(m_tjet_dl1_pu,  "tjet_DL1_pu");
+        systematicTree->makeOutputVariable(m_tjet_dl1_pb,  "tjet_DL1_pb");
+        systematicTree->makeOutputVariable(m_tjet_dl1_pc,  "tjet_DL1_pc");
+        systematicTree->makeOutputVariable(m_tjet_dl1rmu_pu,  "tjet_DL1rmu_pu");
+        systematicTree->makeOutputVariable(m_tjet_dl1rmu_pb,  "tjet_DL1rmu_pb");
+        systematicTree->makeOutputVariable(m_tjet_dl1rmu_pc,  "tjet_DL1rmu_pc");
+        systematicTree->makeOutputVariable(m_tjet_dl1r_pu,  "tjet_DL1r_pu");
+        systematicTree->makeOutputVariable(m_tjet_dl1r_pb,  "tjet_DL1r_pb");
+        systematicTree->makeOutputVariable(m_tjet_dl1r_pc,  "tjet_DL1r_pc");
 
 
         // book large-R calo jet trackjet b-tagging information
@@ -1246,8 +1246,8 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     }
 
 
-    m_tjet_mv2c10rmu.resize(event.m_trackJets.size());
-    m_tjet_mv2c10r.resize(event.m_trackJets.size());
+    m_tjet_mv2rmu.resize(event.m_trackJets.size());
+    m_tjet_mv2r.resize(event.m_trackJets.size());
     m_tjet_dl1_pu.resize(event.m_trackJets.size());
     m_tjet_dl1_pb.resize(event.m_trackJets.size());
     m_tjet_dl1_pc.resize(event.m_trackJets.size());
@@ -1267,15 +1267,15 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             const xAOD::BTagging* btag(nullptr);
             btag = jetPtr->btagging();
 
-            m_tjet_mv2c10r[i] = -999;
-            m_tjet_mv2c10rmu[i] = -999;
+            m_tjet_mv2r[i] = -999;
+            m_tjet_mv2rmu[i] = -999;
 
             double mvx = -999;
-            if (btag) btag->MVx_discriminant("MV2c10mu", mvx);
-            m_tjet_mv2c10rmu[i] = mvx;
+            if (btag) btag->MVx_discriminant("MV2rmu", mvx);
+            m_tjet_mv2rmu[i] = mvx;
             mvx = -999;
-            if (btag) btag->MVx_discriminant("MV2c10r", mvx);
-            m_tjet_mv2c10r[i] = mvx;
+            if (btag) btag->MVx_discriminant("MV2r", mvx);
+            m_tjet_mv2r[i] = mvx;
 
             m_tjet_dl1_pu[i] = -999;
             m_tjet_dl1_pc[i] = -999;
