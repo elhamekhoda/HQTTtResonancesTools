@@ -347,17 +347,19 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_el_z0,      "el_z0");
         //systematicTree->makeOutputVariable(m_el_d0sig,   "el_d0sig");
         systematicTree->makeOutputVariable(m_el_z0sig,   "el_z0sig");
-        //systematicTree->makeOutputVariable(m_el_ptvarcone20_TightTTVA_pt1000, "el_ptvarcone20_TightTTVA_pt1000");
-        //systematicTree->makeOutputVariable(m_el_ptcone20_ttres, "el_ptcone20_ttres");
-        //systematicTree->makeOutputVariable(m_el_ptvarcone20_ttres, "el_ptvarcone20_ttres");
+        systematicTree->makeOutputVariable(m_el_ptvarcone20_TightTTVA_pt1000, "el_ptvarcone20_TightTTVA_pt1000");
+        systematicTree->makeOutputVariable(m_el_ptcone20_TightTTVA_pt1000, "el_ptcone20_TightTTVA_pt1000");
+        systematicTree->makeOutputVariable(m_el_ptcone20_ttres, "el_ptcone20_ttres");
+        systematicTree->makeOutputVariable(m_el_ptvarcone20_ttres, "el_ptvarcone20_ttres");
 
         systematicTree->makeOutputVariable(m_mu_d0,      "mu_d0");
         systematicTree->makeOutputVariable(m_mu_z0,      "mu_z0");
         //systematicTree->makeOutputVariable(m_mu_d0sig,   "mu_d0sig");
         systematicTree->makeOutputVariable(m_mu_z0sig,   "mu_z0sig");
-        //systematicTree->makeOutputVariable(m_mu_ptvarcone30_TightTTVA_pt1000, "mu_ptvarcone30_TightTTVA_pt1000");
-        //systematicTree->makeOutputVariable(m_mu_ptcone20_ttres, "mu_ptcone20_ttres");
-        //systematicTree->makeOutputVariable(m_mu_ptvarcone30_ttres, "mu_ptvarcone30_ttres");
+        systematicTree->makeOutputVariable(m_mu_ptvarcone30_TightTTVA_pt1000, "mu_ptvarcone30_TightTTVA_pt1000");
+        systematicTree->makeOutputVariable(m_mu_ptcone20_TightTTVA_pt1000, "mu_ptcone20_TightTTVA_pt1000");
+        systematicTree->makeOutputVariable(m_mu_ptcone20_ttres, "mu_ptcone20_ttres");
+        systematicTree->makeOutputVariable(m_mu_ptvarcone30_ttres, "mu_ptvarcone30_ttres");
 
         systematicTree->makeOutputVariable(m_truthparticle_type,      "truthparticle_type");
         systematicTree->makeOutputVariable(m_truthparticle_origin,      "truthparticle_origin");
@@ -894,50 +896,52 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     //electrons
     m_el_d0.resize(event.m_electrons.size());
     m_el_z0.resize(event.m_electrons.size());
-    //m_el_d0sig.resize(event.m_electrons.size());
+    m_el_d0sig.resize(event.m_electrons.size());
     m_el_z0sig.resize(event.m_electrons.size());
 
     // electron Isolation variables:
-    //m_el_ptvarcone20_TightTTVA_pt1000.resize(event.m_electrons.size());
-    //m_el_ptcone20_ttres.resize(event.m_electrons.size());
-    //m_el_ptvarcone20_ttres.resize(event.m_electrons.size());
+    m_el_ptvarcone20_TightTTVA_pt1000.resize(event.m_electrons.size());
+    m_el_ptcone20_TightTTVA_pt1000.resize(event.m_electrons.size());
+    m_el_ptcone20_ttres.resize(event.m_electrons.size());
+    m_el_ptvarcone20_ttres.resize(event.m_electrons.size());
 
 
     unsigned int k(0);
     for (const auto* const elPtr : event.m_electrons) {//loop on electrons
         // access Electron TrackParticle for d0/z0 information if avaialable
-        //m_el_d0sig[k] = 0.;
+        m_el_d0sig[k] = 0.;
         const xAOD::TrackParticle* eltrack = elPtr->trackParticle();
         m_el_d0[k] = eltrack->d0();
         // z0 is expressed internally wrt tracks defining vertex (=beamspot)
         // subtract off primary vtx z to get z0 wrt primary vertex
         m_el_z0[k] = eltrack->z0() + eltrack->vz() - m_vtxz;
         const xAOD::ParametersCovMatrix_t elcov = eltrack->definingParametersCovMatrix();
-        //m_el_d0sig[k] = m_el_d0[k]/sqrt(elcov(0,0));
+        m_el_d0sig[k] = m_el_d0[k]/sqrt(elcov(0,0));
         m_el_z0sig[k] = m_el_z0[k] / sqrt(elcov(1, 1));
 
-        /* // commenting for now, since some of the samples do not have the new isolation vars : Elham///Nov14, 2018
+        // commenting for now, since some of the samples do not have the new isolation vars : Elham///Nov14, 2018
         if (elPtr->isAvailable<float>("ptvarcone20_TightTTVA_pt1000")) {
             //ATH_MSG_INFO("\e[1;34m(ptvarcone20_TightTTVA_pt1000)" << elPtr->auxdata<float>("ptvarcone20_TightTTVA_pt1000")<< "   pT   " << elPtr->pt() << "\e[0m");
             //ATH_MSG_INFO("\e[1;33m(ptvarcone30_TightTTVA_pt1000)" << elPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000")<< "   pT   " << elPtr->pt() << "\e[0m");
             m_el_ptvarcone20_TightTTVA_pt1000[k] = elPtr->auxdata<float>("ptvarcone20_TightTTVA_pt1000");
+            m_el_ptcone20_TightTTVA_pt1000[k] = elPtr->auxdata<float>("ptcone20_TightTTVA_pt1000");
         } //if loop
         if (elPtr->auxdata<float>("ptvarcone20")){
             m_el_ptvarcone20_ttres[k] =  elPtr->auxdata<float>("ptvarcone20");
         }
         elPtr->isolationValue( m_el_ptcone20_ttres[k] , xAOD::Iso::ptcone20 );
-        */
     }//for
 
     //muons
     m_mu_d0.resize(event.m_muons.size());
     m_mu_z0.resize(event.m_muons.size());
-    //m_mu_d0sig.resize(event.m_muons.size());
+    m_mu_d0sig.resize(event.m_muons.size());
     m_mu_z0sig.resize(event.m_muons.size());
     // Isolation variables
-    //m_mu_ptvarcone30_TightTTVA_pt1000.resize(event.m_muons.size());
-    //m_mu_ptcone20_ttres.resize(event.m_muons.size());
-    //m_mu_ptvarcone30_ttres.resize(event.m_muons.size());
+    m_mu_ptvarcone30_TightTTVA_pt1000.resize(event.m_muons.size());
+    m_mu_ptcone20_TightTTVA_pt1000.resize(event.m_muons.size());
+    m_mu_ptcone20_ttres.resize(event.m_muons.size());
+    m_mu_ptvarcone30_ttres.resize(event.m_muons.size());
 
 
     k = 0;
@@ -945,27 +949,27 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         //// access Muon TrackParticle for d0/z0 information if available
         m_mu_d0[k]    = 0.;
         m_mu_z0[k]    = 0.;
-        //m_mu_d0sig[k] = 0.;
+        m_mu_d0sig[k] = 0.;
         m_mu_z0sig[k] = 0.;
         const xAOD::TrackParticle* mutrack = muPtr->primaryTrackParticle();
         if (mutrack != nullptr) {
             m_mu_d0[k] = mutrack->d0();
             m_mu_z0[k] = mutrack->z0() + mutrack->vz() - m_vtxz;
             const xAOD::ParametersCovMatrix_t mucov = mutrack->definingParametersCovMatrix();
-            //m_mu_d0sig[k] = mutrack->d0()/sqrt(mucov(0,0));
+            m_mu_d0sig[k] = mutrack->d0()/sqrt(mucov(0,0));
             m_mu_z0sig[k] = m_mu_z0[k] / sqrt(mucov(1, 1));
         }
-        /* // commenting for now, since some of the samples do not have the new isolation vars : Elham///Nov14, 2018
+        // Isolation variables
         if (muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000")){
             m_mu_ptvarcone30_TightTTVA_pt1000[k] = muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000");
             //ATH_MSG_INFO("\e[1;31m(ptvarcone30_TightTTVA_pt1000)" << muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000") << "   pT   " << muPtr->pt() << "\e[0m");
-            //m_mu_ptvarcone30_HQT[k] = muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000");
+            m_mu_ptcone20_TightTTVA_pt1000[k] = muPtr->auxdata<float>("ptcone20_TightTTVA_pt1000");
         }
         muPtr->isolation( m_mu_ptcone20_ttres[k] , xAOD::Iso::ptcone20 );
         if (muPtr->auxdata<float>("ptvarcone30")){
             m_mu_ptvarcone30_ttres[k] =  muPtr->auxdata<float>("ptvarcone30");
         }
-        */
+        
     }//for
 
     // --------- truth particle info  ------- //

@@ -196,18 +196,20 @@ namespace top {
       
       std::vector<float>  m_el_d0;
       std::vector<float>  m_el_z0;
-      //std::vector<float>  m_el_d0sig;
+      std::vector<float>  m_el_d0sig;
       std::vector<float>  m_el_z0sig;
 
       std::vector<float> m_el_ptvarcone20_TightTTVA_pt1000;
+      std::vector<float> m_el_ptcone20_TightTTVA_pt1000;
       std::vector<float> m_el_ptcone20_ttres;
       std::vector<float> m_el_ptvarcone20_ttres;
 
       std::vector<float>  m_mu_d0;
       std::vector<float>  m_mu_z0;
-      //std::vector<float>  m_mu_d0sig;
-      std::vector<float>  m_mu_z0sig;
-      std::vector<float>  m_mu_ptvarcone30_TightTTVA_pt1000;
+      std::vector<float>  m_mu_d0sig;
+      std::vector<float> m_mu_z0sig;
+      std::vector<float> m_mu_ptvarcone30_TightTTVA_pt1000;
+      std::vector<float> m_mu_ptcone20_TightTTVA_pt1000;
       std::vector<float> m_mu_ptcone20_ttres;
 
       std::vector<float> m_mu_ptvarcone30_ttres;
@@ -381,25 +383,25 @@ namespace top {
       float m_MC_b_from_t_pt;
       float m_MC_b_from_t_eta;
       float m_MC_b_from_t_phi;
-      float m_MC_b_from_t_m;      
-            
+      float m_MC_b_from_t_m;
+
       float m_MC_b_from_tbar_pt;
       float m_MC_b_from_tbar_eta;
       float m_MC_b_from_tbar_phi;
       float m_MC_b_from_tbar_m;
-            
+
       float m_MC_Wdecay1_from_t_pt;
       float m_MC_Wdecay1_from_t_eta;
       float m_MC_Wdecay1_from_t_phi;
       float m_MC_Wdecay1_from_t_m;
       int   m_MC_Wdecay1_from_t_pdgId;
-            
+
       float m_MC_Wdecay2_from_t_pt;
       float m_MC_Wdecay2_from_t_eta;
       float m_MC_Wdecay2_from_t_phi;
       float m_MC_Wdecay2_from_t_m;
-      int   m_MC_Wdecay2_from_t_pdgId;      
-            
+      int   m_MC_Wdecay2_from_t_pdgId;
+
       float m_MC_W_from_t_pt;
       float m_MC_W_from_t_eta;
       float m_MC_W_from_t_phi;
@@ -409,13 +411,13 @@ namespace top {
       float m_MC_Wdecay1_from_tbar_eta;
       float m_MC_Wdecay1_from_tbar_phi;
       float m_MC_Wdecay1_from_tbar_m;
-      int   m_MC_Wdecay1_from_tbar_pdgId;     
+      int   m_MC_Wdecay1_from_tbar_pdgId;
             
       float m_MC_Wdecay2_from_tbar_pt;
       float m_MC_Wdecay2_from_tbar_eta;
       float m_MC_Wdecay2_from_tbar_phi;
       float m_MC_Wdecay2_from_tbar_m;
-      int   m_MC_Wdecay2_from_tbar_pdgId;     
+      int   m_MC_Wdecay2_from_tbar_pdgId;
             
       float m_MC_W_from_tbar_pt;
       float m_MC_W_from_tbar_eta;
