@@ -50,9 +50,7 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
     m_saveFullTruthRecord = (configValueDefault("SaveFullTruthRecord", "True") == "True") ? true : false ;
     m_runEWK              = (configValueDefault("TtresrunEWK", "False") == "True") ? true : false ;
     m_dumpToolConfigTo    = configValueDefault("DumpToolConfigTo", "False"); // A string!
-    m_ttresFHExtra        = (configValueDefault("TtresFHExtraBranches", "False") == "True") ? true : false ;
-    m_ZprimeRWGTParams    = configValueDefault("ZprimeRWGT", ""); // Leave it empty to deactivate this
-    m_doZprimeRWGT        = (m_ZprimeRWGTParams.empty()) ? false : true;
+    m_ttresFHExtra    = (configValueDefault("TtresFHExtraBranches", "False") == "True") ? true : false ;
 
     if (m_isTOPQ) {
         m_trackjetcollection = "";
@@ -124,12 +122,9 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     top::check(m_bdtTopTagger80->initialize(), "Initializing failed");
     top::check(m_dnnTopTagger80->initialize(), "Initializing failed");
     top::check(m_topoTopTagger80->initialize(), "Initializing failed");
-    
+
     if (config->isMC()) {
         std::cout << "GENERATOR:" << config->getGenerators() << std::endl;
-        #ifdef ENABLE_ZPRIMERWGT
-        if (m_doZprimeRWGT) m_zprimerwgt_tool.initialize(m_ZprimeRWGTParams);
-        #endif
         //cout<< "I am here" <<endl;
         //n_b = config->btagging_num_B_eigenvars("MV2c10","FixedCutBEff_70");
         //n_b =0;
@@ -188,7 +183,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
             for ( auto& pdf : m_PDF_eventWeights )
                 systematicTree->makeOutputVariable( pdf.second, pdf.first );
         }
-        if (m_doZprimeRWGT) systematicTree->makeOutputVariable(m_weight_rwgt, "weight_rwgt");
+
         // save lumiblock
         systematicTree->makeOutputVariable(m_lumiblock, "lumiblock");
         systematicTree->makeOutputVariable(m_npv, "npv");
@@ -2056,12 +2051,6 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             m_MC_ttbar_afterFSR_m   = topParton->auxdata<float>("MC_ttbar_afterFSR_m");
         }
 
-        #ifdef ENABLE_ZPRIMERWGT
-        TLorentzVector i1_p4, i2_p4;
-        i1_p4.SetXYZM(m_MC_i1_px, m_MC_i1_py, m_MC_i1_pz, m_MC_i1_m);
-        i2_p4.SetXYZM(m_MC_i2_px, m_MC_i2_py, m_MC_i2_pz, m_MC_i2_m);
-        m_weight_rwgt = m_zprimerwgt_tool.get_weight(m_MC_i1_pid, m_MC_i2_pid, &i1_p4, &i2_p4, &parton_t_p4, &parton_tbar_p4);
-        #endif
         TLorentzVector b_from_t_lv;
         TLorentzVector b_from_tbar_lv;
 
