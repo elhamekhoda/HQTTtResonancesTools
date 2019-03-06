@@ -94,7 +94,7 @@ ElectronIDLoose MediumLH
 MuonQuality Medium
 MuonQualityLoose Loose
 ElectronIsolation None #FixedCutTightTrackOnly  #setting up to NONE for now, FCTTO is not avaialble
-MuonIsolation FixedCutTightTrackOnly
+MuonIsolation FCTightTrackOnly #FixedCutTightTrackOnly #FixedCutTightTrackOnly is not avaialble
 ElectronIsolationLoose None
 MuonIsolationLoose None
 
@@ -180,6 +180,7 @@ SUB boosted_common
 EL_N 25000 == 0
 MU_N 25000 == 0
 JETCLEAN LooseBad
+TRACKJETCLEAN
 #turning off the top-tagging selector for now. We will do it in the NtupleAnalysis 
 #. SmoothMTTagger80 # put your large-R jet selection here!
 # Making sure at least two large-R jets in the event
