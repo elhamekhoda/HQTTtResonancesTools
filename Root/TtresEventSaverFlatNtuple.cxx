@@ -545,6 +545,25 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
             systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_m,    "MC_ttbar_afterFSR_m");
             systematicTree->makeOutputVariable(m_MC_ttbar_type, "MC_ttbar_type");
 
+            // post-FSR top or anti-top found using statusCodes
+            systematicTree->makeOutputVariable(m_MC_t_afterFSR_SC_pt, "MC_t_afterFSR_SC_pt");
+            systematicTree->makeOutputVariable(m_MC_t_afterFSR_SC_eta, "MC_t_afterFSR_SC_eta");
+            systematicTree->makeOutputVariable(m_MC_t_afterFSR_SC_phi, "MC_t_afterFSR_SC_phi");
+            systematicTree->makeOutputVariable(m_MC_t_afterFSR_SC_m, "MC_t_afterFSR_SC_m");
+
+            systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_SC_pt, "MC_tbar_afterFSR_SC_pt");
+            systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_SC_eta, "MC_tbar_afterFSR_SC_eta");
+            systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_SC_phi, "MC_tbar_afterFSR_SC_phi");
+            systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_SC_m, "MC_tbar_afterFSR_SC_m");
+
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_SC_pt, "MC_ttbar_afterFSR_SC_pt");
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_SC_eta, "MC_ttbar_afterFSR_SC_eta");
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_SC_phi, "MC_ttbar_afterFSR_SC_phi");
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_SC_m, "MC_ttbar_afterFSR_SC_m");
+
+            // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_beforeDecay_m, "MC_ttbar_afterFSR_beforeDecay_m");
+            
             //Matched jets
             systematicTree->makeOutputVariable(m_MA_b_from_t_pt,      "MA_b_from_t_pt");
             systematicTree->makeOutputVariable(m_MA_b_from_t_eta,     "MA_b_from_t_eta");
@@ -2056,6 +2075,34 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             m_MC_ttbar_afterFSR_m   = topParton->auxdata<float>("MC_ttbar_afterFSR_m");
         }
 
+        // post-FSR top or anti-top found using statusCodes
+        TLorentzVector t_after_SC, tbar_after_SC, ttbar_after_SC;
+        if (topParton->auxdata<float>("MC_t_afterFSR_SC_pt") > 0){
+            m_MC_t_afterFSR_SC_pt  = topParton->auxdata<float>("MC_t_afterFSR_SC_pt");
+            m_MC_t_afterFSR_SC_eta = topParton->auxdata<float>("MC_t_afterFSR_SC_eta");
+            m_MC_t_afterFSR_SC_phi = topParton->auxdata<float>("MC_t_afterFSR_SC_phi");
+            m_MC_t_afterFSR_SC_m   = topParton->auxdata<float>("MC_t_afterFSR_SC_m");
+            t_after_SC.SetPtEtaPhiM(m_MC_t_afterFSR_pt, m_MC_t_afterFSR_SC_eta, m_MC_t_afterFSR_SC_phi, m_MC_t_afterFSR_SC_m);
+
+            m_MC_tbar_afterFSR_SC_pt  = topParton->auxdata<float>("MC_tbar_afterFSR_SC_pt");
+            m_MC_tbar_afterFSR_SC_eta = topParton->auxdata<float>("MC_tbar_afterFSR_SC_eta");
+            m_MC_tbar_afterFSR_SC_phi = topParton->auxdata<float>("MC_tbar_afterFSR_SC_phi");
+            m_MC_tbar_afterFSR_SC_m   = topParton->auxdata<float>("MC_tbar_afterFSR_SC_m");
+            tbar_after_SC.SetPtEtaPhiM(m_MC_tbar_afterFSR_pt, m_MC_tbar_afterFSR_SC_eta, m_MC_tbar_afterFSR_SC_phi, m_MC_tbar_afterFSR_SC_m);
+
+            ttbar_after_SC = t_after_SC + tbar_after_SC;
+            m_MC_ttbar_afterFSR_SC_pt  = ttbar_after_SC.Pt();
+            m_MC_ttbar_afterFSR_SC_eta = ttbar_after_SC.Eta();
+            m_MC_ttbar_afterFSR_SC_phi = ttbar_after_SC.Phi();
+            m_MC_ttbar_afterFSR_SC_m   = ttbar_after_SC.M();
+        }
+
+        // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
+        if (topParton->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m") > 0){
+            m_MC_ttbar_afterFSR_beforeDecay_m = topParton->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m");
+        }
+        
+
         #ifdef ENABLE_ZPRIMERWGT
         TLorentzVector i1_p4, i2_p4;
         i1_p4.SetXYZM(m_MC_i1_px, m_MC_i1_py, m_MC_i1_pz, m_MC_i1_m);
@@ -3185,6 +3232,25 @@ void TtresEventSaverFlatNtuple::IniVariables() {
     m_MC_ttbar_afterFSR_eta = -5000;
     m_MC_ttbar_afterFSR_phi = -5000;
     m_MC_ttbar_afterFSR_m   = -5000;
+
+    // post-FSR top or anti-top found using statusCodes
+    m_MC_t_afterFSR_SC_pt  = -5000;;
+    m_MC_t_afterFSR_SC_eta = -5000;;
+    m_MC_t_afterFSR_SC_phi = -5000;;
+    m_MC_t_afterFSR_SC_m   = -5000;;
+
+    m_MC_tbar_afterFSR_SC_pt  = -5000;;
+    m_MC_tbar_afterFSR_SC_eta = -5000;;
+    m_MC_tbar_afterFSR_SC_phi = -5000;;
+    m_MC_tbar_afterFSR_SC_m   = -5000;;
+
+    m_MC_ttbar_afterFSR_SC_pt  = -5000;;
+    m_MC_ttbar_afterFSR_SC_eta = -5000;;
+    m_MC_ttbar_afterFSR_SC_phi = -5000;;
+    m_MC_ttbar_afterFSR_SC_m   = -5000;;
+
+    // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
+    m_MC_ttbar_afterFSR_beforeDecay_m = -5000;
 
     //Matched jets
     m_MA_b_from_t_pt = -5000;

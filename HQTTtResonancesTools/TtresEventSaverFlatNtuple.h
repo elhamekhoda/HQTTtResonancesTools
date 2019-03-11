@@ -464,7 +464,7 @@ namespace top {
       float m_MC_tbar_afterFSR_pt;
       float m_MC_tbar_afterFSR_eta;
       float m_MC_tbar_afterFSR_phi;
-      float m_MC_tbar_afterFSR_m;      
+      float m_MC_tbar_afterFSR_m;
 
       float m_MC_ttbar_beforeFSR_pt;
       float m_MC_ttbar_beforeFSR_eta;
@@ -475,6 +475,25 @@ namespace top {
       float m_MC_ttbar_afterFSR_eta; 
       float m_MC_ttbar_afterFSR_phi; 
       float m_MC_ttbar_afterFSR_m;       
+
+      // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
+      float m_MC_ttbar_afterFSR_beforeDecay_m;
+
+      // post-FSR top or anti-top found using statusCodes
+      float m_MC_t_afterFSR_SC_pt;
+      float m_MC_t_afterFSR_SC_eta;
+      float m_MC_t_afterFSR_SC_phi;
+      float m_MC_t_afterFSR_SC_m;
+      
+      float m_MC_tbar_afterFSR_SC_pt;
+      float m_MC_tbar_afterFSR_SC_eta;
+      float m_MC_tbar_afterFSR_SC_phi;
+      float m_MC_tbar_afterFSR_SC_m;
+
+      float m_MC_ttbar_afterFSR_SC_pt;
+      float m_MC_ttbar_afterFSR_SC_eta;
+      float m_MC_ttbar_afterFSR_SC_phi;
+      float m_MC_ttbar_afterFSR_SC_m;
            
       // Matched jets
       float m_MA_b_from_t_pt;
