@@ -2,7 +2,7 @@ import TopExamples.grid
 
 #ttbar backgrounds: inclusive
 TopExamples.grid.Add("MC16e_13TeV_25ns_FS_EXOT7_ttbar_allhad").datasets = [
-#'mc16_13TeV.410471.PhPy8EG_A14_ttbar_hdamp258p75_allhad.deriv.DAOD_EXOT7.e6337_s3126_r10724_p3729', # prodsysStatus: "EVENTS PARTIALLY AVAILABLE"
+'mc16_13TeV.410471.PhPy8EG_A14_ttbar_hdamp258p75_allhad.deriv.DAOD_EXOT7.e6337_s3126_r10724_p3729', # prodsysStatus: "EVENTS PARTIALLY AVAILABLE"
 ]
 
 #ttbar backgrounds: mtt sliced

@@ -118,7 +118,7 @@ def preselect(attr):
 
 def get_grls(*grls):
     if grls == ('default',):
-        return ['GoodRunsLists/data18_13TeV/20181111/data18_13TeV.periodAllYear_DetStatus-v102-pro22-04_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml',
+        return ['GoodRunsLists/data18_13TeV/20190219/data18_13TeV.periodAllYear_DetStatus-v102-pro22-04_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml',
                 'GoodRunsLists/data17_13TeV/20180618/data17_13TeV.periodAllYear_DetStatus-v97-pro21-17_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml',
                 'GoodRunsLists/data16_13TeV/20180129/data16_13TeV.periodAllYear_DetStatus-v89-pro21-01_DQDefects-00-02-04_PHYS_StandardGRL_All_Good_25ns.xml',
                 'GoodRunsLists/data15_13TeV/20170619/data15_13TeV.periodAllYear_DetStatus-v89-pro21-02_Unknown_PHYS_StandardGRL_All_Good_25ns.xml']

@@ -4,10 +4,10 @@ LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtRe
 # 2015 data: (Runs: 276262 - 284484) --> 3219.56 pb-1
 # 2016 data: (Runs: 297730 - 311481) --> 32988.1 pb-1 
 # 2017 data: (Runs: 325713 - 340453) --> 44307.4 pb-1 
-# 2018 data: (Runs: 348885 - 360402) --> 47824.7 pb-1 [Latest GRL]
+# 2018 data: (Runs: 348885 - 364292) --> 58450.1 pb-1 [Latest GRL]
 
 GRLDir  GoodRunsLists
-GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.xml data18_13TeV/20180924/physics_25ns_Triggerno17e33prim.xml
+GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.xml data18_13TeV/20190219/physics_25ns_Triggerno17e33prim.xml
 
 
 ######################################## PRW Files ###################################################
@@ -29,9 +29,9 @@ PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_2
 #PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root
 
 # MC16e configuration to comapre with 2018-only
-#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root
+#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root purw.actualMu.root
 #PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
-#PRWLumiCalcFiles GoodRunsLists/data18_13TeV/20180924/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-001.root
+#PRWLumiCalcFiles GoodRunsLists/data18_13TeV/20190219/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
 
 ######################################################################################################
 
@@ -53,7 +53,7 @@ LargeRJESJMSConfig CombMass
 # Note that different JetCollections may have different recommended pT thresholds
 #TrackJetCollectionName AntiKt2PV0TrackJets
 TrackJetCollectionName AntiKtVR30Rmax4Rmin02TrackJets
-TrackJetPt 7000
+TrackJetPt 10000
 
 TruthCollectionName TruthParticles
 #TruthCollectionName None
@@ -82,7 +82,10 @@ Systematics Nominal
 #BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_85 DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 MV2c10:HybBEff_60 MV2c10:HybBEff_70 MV2c10:HybBEff_77 MV2c10:HybBEff_85 DL1:HybBEff_60 DL1:HybBEff_70 DL1:HybBEff_77 DL1:HybBEff_85 MV2c10:Continuous DL1:Continuous
 
 #Different algorithms of 70% WP
-BTaggingWP MV2c10:FixedCutBEff_70 MV2rmu:FixedCutBEff_70 MV2r:FixedCutBEff_70 MV2c10:HybBEff_70 MV2rmu:HybBEff_70 MV2r:HybBEff_70 DL1:FixedCutBEff_70 DL1rmu:FixedCutBEff_70 DL1r:FixedCutBEff_70 DL1:HybBEff_70 DL1rmu:HybBEff_70 DL1r:HybBEff_70
+#BTaggingWP MV2c10:FixedCutBEff_70 MV2rmu:FixedCutBEff_70 MV2r:FixedCutBEff_70 MV2c10:HybBEff_70 MV2rmu:HybBEff_70 MV2r:HybBEff_70 DL1:FixedCutBEff_70 DL1rmu:FixedCutBEff_70 DL1r:FixedCutBEff_70 DL1:HybBEff_70 DL1rmu:HybBEff_70 DL1r:HybBEff_70
+
+#Default collections
+BTaggingWP MV2c10:FixedCutBEff_70 MV2r:FixedCutBEff_70 DL1:FixedCutBEff_70 DL1r:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2r:FixedCutBEff_77 DL1:FixedCutBEff_77 DL1r:FixedCutBEff_77
 
 JetUncertainties_NPModel GlobalReduction
 #LargeRJESUncertaintyConfig TopTagging
@@ -168,7 +171,6 @@ LARGEJETTTRESSTTMT_N 300000 >= 2
 SUB NoTopTagging 
 LJET_N 500000 >= 1
 LJET_N 350000 >= 2
-LARGEJETTTRES0L0BDNNTOPTAG_N 350000 >= 0
 LARGEJETTTRES0L1BDNNTOPTAG_N 350000 >= 0
 LARGEJETTTRES0L2BDNNTOPTAG_N 350000 >= 0
 
@@ -180,14 +182,13 @@ SUB boosted_common
 EL_N 25000 == 0
 MU_N 25000 == 0
 JETCLEAN LooseBad
-TRACKJETCLEAN
 #turning off the top-tagging selector for now. We will do it in the NtupleAnalysis 
 #. SmoothMTTagger80 # put your large-R jet selection here!
 # Making sure at least two large-R jets in the event
 . NoTopTagging
 #turning off the b-tagging selector as well. We will do in the NtupleAnalysis
 #TRACKMV2C10_N 0.66 >= 1
-EXAMPLEPLOTS
+#EXAMPLEPLOTS
 
 ########################
 ### boosted full-hadronic selections
@@ -219,6 +220,12 @@ SELECTION bFH_2018
 . period_2018
 TRIGDEC HLT_j460_a10t_lcw_jes_L1J100
 . boosted_common
+SAVE
+
+SELECTION vrtjet_cleaning
+. BASIC
+. boosted_common
+TRACKJETCLEAN
 SAVE
 
 ########################
