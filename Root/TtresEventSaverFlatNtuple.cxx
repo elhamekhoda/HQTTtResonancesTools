@@ -335,6 +335,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_jet_nghosttrackjetl, "jet_nghosttrackjetl");
 
         systematicTree->makeOutputVariable(m_jet_trueflav, "jet_trueflav");
+        systematicTree->makeOutputVariable(m_jet_NumTrkPt500, "jet_NumTrkPt500");
 
         //for leptons
         //Adding flag for the tight leptons in the nominal ttree
@@ -1451,7 +1452,9 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     m_jet_nghosttrackjetcc.resize(event.m_jets.size(), 0);
     m_jet_nghosttrackjetl.resize(event.m_jets.size(), 0);
     m_jet_trueflav.resize(event.m_jets.size(), -1);
-    for (const auto* const jetPtr : event.m_jets) {
+    m_jet_NumTrkPt500.resize(event.m_jets.size(), -1);
+
+    for (const auto* const jetPtr : event.m_jets){
         m_jet_closeToLepton[i] = 0;
         m_jet_ghosttrackjet_idx[i].clear();
 
@@ -1459,6 +1462,17 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             m_jet_closeToLepton[i] = jetPtr->auxdata<char>("closeToLepton");
             if (jetPtr->auxdata<char>("closeToLepton") == 1) {lepjet_index = i;}
         }
+        static const SG::AuxElement::ConstAccessor< std::vector<int> > acc("NumTrkPt500");
+        size_t vtxIdx=0;
+        for(auto vtx : *m_primvtx) {
+            if(vtx->vertexType() == xAOD::VxType::PriVtx){
+                vtxIdx=vtx->index();
+            }
+        }
+        int NumTrk = acc(*jetPtr)[vtxIdx];
+        m_jet_NumTrkPt500[i] = NumTrk;
+
+
         // I want this to crash if they're not available!
         // Danilo: I want this to work when they are not available due to bug ATLJETMET-381
         try { m_jet_nghosttrackjet[i] = jetPtr->getAttribute<int>("nGhostJets"); } catch (...) { }

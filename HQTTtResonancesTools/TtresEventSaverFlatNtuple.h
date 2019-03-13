@@ -277,6 +277,7 @@ namespace top {
       std::vector<int> m_ljet_nghosttrackjetc;
       std::vector<int> m_ljet_nghosttrackjetcc;
       std::vector<int> m_ljet_nghosttrackjetl;
+      std::vector<int> m_jet_NumTrkPt500;
 
       std::vector<int> m_jet_trueflav;
 
