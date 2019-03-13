@@ -39,10 +39,10 @@ bool TruthMttSelector::apply(const top::Event& event) const {
         if ( std::find(m_mcChannelNumbers.begin(), m_mcChannelNumbers.end(), MCchannel_number) == m_mcChannelNumbers.end() ) { // This is not a selected ttbar event
             return true;
         } else { // This is a selected ttbar event
-            if ( event.m_partonHistory->isAvailable<float>("MC_ttbar_beforeFSR_m") ) {
-                bool passed = checkFloat(event.m_partonHistory->auxdata<float>("MC_ttbar_beforeFSR_m"), multiplicity());
+            if ( event.m_partonHistory->isAvailable<float>("MC_ttbar_afterFSR_beforeDecay_m") ) {
+                bool passed = checkFloat(event.m_partonHistory->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m"), multiplicity());
                 // std::cout << "mtt Cut:" << multiplicity() << "\n";
-                // std::cout << "MC_ttbar_beforeFSR_m: " << event.m_partonHistory->auxdata<float>("MC_ttbar_beforeFSR_m") << "\n";
+                // std::cout << "MC_ttbar_afterFSR_beforeDecay_m: " << event.m_partonHistory->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m") << "\n";
                 // std::cout << "pass? " << passed << "\n";
                 return passed;
             } else {

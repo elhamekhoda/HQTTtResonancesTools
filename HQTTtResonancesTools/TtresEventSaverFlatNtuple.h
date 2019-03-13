@@ -32,7 +32,10 @@
 #include "HQTTtResonancesTools/AngularCutsSL.h"
 using namespace std;
 
-//#define ENABLE_BTAG_DEBUG 1
+// SSM Z' -> HVT Z' Signal Reweighting
+#ifdef ENABLE_ZPRIMERWGT
+#include "ZprimeRWGT/ZprimeRWGT.h"
+#endif
 
 namespace top {
 
@@ -179,7 +182,12 @@ namespace top {
       std::unique_ptr<JSSWTopTaggerBDT> m_bdtTopTagger80;//BDT top tagger 80%
       std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTagger80;//DNN top tagger 80%
       std::unique_ptr<TopoclusterTopTagger> m_topoTopTagger80;//Topo Cluster top tagger 80%
-
+      #ifdef ENABLE_ZPRIMERWGT
+      ZprimeRWGTTool &m_zprimerwgt_tool = ZprimeRWGTTool::getInstance();
+      #endif
+      std::string m_ZprimeRWGTParams;
+      bool m_doZprimeRWGT = false;
+      double m_weight_rwgt = -999;
       std::vector<float> m_part_ljet_tau32;
       std::vector<float> m_part_ljet_tau32_wta;
 
@@ -457,7 +465,7 @@ namespace top {
       float m_MC_tbar_afterFSR_pt;
       float m_MC_tbar_afterFSR_eta;
       float m_MC_tbar_afterFSR_phi;
-      float m_MC_tbar_afterFSR_m;      
+      float m_MC_tbar_afterFSR_m;
 
       float m_MC_ttbar_beforeFSR_pt;
       float m_MC_ttbar_beforeFSR_eta;
@@ -468,6 +476,25 @@ namespace top {
       float m_MC_ttbar_afterFSR_eta; 
       float m_MC_ttbar_afterFSR_phi; 
       float m_MC_ttbar_afterFSR_m;       
+
+      // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
+      float m_MC_ttbar_afterFSR_beforeDecay_m;
+
+      // post-FSR top or anti-top found using statusCodes
+      float m_MC_t_afterFSR_SC_pt;
+      float m_MC_t_afterFSR_SC_eta;
+      float m_MC_t_afterFSR_SC_phi;
+      float m_MC_t_afterFSR_SC_m;
+      
+      float m_MC_tbar_afterFSR_SC_pt;
+      float m_MC_tbar_afterFSR_SC_eta;
+      float m_MC_tbar_afterFSR_SC_phi;
+      float m_MC_tbar_afterFSR_SC_m;
+
+      float m_MC_ttbar_afterFSR_SC_pt;
+      float m_MC_ttbar_afterFSR_SC_eta;
+      float m_MC_ttbar_afterFSR_SC_phi;
+      float m_MC_ttbar_afterFSR_SC_m;
            
       // Matched jets
       float m_MA_b_from_t_pt;
