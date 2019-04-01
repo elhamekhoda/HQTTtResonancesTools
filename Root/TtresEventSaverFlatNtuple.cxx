@@ -949,6 +949,8 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             //ATH_MSG_INFO("\e[1;34m(ptvarcone20_TightTTVA_pt1000)" << elPtr->auxdata<float>("ptvarcone20_TightTTVA_pt1000")<< "   pT   " << elPtr->pt() << "\e[0m");
             //ATH_MSG_INFO("\e[1;33m(ptvarcone30_TightTTVA_pt1000)" << elPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000")<< "   pT   " << elPtr->pt() << "\e[0m");
             m_el_ptvarcone20_TightTTVA_pt1000[k] = elPtr->auxdata<float>("ptvarcone20_TightTTVA_pt1000");
+        }
+        if (elPtr->isAvailable<float>("ptcone20_TightTTVA_pt1000")) {
             m_el_ptcone20_TightTTVA_pt1000[k] = elPtr->auxdata<float>("ptcone20_TightTTVA_pt1000");
         } //if loop
         if (elPtr->auxdata<float>("ptvarcone20")){
@@ -988,6 +990,8 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         if (muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000")){
             m_mu_ptvarcone30_TightTTVA_pt1000[k] = muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000");
             //ATH_MSG_INFO("\e[1;31m(ptvarcone30_TightTTVA_pt1000)" << muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000") << "   pT   " << muPtr->pt() << "\e[0m");
+        }
+        if(muPtr->auxdata<float>("ptcone20_TightTTVA_pt1000")){
             m_mu_ptcone20_TightTTVA_pt1000[k] = muPtr->auxdata<float>("ptcone20_TightTTVA_pt1000");
         }
         muPtr->isolation( m_mu_ptcone20_ttres[k] , xAOD::Iso::ptcone20 );
