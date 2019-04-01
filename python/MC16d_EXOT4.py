@@ -210,7 +210,7 @@ TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_Zprime5000").datasets = [
 'mc16_13TeV.301335.Pythia8EvtGen_A14NNPDF23LO_zprime5000_tt.deriv.DAOD_EXOT4.e3723_s3126_r10201_p3731',
 ]
 
-TopExamples.grid.Add("MC16a_13TeV_25ns_FS_EXOT4_Zprime6000").datasets = [
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_Zprime6000").datasets = [
 'mc16_13TeV.311258.Pythia8EvtGen_A14NNPDF23LO_zprime6000_tt_mtt3000.deriv.DAOD_EXOT4.e7217_s3126_r10201_p3731',
 ]
 
