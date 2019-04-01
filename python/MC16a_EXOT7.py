@@ -14,11 +14,9 @@ TopExamples.grid.Add("MC16a_13TeV_25ns_FS_EXOT7_ttbar_allhad_mttsliced").dataset
 'mc16_13TeV.410288.PhPy8EG_A14_ttbar_hdamp258p75_allhad_mtt_2000_14000.deriv.DAOD_EXOT7.e6686_s3126_r9364_p3729',
 ]
 
-#
 #ttbar backgrounds: nonallhad inclusive
 TopExamples.grid.Add("MC16a_13TeV_25ns_FS_EXOT7_ttbar_nonallhad").datasets = [
-#Please be informed that we don't have nonallhad inclusive ttbar EXOT7 including AntiKtVR30Rmax4Rmin02TrackJets for MC16a
-#Use the corresponding MC16a_TOPQ1: <"MC16a_13TeV_25ns_FS_TOPQ1_ttbar_nonallhad"> instead
+'mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.deriv.DAOD_EXOT7.e6337_s3126_r9364_p3729',
 ]
 
 #ttbar backgrounds: nonallhad mtt sliced samples
@@ -130,6 +128,10 @@ TopExamples.grid.Add("MC16a_13TeV_25ns_FS_EXOT7_Zprime4000").datasets = [
 
 TopExamples.grid.Add("MC16a_13TeV_25ns_FS_EXOT7_Zprime5000").datasets = [
 'mc16_13TeV.301335.Pythia8EvtGen_A14NNPDF23LO_zprime5000_tt.deriv.DAOD_EXOT7.e3723_s3126_r9364_p3731',
+]
+
+TopExamples.grid.Add("MC16a_13TeV_25ns_FS_EXOT7_Zprime6000").datasets = [
+'mc16_13TeV.311258.Pythia8EvtGen_A14NNPDF23LO_zprime6000_tt_mtt3000.deriv.DAOD_EXOT7.e7217_s3126_r9364_p3729', #skimmed for now
 ]
 
 TopExamples.grid.Add("MC16a_13TeV_25ns_EXOT7_HVT1000").datasets = [
