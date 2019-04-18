@@ -24,6 +24,19 @@ This Tool is developed to fulfill the purpose of the exotics ttbar resonances se
     * The "good" flag corresponds to this setup if one uses `LARGEJETTTRESSUBTOPTAG50_N 300000 >= 1` in the config file
 * The  _NLargeJetTtresSmoothedTTMassTau32Selector_ class only calls ```SmoothedTopTagger```  with 80% WP using mass and tau32
     * The "good" flag corresponds to this WP if one uses ```LARGEJETTTRESSTTMT_N 300000 >= 1``` in the config file
+* The  _NLargeJetTtresFHDNNTopTagSelector_ class calls ```ShapeBasedDNNTopTagger```  with several different WPs
+    * If one uses in the config file
+        1.  ```LJET_DNNTOPTAG_INCLUSIVE80_N 350000 >= 1```, the "good" flags corresponds to 80% WP using Rel21 inclusive top defintion. 
+        2.  ```LJET_DNNTOPTAG_INCLUSIVE850_N 350000 >= 1```, the "good" flags corresponds to 50% WP using Rel21 inclusive top defintion. 
+        3.  ```LJET_DNNTOPTAG_CONTAINED80_N 350000 >= 1```, the "good" flags corresponds to 80% WP using Rel21 fully-contained top defintion. 
+        4.  ```LJET_DNNTOPTAG_CONTAINED50_N 350000 >= 1```, the "good" flags corresponds to 50% WP using Rel21 fully-contained top defintion. 
+        5.  ```LJET_DNNTOPTAG_TTRES0L1B_N 350000 >= 1```, the "good" flags corresponds to full had. sensitivity-based WP in 1bSR using Rel20.7 fully-contained top defintion. 
+        6.  ```LJET_DNNTOPTAG_TTRES0L2B_N 350000 >= 1```, the "good" flags corresponds to full had. sensitivity-based WP in 2bSR using Rel20.7 fully-contained top defintion. 
+    *   To store the __DNNisTagged__ flag or __DNNScore__, one can also add, for example, 
+        ```bash
+        ExtraTopTaggingWP DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_CONTAINED50 DNNTOPTAG_CONTAINED50
+        ```
+
 * Don't use both large-R jet selection class in one config file. Remember the name of the "good" flag is the same for both the classes at this point. New updates will be coming very soon.
 * Differnt b-tagging discriminants for track jets are stored in the output Ntuple
 * Based on the recent jet uncertainty recommendation ```JetUncertainties_NPModel 21NP``` has been changed to ```JetUncertainties_NPModel GlobalReduction```. (23 Nps)

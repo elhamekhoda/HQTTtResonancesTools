@@ -111,11 +111,11 @@ ApplyElectronInJetSubtraction False
 
 OverlapRemovalProcedure BoostedSlidingDRMu
 
-DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord,DumpToolConfigTo,TtresFHExtraBranches
+DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord,DumpToolConfigTo,ExtraTopTaggingWP
 
 TtresRunHTT False
 TtresSavePartons True
-TtresFHExtraBranches True
+ExtraTopTaggingWP DNNTOPTAG_CONTAINED80 DNNTOPTAG_CONTAINED50 DNNTOPTAG_TTRES0L1B DNNTOPTAG_TTRES0L2B # DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_TTRES0L0B ### Activate more taggers as you'd like. Note that if the corresponding EventSelectors are not activated, the branches will be just filled with empty entries!
 TtresrunEWK True
 isTOPQ False
 fakeLeptonSel False
@@ -175,8 +175,13 @@ LARGEJETTTRESSTTMT_N 300000 >= 2
 SUB NoTopTagging 
 LJET_N 500000 >= 1
 LJET_N 350000 >= 2
-LARGEJETTTRES0L1BDNNTOPTAG_N 350000 >= 0
-LARGEJETTTRES0L2BDNNTOPTAG_N 350000 >= 0
+LJET_DNNTOPTAG_CONTAINED50_N 350000 >= 0
+LJET_DNNTOPTAG_CONTAINED80_N 350000 >= 0
+LJET_DNNTOPTAG_TTRES0L1B_N 350000 >= 0
+LJET_DNNTOPTAG_TTRES0L2B_N 350000 >= 0
+#LJET_DNNTOPTAG_INCLUSIVE50_N 350000 >= 0 # Activate more taggers as you'd like
+#LJET_DNNTOPTAG_INCLUSIVE80_N 350000 >= 0 # Activate more taggers as you'd like
+#LJET_DNNTOPTAG_TTRES0L0B_N 350000 >= 0 # Activate more taggers as you'd like
 
 ########################
 ### offline cuts for reco-level selections
