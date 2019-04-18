@@ -41,6 +41,15 @@ namespace top {
 
   typedef std::map<TString,vector<int>> TMapTSiarr;
 
+  struct Tagger {
+    std::string TaggerDecorationName;
+    std::string TaggerBranchName;
+    std::vector<int> TaggerAccept;
+    std::string TaggerScoreName;
+    std::string TaggerScoreBranchName;
+    std::vector<double> TaggerScore;
+    };
+
   class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple{
     public:
 
@@ -84,6 +93,7 @@ namespace top {
       int  FindInVector(vector<int>& v, int x);
       void PrintME(const xAOD::TruthParticle* mcPtr, int depth, int maxDepth=10);
       void FillME(const xAOD::TruthParticleContainer* truthparticles, const xAOD::TruthEventContainer* truthevents);
+      void SetTopTaggingWPs(const std::vector<std::string> WPs);
 
     private:
 
@@ -91,7 +101,7 @@ namespace top {
       virtual void dumpToolConfig(std::string fname);
       const std::string& configValueDefault(const std::string& key, const std::string& default_value="False") const;
       std::string m_dumpToolConfigTo;
-      bool m_ttresFHExtra;
+      std::vector<std::string> m_TopTaggingWP = {"DNNTOPTAG_CONTAINED80", "DNNTOPTAG_INCLUSIVE80"}; // We always store variables of DNNContained/DNNInclusive FC 80%;
       bool m_isMC;
 
       bool m_isTOPQ;
@@ -132,6 +142,8 @@ namespace top {
       //Store output PDF weights from LHAPDF
       std::unordered_map<std::string, std::vector<float> > m_PDF_eventWeights;
 
+      std::map<std::string, Tagger> m_taggers;
+
       std::vector<int>   m_ljet_good;
       std::vector<int>   m_ljet_notgood;// for WCR
       std::vector<float> m_ljet_tau32;
@@ -160,16 +172,10 @@ namespace top {
       std::vector<int>   m_ljet_good_smooth_qt80;
       std::vector<int>   m_ljet_good_smooth_qt50;
       std::vector<int>   m_ljet_good_bdt80;
-      std::vector<int>   m_ljet_good_dnn80;
       std::vector<int>   m_ljet_good_topo80;
       std::vector<float> m_ljet_bdt_score;
-      std::vector<float> m_ljet_dnn_score;
       std::vector<float> m_ljet_topo_score;
       std::vector<int>   m_ljet_angular_cuts;
-
-      std::vector<int>   m_ljet_good_dnn_ttres0l0b;
-      std::vector<int>   m_ljet_good_dnn_ttres0l1b;
-      std::vector<int>   m_ljet_good_dnn_ttres0l2b;
 
       SubstructureTopTagger *STL80;
       SubstructureTopTagger *STL50;
@@ -180,7 +186,8 @@ namespace top {
       std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerQT80;//Qw+tau32
       std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerQT50;//Qw+tau32
       std::unique_ptr<JSSWTopTaggerBDT> m_bdtTopTagger80;//BDT top tagger 80%
-      std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTagger80;//DNN top tagger 80%
+      std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerContained80;//DNN contained top tagger 80%
+      std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerInclusive80;//DNN inclusive top tagger 80%
       std::unique_ptr<TopoclusterTopTagger> m_topoTopTagger80;//Topo Cluster top tagger 80%
       #ifdef ENABLE_ZPRIMERWGT
       ZprimeRWGTTool &m_zprimerwgt_tool = ZprimeRWGTTool::getInstance();

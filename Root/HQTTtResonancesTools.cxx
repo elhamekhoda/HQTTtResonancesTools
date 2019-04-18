@@ -56,13 +56,21 @@ top::EventSelectorBase* HQTTtResonancesToolsLoader::initTool(const std::string& 
         return new top::AngularCutsSLSelector(param);
     else if (toolname == "LARGEJETTTRESSTTMT_N")
         return new top::NLargeJetTtresSmoothedTTMassTau32Selector(param);
-    else if (toolname == "LARGEJETTTRES0L0BDNNTOPTAG_N")
-        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "0L0B");
-    else if (toolname == "LARGEJETTTRES0L1BDNNTOPTAG_N")
-        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "0L1B");
-    else if (toolname == "LARGEJETTTRES0L2BDNNTOPTAG_N")
-        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "0L2B");
-    else if (toolname == "NLARGEJETANYTOPTAG_N")
+    else if (toolname == "LJET_DNNTOPTAG_CONTAINED80_N")
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "Contained80");
+    else if (toolname == "LJET_DNNTOPTAG_CONTAINED50_N")
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "Contained50");
+    else if (toolname == "LJET_DNNTOPTAG_INCLUSIVE80_N")
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "Inclusive80");
+    else if (toolname == "LJET_DNNTOPTAG_INCLUSIVE50_N")
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "Inclusive50");
+    else if (toolname == "LJET_DNNTOPTAG_TTRES0L0B_N")
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres0L0B");
+    else if (toolname == "LJET_DNNTOPTAG_TTRES0L1B_N")
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres0L1B");
+    else if (toolname == "LJET_DNNTOPTAG_TTRES0L2B_N")
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres0L2B");
+    else if (toolname == "LJET_ANYTOPTAG_N")
         return new top::NLargeJetAnyTopTagSelector(param);
     else if (toolname == "TRUTH_TTBARMASS")
         return new top::TruthMttSelector(param, config);

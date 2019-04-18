@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <cmath>
-
+#include <stdexcept>
 /*
 
 A Large R Jet Class which passes the smooth pre-rec tagger requirements
@@ -20,17 +20,33 @@ Here we intialize the tool with 80% WP based on mass and tau32
 namespace top {
   
   NLargeJetTtresFHDNNTopTagSelector::NLargeJetTtresFHDNNTopTagSelector(const std::string& params, const std::string& region) :
-    SignValueSelector("NLARGEJETTTRES" + region + "DNN_N", params, true) {
+    SignValueSelector("NLARGEJET_DNN" + region + "_N", params, true) {
     m_region = region;
     checkValueIsInteger();
     //STL = STTHelpers::configSubstTagger("TightSmoothTopTag", "SmoothCut_80");
-    TopTaggerDNN = new JSSWTopTaggerDNN("JSSWTopTaggerTtres" + region + "DNN");
-    if (region == "0L0B") {
+    TopTaggerDNN = new JSSWTopTaggerDNN("JSSWTopTaggerDNN" + region);
+    if (region == "ContainedTtres0L0B") {
         top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSWTopTaggerDNN/JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup_Ttres0l0b.dat"), "Failed to set property for ConfigFile");
-    } else if (region == "0L1B") {
+    } else if (region == "ContainedTtres0L1B") {
         top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSWTopTaggerDNN/JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup_Ttres0l1b.dat"), "Failed to set property for ConfigFile");
-    } else if (region == "0L2B") {
+    } else if (region == "ContainedTtres0L2B") {
         top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSWTopTaggerDNN/JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup_Ttres0l2b.dat"), "Failed to set property for ConfigFile");
+    } else if (region == "Contained80") {
+        top::check(TopTaggerDNN->setProperty( "CalibArea",    "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
+        top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC16d_20190405_80Eff.dat"), "Failed to set property for ConfigFile");
+    } else if (region == "Contained50") {
+        top::check(TopTaggerDNN->setProperty( "CalibArea",    "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
+        top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC16d_20190405_50Eff.dat"), "Failed to set property for ConfigFile");
+    } else if (region == "Inclusive80") {
+        top::check(TopTaggerDNN->setProperty( "CalibArea",    "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
+        top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkInclusive_MC16d_20190405_80Eff.dat"), "Failed to set property for ConfigFile");
+    } else if (region == "Inclusive50") {
+        top::check(TopTaggerDNN->setProperty( "CalibArea",    "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
+        top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkInclusive_MC16d_20190405_50Eff.dat"), "Failed to set property for ConfigFile");
+    } else {
+        std::stringstream errMsg;
+        errMsg << "TopTagging WP: " << "\"" << "JSSWTopTaggerDNN"+region << "\"" << " is not available!";
+        throw std::invalid_argument(errMsg.str());
     }
     
     top::check(TopTaggerDNN->setProperty( "JetPtMin",   value()), "Failed to set property for ConfigFile");
@@ -52,7 +68,7 @@ namespace top {
       }
       
       largeJet->auxdecor<int>("topTagged") = good;
-      largeJet->auxdecor<int>("DNNTaggerTopQuarkTtres" + m_region) = good;
+      largeJet->auxdecor<int>("DNNTaggerTopQuark" + m_region) = good;
     }
     
     return checkInt(nGoodJets, (int) multiplicity());
