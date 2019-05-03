@@ -2535,6 +2535,11 @@ void TtresEventSaverFlatNtuple::SetTopTaggingWPs(const std::vector<std::string> 
         } else if (taggingWP.compare("DNNTOPTAG_TTRES0L2B") == 0) {
             m_taggers["DNNTtres0L2B"] = {"DNNTaggerTopQuarkContainedTtres0L2B", "ljet_good_dnn_ttres0l2b", {},
                                          "DNNTaggerTopQuarkTtres0L2B_Score", "ljet_DNNContainedTopTagRel207_score", {}};
+        } else if (taggingWP.find("DNNTOPTAG_TTRES1L") == 0) {
+            size_t pos = taggingWP.find("EFF");
+            std::string eff = taggingWP.substr(pos-2, 2);
+            m_taggers["DNNTtres1L"+eff+"Eff"] = {"DNNTaggerTopQuarkContainedTtres1L"+eff+"Eff", "ljet_good_dnn_ttres1l"+eff+"eff", {},
+                                         "DNNTaggerTopQuarkTtres1L"+eff+"Eff_Score", "ljet_DNNContainedTopTagRel207_score", {}};
         } else {
             std::stringstream errMsg;
             errMsg << "TopTagging WP: " << "\"" << taggingWP << "\"" << " is not available!";

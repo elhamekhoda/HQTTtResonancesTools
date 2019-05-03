@@ -16,7 +16,7 @@
 #include "TtResonancesTools/Chi2Selector.h"
 
 #include <iostream>
-
+#include <regex>
 #include "TFile.h"
 
 namespace top {
@@ -70,6 +70,12 @@ top::EventSelectorBase* HQTTtResonancesToolsLoader::initTool(const std::string& 
         return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres0L1B");
     else if (toolname == "LJET_DNNTOPTAG_TTRES0L2B_N")
         return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres0L2B");
+    else if (toolname.compare("LJET_DNNTOPTAG_TTRES1L")) {
+        std::smatch sm;
+        if ( std::regex_match(toolname, sm, std::regex("LJET_DNNTOPTAG_TTRES1L(\\d+)EFF_N")) ) {
+            return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres1L" + sm[1].str() + "Eff");
+        }
+    }
     else if (toolname == "LJET_ANYTOPTAG_N")
         return new top::NLargeJetAnyTopTagSelector(param);
     else if (toolname == "TRUTH_TTBARMASS")
