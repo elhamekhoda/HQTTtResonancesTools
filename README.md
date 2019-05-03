@@ -26,15 +26,16 @@ This Tool is developed to fulfill the purpose of the exotics ttbar resonances se
     * The "good" flag corresponds to this WP if one uses ```LARGEJETTTRESSTTMT_N 300000 >= 1``` in the config file
 * The  _NLargeJetTtresFHDNNTopTagSelector_ class calls ```ShapeBasedDNNTopTagger```  with several different WPs
     * If one uses in the config file
-        1.  ```LJET_DNNTOPTAG_INCLUSIVE80_N 350000 >= 1```, the "good" flags corresponds to 80% WP using Rel21 inclusive top defintion. 
-        2.  ```LJET_DNNTOPTAG_INCLUSIVE850_N 350000 >= 1```, the "good" flags corresponds to 50% WP using Rel21 inclusive top defintion. 
-        3.  ```LJET_DNNTOPTAG_CONTAINED80_N 350000 >= 1```, the "good" flags corresponds to 80% WP using Rel21 fully-contained top defintion. 
-        4.  ```LJET_DNNTOPTAG_CONTAINED50_N 350000 >= 1```, the "good" flags corresponds to 50% WP using Rel21 fully-contained top defintion. 
-        5.  ```LJET_DNNTOPTAG_TTRES0L1B_N 350000 >= 1```, the "good" flags corresponds to full had. sensitivity-based WP in 1bSR using Rel20.7 fully-contained top defintion. 
-        6.  ```LJET_DNNTOPTAG_TTRES0L2B_N 350000 >= 1```, the "good" flags corresponds to full had. sensitivity-based WP in 2bSR using Rel20.7 fully-contained top defintion. 
+        1.  ```LJET_DNNTOPTAG_INCLUSIVE80_N 350000 >= 1```, the "good" flags corresponds to 80% WP using Rel21 inclusive top definition. 
+        2.  ```LJET_DNNTOPTAG_INCLUSIVE850_N 350000 >= 1```, the "good" flags corresponds to 50% WP using Rel21 inclusive top definition. 
+        3.  ```LJET_DNNTOPTAG_CONTAINED80_N 350000 >= 1```, the "good" flags corresponds to 80% WP using Rel21 fully-contained top definition. 
+        4.  ```LJET_DNNTOPTAG_CONTAINED50_N 350000 >= 1```, the "good" flags corresponds to 50% WP using Rel21 fully-contained top definition. 
+        5.  ```LJET_DNNTOPTAG_TTRES0L1B_N 350000 >= 1```, the "good" flags corresponds to full had. sensitivity-based WP in 1bSR using Rel20.7 fully-contained top definition. 
+        6.  ```LJET_DNNTOPTAG_TTRES0L2B_N 350000 >= 1```, the "good" flags corresponds to full had. sensitivity-based WP in 2bSR using Rel20.7 fully-contained top definition. 
+        7.  ```LJET_DNNTOPTAG_TTRES1L**EFF_N 350000 >= 1```, the "good" flags corresponds to l+jets fixed efficiency WP from 50%~95% (step size 5%) using Rel20.7 fully-contained top definition derived by @kkrowpma. 
     *   To store the __DNNisTagged__ flag or __DNNScore__, one can also add, for example, 
         ```bash
-        ExtraTopTaggingWP DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_CONTAINED50 DNNTOPTAG_CONTAINED50
+        ExtraTopTaggingWP DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_CONTAINED50 DNNTOPTAG_CONTAINED50 DNNTOPTAG_TTRES1L50EFF DNNTOPTAG_TTRES1L95EFF
         ```
 
 * Don't use both large-R jet selection class in one config file. Remember the name of the "good" flag is the same for both the classes at this point. New updates will be coming very soon.

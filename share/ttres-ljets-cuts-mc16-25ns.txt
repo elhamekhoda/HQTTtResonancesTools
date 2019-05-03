@@ -110,11 +110,11 @@ ApplyElectronInJetSubtraction False
 
 OverlapRemovalProcedure BoostedSlidingDRMu
 
-DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord,DumpToolConfigTo
+DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord,DumpToolConfigTo,ExtraTopTaggingWP
 
 TtresRunHTT False
 TtresSavePartons True
-ExtraTopTaggingWP # DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_CONTAINED80 DNNTOPTAG_CONTAINED50 DNNTOPTAG_TTRES0L0B DNNTOPTAG_TTRES0L1B DNNTOPTAG_TTRES0L2B ### Activate more taggers as you'd like. Note that if the corresponding EventSelectors are not activated, the branches will be just filled with empty entries!
+ExtraTopTaggingWP # DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_CONTAINED80 DNNTOPTAG_CONTAINED50 DNNTOPTAG_TTRES0L0B DNNTOPTAG_TTRES0L1B DNNTOPTAG_TTRES0L2B DNNTOPTAG_TTRES1L50EFF DNNTOPTAG_TTRES1L90EFF ### Activate more taggers as you'd like. Note that if the corresponding EventSelectors are not activated, the branches will be just filled with empty entries!
 # Note that turning `TtresrunEWK` on when running ttbar samples is necessary in order to apply EWKCorrection in the later stage.
 # However, it may increase the running time significantly when running non-ttbar samples. Therefore, it must be only turned OFF with caution.
 TtresrunEWK True 
@@ -169,6 +169,8 @@ JETCLOSELEPTON_N >= 1
 LARGEJETTTRESST_N 300000 >= 1
 #LJET_DNNTOPTAG_CONTAINED50_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_CONTAINED80_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
+#LJET_DNNTOPTAG_TTRES1L50EFF_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
+#LJET_DNNTOPTAG_TTRES1L90EFF_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_TTRES0L1B_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_TTRES0L2B_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_TTRES0L0B_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing

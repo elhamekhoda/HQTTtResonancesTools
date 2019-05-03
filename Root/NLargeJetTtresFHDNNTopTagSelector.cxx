@@ -8,6 +8,7 @@
 #include <vector>
 #include <cmath>
 #include <stdexcept>
+
 /*
 
 A Large R Jet Class which passes the smooth pre-rec tagger requirements
@@ -24,34 +25,40 @@ namespace top {
     m_region = region;
     checkValueIsInteger();
     //STL = STTHelpers::configSubstTagger("TightSmoothTopTag", "SmoothCut_80");
-    TopTaggerDNN = new JSSWTopTaggerDNN("JSSWTopTaggerDNN" + region);
+    m_TopTaggerDNN = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN("JSSWTopTaggerDNN" + region) );
+
     if (region == "ContainedTtres0L0B") {
-        top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSWTopTaggerDNN/JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup_Ttres0l0b.dat"), "Failed to set property for ConfigFile");
+        top::check(m_TopTaggerDNN->setProperty( "ConfigFile",   "JSSWTopTaggerDNN/JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup_Ttres0l0b.dat"), "Failed to set property for ConfigFile");
     } else if (region == "ContainedTtres0L1B") {
-        top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSWTopTaggerDNN/JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup_Ttres0l1b.dat"), "Failed to set property for ConfigFile");
+        top::check(m_TopTaggerDNN->setProperty( "ConfigFile",   "JSSWTopTaggerDNN/JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup_Ttres0l1b.dat"), "Failed to set property for ConfigFile");
     } else if (region == "ContainedTtres0L2B") {
-        top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSWTopTaggerDNN/JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup_Ttres0l2b.dat"), "Failed to set property for ConfigFile");
+        top::check(m_TopTaggerDNN->setProperty( "ConfigFile",   "JSSWTopTaggerDNN/JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup_Ttres0l2b.dat"), "Failed to set property for ConfigFile");
+    } else if (region.find("ContainedTtres1L") == 0) {
+        size_t pos = region.find("Eff");
+        std::string eff = region.substr(pos-2, 2);
+        top::check(m_TopTaggerDNN->setProperty( "ConfigFile",   "JSSWTopTaggerDNN/JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup_Ttres1l"+eff+"Eff.dat"), "Failed to set property for ConfigFile");
     } else if (region == "Contained80") {
-        top::check(TopTaggerDNN->setProperty( "CalibArea",    "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
-        top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC16d_20190405_80Eff.dat"), "Failed to set property for ConfigFile");
+        top::check(m_TopTaggerDNN->setProperty( "CalibArea",    "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
+        top::check(m_TopTaggerDNN->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC16d_20190405_80Eff.dat"), "Failed to set property for ConfigFile");
     } else if (region == "Contained50") {
-        top::check(TopTaggerDNN->setProperty( "CalibArea",    "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
-        top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC16d_20190405_50Eff.dat"), "Failed to set property for ConfigFile");
+        top::check(m_TopTaggerDNN->setProperty( "CalibArea",    "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
+        top::check(m_TopTaggerDNN->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC16d_20190405_50Eff.dat"), "Failed to set property for ConfigFile");
     } else if (region == "Inclusive80") {
-        top::check(TopTaggerDNN->setProperty( "CalibArea",    "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
-        top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkInclusive_MC16d_20190405_80Eff.dat"), "Failed to set property for ConfigFile");
+        top::check(m_TopTaggerDNN->setProperty( "CalibArea",    "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
+        top::check(m_TopTaggerDNN->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkInclusive_MC16d_20190405_80Eff.dat"), "Failed to set property for ConfigFile");
     } else if (region == "Inclusive50") {
-        top::check(TopTaggerDNN->setProperty( "CalibArea",    "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
-        top::check(TopTaggerDNN->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkInclusive_MC16d_20190405_50Eff.dat"), "Failed to set property for ConfigFile");
+        top::check(m_TopTaggerDNN->setProperty( "CalibArea",    "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
+        top::check(m_TopTaggerDNN->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkInclusive_MC16d_20190405_50Eff.dat"), "Failed to set property for ConfigFile");
     } else {
         std::stringstream errMsg;
         errMsg << "TopTagging WP: " << "\"" << "JSSWTopTaggerDNN"+region << "\"" << " is not available!";
         throw std::invalid_argument(errMsg.str());
     }
     
-    top::check(TopTaggerDNN->setProperty( "JetPtMin",   value()), "Failed to set property for ConfigFile");
-    // top::check(TopTaggerDNN->setProperty( "OutputLevel",   MSG::VERBOSE), "Failed to set property for ConfigFile");
-    top::check(TopTaggerDNN->initialize(), "Initializing failed");
+    // top::check(m_TopTaggerDNN->setProperty( "JetPtMin",   value()), "Failed to set property for ConfigFile");
+    // top::check(m_TopTaggerDNN->setProperty( "OutputLevel",   MSG::VERBOSE), "Failed to set property for ConfigFile");
+
+    top::check(m_TopTaggerDNN->initialize(), "Initializing failed");
   }
   
   bool NLargeJetTtresFHDNNTopTagSelector::apply(const top::Event& event) const {    
@@ -62,7 +69,7 @@ namespace top {
       // pt and eta should already have been applied in object definition
       // but re-apply just in case it has been lowered for CR studies
       int good = 0;
-      if (TopTaggerDNN->tag(*largeJet)){
+      if (m_TopTaggerDNN->tag(*largeJet)){
           ++nGoodJets;
           good = 1;
       }

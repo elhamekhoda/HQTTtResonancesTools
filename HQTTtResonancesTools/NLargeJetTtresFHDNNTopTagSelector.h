@@ -1,7 +1,6 @@
 #ifndef NLARGEJETTTRESFHDNNTOPTAGSELECTOR_H_
 #define NLARGEJETTTRESFHDNNTOPTAGSELECTOR_H_
 
-
 #include "TopEventSelectionTools/SignValueSelector.h"
 #include "BoostedJetTaggers/JSSWTopTaggerDNN.h"
 namespace top {
@@ -15,7 +14,7 @@ public:
 
      bool apply(const top::Event& event) const override;
 
-     JSSWTopTaggerDNN *TopTaggerDNN;
+     std::unique_ptr<JSSWTopTaggerDNN> m_TopTaggerDNN = nullptr;
      std::string m_region; 
 };
 
