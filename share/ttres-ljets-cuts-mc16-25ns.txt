@@ -7,7 +7,7 @@ LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtRe
 # 2018 data: (Runs: 348885 - 364292) --> 58450.1 pb-1 [Latest GRL]
 
 GRLDir  GoodRunsLists
-GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.xml data18_13TeV/20190219/physics_25ns_Triggerno17e33prim.xml
+GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.xml data18_13TeV/20190318/physics_25ns_Triggerno17e33prim.xml
 
 
 ######################################## PRW Files ###################################################
@@ -33,14 +33,14 @@ GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/phy
 # MC16e configuration to comapre with 2018-only
 #PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root
 #PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
-#PRWActualMu_AF GoodRunsLists/data18_13TeV/20190219/purw.actualMu.root
-#PRWActualMu_FS GoodRunsLists/data18_13TeV/20190219/purw.actualMu.root
-#PRWLumiCalcFiles GoodRunsLists/data18_13TeV/20190219/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
+#PRWActualMu_AF GoodRunsLists/data18_13TeV/20190318/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
+#PRWActualMu_FS GoodRunsLists/data18_13TeV/20190318/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
+#PRWLumiCalcFiles GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
 
 # MC16a, MC16d and MC16e configuration to compare (2015+2016+2017+2018) data
 PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root HQTTtResonancesTools/PRW_ExotComb_mc16a.root HQTTtResonancesTools/PRW_ExotComb_mc16d.root HQTTtResonancesTools/PRW_ExotComb_mc16e.root
 PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
-PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root GoodRunsLists/data18_13TeV/20190219/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
+PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
 
 ######################################################################################################
 
@@ -82,10 +82,10 @@ CalculateSF True
 Systematics Nominal
 
 #Just of Btagging WP
-BTaggingWP FixedCutBEff_70
+BTaggingWP MV2c10:FixedCutBEff_70 DL1:FixedCutBEff_70
 
 #B-tagging configuration for multiple WP
-BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_85 DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 MV2c10:HybBEff_60 MV2c10:HybBEff_70 MV2c10:HybBEff_77 MV2c10:HybBEff_85 DL1:HybBEff_60 DL1:HybBEff_70 DL1:HybBEff_77 DL1:HybBEff_85 MV2c10:Continuous DL1:Continuous
+#BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_85 DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 MV2c10:HybBEff_60 MV2c10:HybBEff_70 MV2c10:HybBEff_77 MV2c10:HybBEff_85 DL1:HybBEff_60 DL1:HybBEff_70 DL1:HybBEff_77 DL1:HybBEff_85 MV2c10:Continuous DL1:Continuous
 
 #Different algorithms of 70% WP
 #BTaggingWP MV2c10:FixedCutBEff_70 MV2c10mu:FixedCutBEff_70 MV2c10rnn:FixedCutBEff_70 MV2c10:HybBEff_70 MV2c10mu:HybBEff_70 MV2c10rnn:HybBEff_70 DL1:FixedCutBEff_70 DL1mu:FixedCutBEff_70 DL1rnn:FixedCutBEff_70 DL1:HybBEff_70 DL1mu:HybBEff_70 DL1rnn:HybBEff_70
@@ -177,7 +177,7 @@ LARGEJETTTRESST_N 300000 >= 1
 #LJET_DNNTOPTAG_INCLUSIVE50_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_INCLUSIVE80_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 ANGULARCUTSSL >= 1
-TRACKMV2C10_N 0.66 >= 1
+#TRACKMV2C10_N 0.66 >= 1
 NOBADMUON
 EXAMPLEPLOTS
 
@@ -186,7 +186,7 @@ SUB resolved_common
 JET_N 25000 >= 2
 JET_N 25000 >= 3
 JET_N 25000 >= 4
-TRACKMV2C10_N 0.66 >= 1
+#TRACKMV2C10_N 0.66 >= 1
 #LOG10_CHI2 < 0.9
 NOBADMUON
 EXAMPLEPLOTS
