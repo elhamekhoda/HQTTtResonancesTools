@@ -14,7 +14,7 @@ A Large R Jet Class which is well-seperated from all the leptonic-top decay prod
 namespace top {
 
 AngularCutsSLSelector::AngularCutsSLSelector(const std::string& params) :
-        SignValueSelector("ANGULARCUTSSL", params) {
+    SignValueSelector("ANGULARCUTSSL", params) {
     checkValueIsInteger();
     m_AngularCutsSL = new AngularCutsSL("AngularCutsSL");
     check(m_AngularCutsSL->initialize(), "Initializing failed");
@@ -48,11 +48,10 @@ bool AngularCutsSLSelector::apply(const top::Event& event) const {
     int nGoodJets = 0;
     for (const auto* const largeJet : event.m_largeJets) {
         if ( m_AngularCutsSL->tag(*largeJet) && largeJet->auxdecor<int>("topTagged") == 1 ) {
-        // if ( largeJet->auxdecor<int>("topTagged") == 1 ) {
+            // if ( largeJet->auxdecor<int>("topTagged") == 1 ) {
             ++nGoodJets;
-        }
-        else {
-            largeJet->auxdecor<int>("topTagged") = 0; 
+        } else {
+            largeJet->auxdecor<int>("topTagged") = 0;
             //largeJet->auxdecor<int>("topTaggedSub80") = 0;
             //largeJet->auxdecor<int>("topTaggedSub50") = 0;
             //largeJet->auxdecor<int>("topTaggedSmoothMT80") = 0;

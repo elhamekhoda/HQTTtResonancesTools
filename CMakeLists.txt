@@ -5,11 +5,15 @@ atlas_subdir( HQTTtResonancesTools None )
          
 # This package depends on other packages:
 atlas_depends_on_subdirs( PUBLIC
-                          PhysicsAnalysis/TopPhys/xAOD/TopObjectSelectionTools
-                          PhysicsAnalysis/TopPhys/xAOD/TopEventSelectionTools
+                          # AnalysisTop
+                          TopObjectSelectionTools
+                          TopEventSelectionTools
                           TopConfiguration 
                           TopEvent
                           TopAnalysis
+                          TopEventReconstructionTools
+                          TopPartons
+                          # xAOD Objects
                           xAODJet
                           xAODEgamma
                           xAODTau
@@ -17,17 +21,20 @@ atlas_depends_on_subdirs( PUBLIC
                           xAODCore
                           xAODTruth
                           xAODRootAccess
+                          # CP Tools
+                          JetRec
+                          BoostedJetTaggers 
+                          Reconstruction/Jet/JetCalibTools
                           PhysicsAnalysis/AnalysisCommon/AssociationUtils
-                          AsgTools
-                          TopPartons
-                          TopEventReconstructionTools
+                          PhysicsAnalysis/AnalysisCommon/ParticleJetTools
+                          PhysicsAnalysis/JetTagging/JetTagPerformanceCalibration/xAODBTaggingEfficiency
+                          PhysicsAnalysis/MuonID/MuonSelectorTools/MuonSelectorTools/MuonSelectorTools
+                          # TtResonances
                           TtResonancesTools
                           ZprimeRWGT
-                          PhysicsAnalysis/JetTagging/JetTagPerformanceCalibration/xAODBTaggingEfficiency
-                          BoostedJetTaggers 
-                          PhysicsAnalysis/MuonID/MuonSelectorTools/MuonSelectorTools/MuonSelectorTools
-                          JetRec
-                          Reconstruction/Jet/JetCalibTools 
+                          # Basic
+                          AsgTools
+                          PRIVATE
                           Tools/PathResolver)
 
 # This package uses ROOT:
@@ -83,11 +90,15 @@ atlas_add_library( HQTTtResonancesTools Root/*.cxx Root/*.h Root/*.icc
                    HQTTtResonancesTools/*.h HQTTtResonancesTools/*.icc HQTTtResonancesTools/*/*.h
                    HQTTtResonancesTools/*/*.icc ${_cintDictSource}
                    PUBLIC_HEADERS HQTTtResonancesTools
-                   LINK_LIBRARIES TopObjectSelectionTools
+                   LINK_LIBRARIES # AnalysisTop
+                                  TopObjectSelectionTools
                                   TopEventSelectionTools
                                   TopConfiguration 
                                   TopEvent
+                                  TopEventReconstructionTools
+                                  TopPartons
                                   TopAnalysis
+                                  # xAOD Objects
                                   xAODJet
                                   xAODEgamma
                                   xAODTau
@@ -95,16 +106,18 @@ atlas_add_library( HQTTtResonancesTools Root/*.cxx Root/*.h Root/*.icc
                                   xAODCore
                                   xAODTruth
                                   xAODRootAccess
+                                  # CP Tools
                                   AssociationUtilsLib
-                                  AsgTools
-                                  TopPartons
-                                  TopEventReconstructionTools
-                                  TtResonancesTools
                                   xAODBTaggingEfficiencyLib
-                                  BoostedJetTaggersLib
                                   MuonSelectorToolsLib
+                                  BoostedJetTaggersLib
                                   JetRecLib
                                   JetCalibToolsLib
+                                  ParticleJetToolsLib
+                                  # TtResonances
+                                  TtResonancesTools
+                                  # Basic
+                                  AsgTools
                                   PathResolver
                                   ${ROOT_LIBRARIES}
                                   ${OPT_LIBRARIES}
