@@ -16,6 +16,7 @@
 #include "TopEventReconstructionTools/TtresNeutrinoBuilder.h"
 #include "HQTTtResonancesTools/ObjectLoaderTtres.h"
 #include "TtResonancesTools/TtresChi2.h"
+#include "ParticleJetTools/JetFlavourInfo.h"
 
 // HEPTopTagger
 //#define USE_HTT 1
@@ -35,20 +36,21 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
     top::ConfigurationSettings* configSettings = top::ConfigurationSettings::get();
     //weak = new WeakCorr::WeakCorrScaleFactorParam(PathResolverFindCalibFile("TtResonancesTools/EWcorr_param.root"));
 
-    m_isTOPQ              = (configValueDefault("isTOPQ") == "True") ? true : false ;
-    m_isSherpaW           = (configValueDefault("isSherpaW") == "True") ? true : false;
-    m_runHtt              = (configValueDefault("TtresRunHTT", "False") == "True") ? true : false ;
+    m_isTOPQ                = (configValueDefault("isTOPQ") == "True") ? true : false ;
+    m_isSherpaW             = (configValueDefault("isSherpaW") == "True") ? true : false;
+    m_runHtt                = (configValueDefault("TtresRunHTT", "False") == "True") ? true : false ;
 #ifndef USE_HTT
-    m_runHtt              = false;
+    m_runHtt                = false;
 #endif
-    m_savePartons         = (configValueDefault("TtresSavePartons", "False") == "True") ? true : false ;
-    m_saveFullTruthRecord = (configValueDefault("SaveFullTruthRecord", "True") == "True") ? true : false ;
-    m_runEWK              = (configValueDefault("TtresrunEWK", "False") == "True") ? true : false ;
-    m_dumpToolConfigTo    = configValueDefault("DumpToolConfigTo", "False"); // A string!
+    m_savePartons           = (configValueDefault("TtresSavePartons", "False") == "True") ? true : false ;
+    m_saveFullTruthRecord   = (configValueDefault("SaveFullTruthRecord", "True") == "True") ? true : false ;
+    m_runEWK                = (configValueDefault("TtresrunEWK", "False") == "True") ? true : false ;
+    m_trackjetBtaggingExtra = (configValueDefault("TrackjetBtaggingExtraBranches", "False") == "True") ? true : false ;
+    m_dumpToolConfigTo      = configValueDefault("DumpToolConfigTo", "False"); // A string!
     tokenize(configValueDefault("ExtraTopTaggingWP", ""), m_TopTaggingWP, " ", true); // "ExtraTopTaggingWP" should be a space seperated list!
     SetTopTaggingWPs(m_TopTaggingWP);
-    m_ZprimeRWGTParams    = configValueDefault("ZprimeRWGT", ""); // Leave it empty to deactivate this
-    m_doZprimeRWGT        = (m_ZprimeRWGTParams.empty()) ? false : true;
+    m_ZprimeRWGTParams      = configValueDefault("ZprimeRWGT", ""); // Leave it empty to deactivate this
+    m_doZprimeRWGT          = (m_ZprimeRWGTParams.empty()) ? false : true;
 
     if (m_isTOPQ) {
         m_trackjetcollection = "";
@@ -125,24 +127,13 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     top::check(m_dnnTopTaggerContained80->initialize(), "Initializing failed");
     top::check(m_dnnTopTaggerInclusive80->initialize(), "Initializing failed");
     top::check(m_topoTopTagger80->initialize(), "Initializing failed");
-    
+
     if (config->isMC()) {
         std::cout << "GENERATOR:" << config->getGenerators() << std::endl;
-        #ifdef ENABLE_ZPRIMERWGT
+#ifdef ENABLE_ZPRIMERWGT
         if (m_doZprimeRWGT) m_zprimerwgt_tool.initialize(m_ZprimeRWGTParams);
-        #endif
-        //cout<< "I am here" <<endl;
-        //n_b = config->btagging_num_B_eigenvars("MV2c10","FixedCutBEff_70");
-        //n_b =0;
-        //cout<< "I am here_1" <<endl;
-        //n_c = config->btagging_num_C_eigenvars("FixedCutBEff_70");
-        //n_c =0;
-        //cout<< "I am here_2" <<endl;
-        //n_l=0;
-        //n_l = config->btagging_num_Light_eigenvars("FixedCutBEff_70");
-        //cout<< "I am here_3" <<endl;
-    }
-    else {
+#endif
+    } else {
         m_isMC = false;
         m_saveTruthJets = false;
         m_savePartons = false;
@@ -154,7 +145,6 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         n_c = 0;
         n_l = 0;
     }
-    cout << "I am here" << endl;
     m_config = config;
     // build HEPTopTagger
 #ifdef USE_HTT
@@ -216,7 +206,16 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_Sherpa22_weight, "weight_Sherpa22_corr");
 
         systematicTree->makeOutputVariable(m_tjet_label, "tjet_label");
+        systematicTree->makeOutputVariable(m_tjet_ghostlabel, "tjet_ghostlabel");
         systematicTree->makeOutputVariable(m_tjet_numConstituents, "tjet_numConstituents");
+        if (m_trackjetBtaggingExtra) {
+            //b-hadrons within dR=0.3
+            systematicTree->makeOutputVariable(m_tjet_BHadron_eta, "tjet_BHadron_eta");
+            systematicTree->makeOutputVariable(m_tjet_BHadron_phi, "tjet_BHadron_phi");
+            systematicTree->makeOutputVariable(m_tjet_BHadron_pt, "tjet_BHadron_pt");
+            systematicTree->makeOutputVariable(m_tjet_BHadron_e, "tjet_BHadron_e");
+        }
+
 
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70, "tjet_" + btag_outputVar);
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_eigen_B_up, "tjet_bTagSF_70_eigen_B_up");
@@ -564,7 +563,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
 
             // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
             systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_beforeDecay_m, "MC_ttbar_afterFSR_beforeDecay_m");
-            
+
             //Matched jets
             systematicTree->makeOutputVariable(m_MA_b_from_t_pt,      "MA_b_from_t_pt");
             systematicTree->makeOutputVariable(m_MA_b_from_t_eta,     "MA_b_from_t_eta");
@@ -941,7 +940,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         // subtract off primary vtx z to get z0 wrt primary vertex
         m_el_z0[k] = eltrack->z0() + eltrack->vz() - m_vtxz;
         const xAOD::ParametersCovMatrix_t elcov = eltrack->definingParametersCovMatrix();
-        m_el_d0sig[k] = m_el_d0[k]/sqrt(elcov(0,0));
+        m_el_d0sig[k] = m_el_d0[k] / sqrt(elcov(0, 0));
         m_el_z0sig[k] = m_el_z0[k] / sqrt(elcov(1, 1));
 
         // commenting for now, since some of the samples do not have the new isolation vars : Elham///Nov14, 2018
@@ -953,7 +952,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         if (elPtr->isAvailable<float>("ptcone20_TightTTVA_pt1000")) {
             m_el_ptcone20_TightTTVA_pt1000[k] = elPtr->auxdata<float>("ptcone20_TightTTVA_pt1000");
         } //if loop
-        if (elPtr->auxdata<float>("ptvarcone20")){
+        if (elPtr->auxdata<float>("ptvarcone20")) {
             m_el_ptvarcone20_ttres[k] =  elPtr->auxdata<float>("ptvarcone20");
         }
         elPtr->isolationValue( m_el_ptcone20_ttres[k] , xAOD::Iso::ptcone20 );
@@ -983,22 +982,22 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             m_mu_d0[k] = mutrack->d0();
             m_mu_z0[k] = mutrack->z0() + mutrack->vz() - m_vtxz;
             const xAOD::ParametersCovMatrix_t mucov = mutrack->definingParametersCovMatrix();
-            m_mu_d0sig[k] = mutrack->d0()/sqrt(mucov(0,0));
+            m_mu_d0sig[k] = mutrack->d0() / sqrt(mucov(0, 0));
             m_mu_z0sig[k] = m_mu_z0[k] / sqrt(mucov(1, 1));
         }
         // Isolation variables
-        if (muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000")){
+        if (muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000")) {
             m_mu_ptvarcone30_TightTTVA_pt1000[k] = muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000");
             //ATH_MSG_INFO("\e[1;31m(ptvarcone30_TightTTVA_pt1000)" << muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000") << "   pT   " << muPtr->pt() << "\e[0m");
         }
-        if(muPtr->auxdata<float>("ptcone20_TightTTVA_pt1000")){
+        if (muPtr->auxdata<float>("ptcone20_TightTTVA_pt1000")) {
             m_mu_ptcone20_TightTTVA_pt1000[k] = muPtr->auxdata<float>("ptcone20_TightTTVA_pt1000");
         }
         muPtr->isolation( m_mu_ptcone20_ttres[k] , xAOD::Iso::ptcone20 );
-        if (muPtr->auxdata<float>("ptvarcone30")){
+        if (muPtr->auxdata<float>("ptvarcone30")) {
             m_mu_ptvarcone30_ttres[k] =  muPtr->auxdata<float>("ptvarcone30");
         }
-        
+
     }//for
 
     // --------- truth particle info  ------- //
@@ -1414,8 +1413,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                     trackjetPtr->btagging()->MVx_discriminant("MV2c10", mvx); // Get track jet MV2c10
                     TLorentzVector trackjet_lv;
 
-                    if (trackjetPtr->pt() > 10e3 && std::fabs(trackjetPtr->eta()) < 2.5 && mvx > m_trackjetMv2c10Cut && trackjetPtr->numConstituents() >= 2)
-                    {
+                    if (trackjetPtr->pt() > 10e3 && std::fabs(trackjetPtr->eta()) < 2.5 && mvx > m_trackjetMv2c10Cut && trackjetPtr->numConstituents() >= 2) {
                         trackjet_lv.SetPtEtaPhiM(trackjetPtr->pt(), trackjetPtr->eta(), trackjetPtr->phi(), 100.);
                         double deltaR_fj_bjet = trackjet_lv.DeltaR(TLorentzCA15[i]);
                         if (deltaR_fj_bjet < 1.5) {
@@ -1482,7 +1480,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     m_jet_trueflav.resize(event.m_jets.size(), -1);
     m_jet_NumTrkPt500.resize(event.m_jets.size(), -1);
 
-    for (const auto* const jetPtr : event.m_jets){
+    for (const auto* const jetPtr : event.m_jets) {
         m_jet_closeToLepton[i] = 0;
         m_jet_ghosttrackjet_idx[i].clear();
 
@@ -1491,10 +1489,10 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             if (jetPtr->auxdata<char>("closeToLepton") == 1) {lepjet_index = i;}
         }
         static const SG::AuxElement::ConstAccessor< std::vector<int> > acc("NumTrkPt500");
-        size_t vtxIdx=0;
-        for(auto vtx : *m_primvtx) {
-            if(vtx->vertexType() == xAOD::VxType::PriVtx){
-                vtxIdx=vtx->index();
+        size_t vtxIdx = 0;
+        for (auto vtx : *m_primvtx) {
+            if (vtx->vertexType() == xAOD::VxType::PriVtx) {
+                vtxIdx = vtx->index();
             }
         }
         int NumTrk = acc(*jetPtr)[vtxIdx];
@@ -1554,14 +1552,12 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                 if (mc_antitop != NULL) {
                     break;
                 }
-            }
-            else if (mcPtr->pdgId() == -6) {
+            } else if (mcPtr->pdgId() == -6) {
                 mc_antitop = mcPtr;
                 if (mc_top != NULL) {
                     break;
                 }
-            }
-            else {
+            } else {
                 mediator = mcPtr;
             }
 
@@ -1571,8 +1567,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                 if ( mediator->nParents() < 2) { std::cout << "ERROR: Could not get top parents!" << std::endl; }
                 initialparton0 = mediator->parent(0);
                 initialparton1 = mediator->parent(1);
-            }
-            else {
+            } else {
                 if ( mc_top->nParents() < 2) { std::cout << "ERROR: Could not get top parents!" << std::endl; }
                 initialparton0 = mc_top->parent(0);
                 initialparton1 = mc_top->parent(1);
@@ -1746,7 +1741,8 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
 
     m_tjet_numConstituents.resize(trackjets->size(), -1);
-    m_tjet_label.resize(trackjets->size(), 1);
+    m_tjet_label.resize(trackjets->size(), 0);
+    m_tjet_ghostlabel.resize(trackjets->size(), 0);
 
     m_tjet_bTagSF_70.resize(trackjets->size(), 1);
     m_tjet_bTagSF_70_eigen_B_up.resize(trackjets->size(), std::vector<float>());
@@ -1759,6 +1755,14 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     m_tjet_bTagSF_70_syst_extrapolation_down.resize(trackjets->size(), 1);
     m_tjet_bTagSF_70_syst_extrapolation_from_charm_up.resize(trackjets->size(), 1);
     m_tjet_bTagSF_70_syst_extrapolation_from_charm_down.resize(trackjets->size(), 1);
+
+    if (m_trackjetBtaggingExtra) {
+        m_tjet_BHadron_eta.resize(trackjets->size(), std::vector<float>());
+        m_tjet_BHadron_pt.resize(trackjets->size(), std::vector<float>());
+        m_tjet_BHadron_phi.resize(trackjets->size(), std::vector<float>());
+        m_tjet_BHadron_e.resize(trackjets->size(), std::vector<float>());
+    }
+
 #ifdef ENABLE_BTAG_DEBUG
     m_tjet_bTagSF_70_syst_B_up.resize(trackjets->size(), 1);
     m_tjet_bTagSF_70_syst_B_down.resize(trackjets->size(), 1);
@@ -1778,10 +1782,12 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     m_weight_trackjet_bTagSF_70_env_extrapolation_from_charm_up = 1;
     m_weight_trackjet_bTagSF_70_env_extrapolation_from_charm_down = 1;
 #endif
+
     for (unsigned int k = 0; k < trackjets->size(); ++k) {
         const xAOD::Jet *trackjetPtr = trackjets->at(k);
-        m_tjet_label[k] = -1;
-        trackjetPtr->getAttribute("HadronConeExclTruthLabelID", m_tjet_label[k]);
+        m_tjet_label[k] = xAOD::jetFlavourLabel(trackjetPtr, xAOD::ExclConeHadron);
+        m_tjet_ghostlabel[k] = xAOD::jetFlavourLabel(trackjetPtr, xAOD::GAFinalHadron);
+
         m_tjet_numConstituents[k] = trackjetPtr->numConstituents();
 
         if (trackjetPtr->isAvailable<float>(btaggingAlgWP))
@@ -1854,6 +1860,22 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         }
 
 #endif
+        if (m_trackjetBtaggingExtra) {
+            m_tjet_BHadron_eta[k].clear();
+            m_tjet_BHadron_phi[k].clear();
+            m_tjet_BHadron_pt[k].clear();
+            m_tjet_BHadron_e[k].clear();
+            std::vector<const xAOD::IParticle*> tjet_bhadrons;
+            const std::string labelB = "ConeExclBHadronsFinal";
+            trackjetPtr->getAssociatedObjects<xAOD::IParticle>(labelB, tjet_bhadrons);
+            for (const auto* const ip : tjet_bhadrons) {
+                const xAOD::TruthParticle * bhadron = (const xAOD::TruthParticle*)(ip);
+                m_tjet_BHadron_eta[k].push_back(bhadron->eta());
+                m_tjet_BHadron_phi[k].push_back(bhadron->phi());
+                m_tjet_BHadron_pt[k].push_back(bhadron->pt());
+                m_tjet_BHadron_e[k].push_back(bhadron->e());
+            }
+        }
     }
 
     //storing the calojet btagging SF
@@ -2095,7 +2117,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
         // post-FSR top or anti-top found using statusCodes
         TLorentzVector t_after_SC, tbar_after_SC, ttbar_after_SC;
-        if (topParton->auxdata<float>("MC_t_afterFSR_SC_pt") > 0){
+        if (topParton->auxdata<float>("MC_t_afterFSR_SC_pt") > 0) {
             m_MC_t_afterFSR_SC_pt  = topParton->auxdata<float>("MC_t_afterFSR_SC_pt");
             m_MC_t_afterFSR_SC_eta = topParton->auxdata<float>("MC_t_afterFSR_SC_eta");
             m_MC_t_afterFSR_SC_phi = topParton->auxdata<float>("MC_t_afterFSR_SC_phi");
@@ -2116,17 +2138,17 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         }
 
         // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
-        if (topParton->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m") > 0){
+        if (topParton->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m") > 0) {
             m_MC_ttbar_afterFSR_beforeDecay_m = topParton->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m");
         }
-        
 
-        #ifdef ENABLE_ZPRIMERWGT
+
+#ifdef ENABLE_ZPRIMERWGT
         TLorentzVector i1_p4, i2_p4;
         i1_p4.SetXYZM(m_MC_i1_px, m_MC_i1_py, m_MC_i1_pz, m_MC_i1_m);
         i2_p4.SetXYZM(m_MC_i2_px, m_MC_i2_py, m_MC_i2_pz, m_MC_i2_m);
         m_weight_rwgt = m_zprimerwgt_tool.get_weight(m_MC_i1_pid, m_MC_i2_pid, &i1_p4, &i2_p4, &parton_t_p4, &parton_tbar_p4);
-        #endif
+#endif
         TLorentzVector b_from_t_lv;
         TLorentzVector b_from_tbar_lv;
 
@@ -2467,14 +2489,11 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         MC_bh_p4.SetPtEtaPhiM(m_MC_bh_pt, m_MC_bh_eta, m_MC_bh_phi, m_MC_bh_m);
         MC_w1h_p4.SetPtEtaPhiM(m_MC_w1h_pt, m_MC_w1h_eta, m_MC_w1h_phi, m_MC_w1h_m);
         MC_w2h_p4.SetPtEtaPhiM(m_MC_w2h_pt, m_MC_w2h_eta, m_MC_w2h_phi, m_MC_w2h_m);
-        for (const auto* const jetPtr : event.m_largeJets)
-        {
-            if ((MC_w1h_p4.DeltaR(jetPtr->p4()) < Rmatch) && (MC_w2h_p4.DeltaR(jetPtr->p4()) < Rmatch))
-            {
+        for (const auto* const jetPtr : event.m_largeJets) {
+            if ((MC_w1h_p4.DeltaR(jetPtr->p4()) < Rmatch) && (MC_w2h_p4.DeltaR(jetPtr->p4()) < Rmatch)) {
                 if (MC_bh_p4.DeltaR(jetPtr->p4()) < Rmatch) {m_ljet_MClike[k] = 2; }
                 else {m_ljet_MClike[k] = 1; }
-            }
-            else { m_ljet_MClike[k] = 0; }
+            } else { m_ljet_MClike[k] = 0; }
             k++;
         }
 #endif
@@ -2516,36 +2535,44 @@ void TtresEventSaverFlatNtuple::SetTopTaggingWPs(const std::vector<std::string> 
         std::cout << "INFO: " << taggingWP << std::endl;
         if (taggingWP.compare("DNNTOPTAG_CONTAINED80") == 0) {
             m_taggers["DNNContained80"] = {"DNNTaggerTopQuarkContained80", "ljet_good_dnn_contained80", {},
-                                           "DNNTaggerTopQuarkContained80_Score", "ljet_DNNContainedTopTag_score", {}};
+                                           "DNNTaggerTopQuarkContained80_Score", "ljet_DNNContainedTopTag_score", {}
+                                          };
         } else if (taggingWP.compare("DNNTOPTAG_CONTAINED50") == 0) {
             m_taggers["DNNContained50"] = {"DNNTaggerTopQuarkContained50", "ljet_good_dnn_contained50", {},
-                                           "", "", {}};
+                                           "", "", {}
+                                          };
         } else if (taggingWP.compare("DNNTOPTAG_INCLUSIVE80") == 0) {
             m_taggers["DNNInclusive80"] = {"DNNTaggerTopQuarkInclusive80", "ljet_good_dnn_inclusive80", {},
-                                           "DNNTaggerTopQuarkInclusive80_Score", "ljet_DNNInclusiveTopTag_score", {}};
+                                           "DNNTaggerTopQuarkInclusive80_Score", "ljet_DNNInclusiveTopTag_score", {}
+                                          };
         } else if (taggingWP.compare("DNNTOPTAG_INCLUSIVE50") == 0) {
             m_taggers["DNNInclusive50"] = {"DNNTaggerTopQuarkInclusive50", "ljet_good_dnn_inclusive50", {},
-                                           "", "", {}};
+                                           "", "", {}
+                                          };
         } else if (taggingWP.compare("DNNTOPTAG_TTRES0L0B") == 0) {
             m_taggers["DNNTtres0L0B"] = {"DNNTaggerTopQuarkContainedTtres0L0B", "ljet_good_dnn_ttres0l0b", {},
-                                         "DNNTaggerTopQuarkTtres0L0B_Score", "ljet_DNNContainedTopTagRel207_score", {}};
+                                         "DNNTaggerTopQuarkTtres0L0B_Score", "ljet_DNNContainedTopTagRel207_score", {}
+                                        };
         } else if (taggingWP.compare("DNNTOPTAG_TTRES0L1B") == 0) {
             m_taggers["DNNTtres0L1B"] = {"DNNTaggerTopQuarkContainedTtres0L1B", "ljet_good_dnn_ttres0l1b", {},
-                                         "DNNTaggerTopQuarkTtres0L1B_Score", "ljet_DNNContainedTopTagRel207_score", {}};
+                                         "DNNTaggerTopQuarkTtres0L1B_Score", "ljet_DNNContainedTopTagRel207_score", {}
+                                        };
         } else if (taggingWP.compare("DNNTOPTAG_TTRES0L2B") == 0) {
             m_taggers["DNNTtres0L2B"] = {"DNNTaggerTopQuarkContainedTtres0L2B", "ljet_good_dnn_ttres0l2b", {},
-                                         "DNNTaggerTopQuarkTtres0L2B_Score", "ljet_DNNContainedTopTagRel207_score", {}};
+                                         "DNNTaggerTopQuarkTtres0L2B_Score", "ljet_DNNContainedTopTagRel207_score", {}
+                                        };
         } else if (taggingWP.find("DNNTOPTAG_TTRES1L") == 0) {
             size_t pos = taggingWP.find("EFF");
-            std::string eff = taggingWP.substr(pos-2, 2);
-            m_taggers["DNNTtres1L"+eff+"Eff"] = {"DNNTaggerTopQuarkContainedTtres1L"+eff+"Eff", "ljet_good_dnn_ttres1l"+eff+"eff", {},
-                                         "DNNTaggerTopQuarkTtres1L"+eff+"Eff_Score", "ljet_DNNContainedTopTagRel207_score", {}};
+            std::string eff = taggingWP.substr(pos - 2, 2);
+            m_taggers["DNNTtres1L" + eff + "Eff"] = {"DNNTaggerTopQuarkContainedTtres1L" + eff + "Eff", "ljet_good_dnn_ttres1l" + eff + "eff", {},
+                                                     "DNNTaggerTopQuarkTtres1L" + eff + "Eff_Score", "ljet_DNNContainedTopTagRel207_score", {}
+                                                    };
         } else {
             std::stringstream errMsg;
             errMsg << "TopTagging WP: " << "\"" << taggingWP << "\"" << " is not available!";
             throw std::invalid_argument(errMsg.str());
         }
-        }
+    }
 }
 
 void TtresEventSaverFlatNtuple::DeltaR_min(TLorentzVector p1, TLorentzVector p2, int i, float & tmp_dr, int & truth_idx) {
@@ -2732,8 +2759,7 @@ int TtresEventSaverFlatNtuple::AnalyzeRecoIndex_forTop(TLorentzVector & t_p4, TL
 
     if (reco_b_idx == reco_Wdecay1_idx || reco_b_idx == reco_Wdecay2_idx) {
         t_p4 = w_p4;
-    }
-    else if (reco_b_idx >= 0) {
+    } else if (reco_b_idx >= 0) {
         t_p4 = w_p4 + b_p4;
         t_Njets++;
     }
@@ -2860,11 +2886,9 @@ void TtresEventSaverFlatNtuple::Reconstruction_w_top_ttbar(std::string W_t_Decay
         m_MC_ttbar_type = 1;
         if ( t_type > 1 && tbar_type == 1) {
             m_MC_ttbar_type = t_type;
-        }
-        else if ( tbar_type > 1 && t_type == 1) {
+        } else if ( tbar_type > 1 && t_type == 1) {
             m_MC_ttbar_type = tbar_type;
-        }
-        else if ( t_type > 1 && tbar_type > 1 ) {
+        } else if ( t_type > 1 && tbar_type > 1 ) {
             m_MC_ttbar_type = (t_type < tbar_type) ? t_type * 100 + tbar_type : tbar_type * 100 + t_type; // ee:1111, emu:1112, etau:1113, mumu:1212, ...
         }
 
@@ -2879,8 +2903,7 @@ void TtresEventSaverFlatNtuple::Reconstruction_w_top_ttbar(std::string W_t_Decay
             MA_tFJ_p4.SetPtEtaPhiM( m_MA_tFJ_pt, m_MA_tFJ_eta, m_MA_tFJ_phi,  m_MA_tFJ_m);
             MA_ttbarFJ_p4 = MA_tFJ_p4 + MA_tbar_p4;
             TLorentzFill(MA_ttbarFJ_p4, m_MA_ttbarFJ_m, m_MA_ttbarFJ_pt, m_MA_ttbarFJ_eta, m_MA_ttbarFJ_phi);
-        }
-        else if (m_MA_t_pt > 0 && m_MA_tbarFJ_pt > 0) {
+        } else if (m_MA_t_pt > 0 && m_MA_tbarFJ_pt > 0) {
             MA_tbarFJ_p4.SetPtEtaPhiM( m_MA_tbarFJ_pt, m_MA_tbarFJ_eta, m_MA_tbarFJ_phi,  m_MA_tbarFJ_m);
             MA_ttbarFJ_p4 = MA_t_p4 + MA_tbarFJ_p4;
             TLorentzFill(MA_ttbarFJ_p4, m_MA_ttbarFJ_m, m_MA_ttbarFJ_pt, m_MA_ttbarFJ_eta, m_MA_ttbarFJ_phi);
@@ -3843,8 +3866,8 @@ void TtresEventSaverFlatNtuple::calculateWjets(const top::Event &event) {
         }
         // if sample is (W) Sherpa 2.2 sample
         if ( (MCchannel_number >= 363331 && MCchannel_number <= 363354) || \
-             (MCchannel_number >= 363436 && MCchannel_number <= 363483) || \
-             (MCchannel_number >= 364156 && MCchannel_number <= 364197)
+                (MCchannel_number >= 363436 && MCchannel_number <= 363483) || \
+                (MCchannel_number >= 364156 && MCchannel_number <= 364197)
            )
             store_Sherpa22_weight = true;
     }
@@ -4283,10 +4306,10 @@ void TtresEventSaverFlatNtuple::FillME(const xAOD::TruthParticleContainer* truth
 void TtresEventSaverFlatNtuple::finalize() {
     EventSaverFlatNtuple::finalize();
     if ( m_dumpToolConfigTo != "False") {
-    std::cout << ">>> dumping ToolConig to" << " \"" << m_dumpToolConfigTo << "\" "  "<<<" << std::endl;
-    dumpToolConfig(m_dumpToolConfigTo);
+        std::cout << ">>> dumping ToolConig to" << " \"" << m_dumpToolConfigTo << "\" "  "<<<" << std::endl;
+        dumpToolConfig(m_dumpToolConfigTo);
     }
-  }
+}
 
 void TtresEventSaverFlatNtuple::dumpToolConfig(std::string fname) {
     std::ofstream out(fname);
@@ -4294,17 +4317,16 @@ void TtresEventSaverFlatNtuple::dumpToolConfig(std::string fname) {
     std::cout.rdbuf(out.rdbuf());
     asg::ToolStore::dumpToolConfig();
     std::cout.rdbuf(coutbuf);
-  }
+}
 
 const std::string& TtresEventSaverFlatNtuple::configValueDefault(const std::string& key, const std::string& default_value) const {
     // To be nice to other analysis, I think it is neccessary to give those dynamic keys a default value so that it behave like vanilla AnalysisTop,
     //  and don't throw non-neccessary errors.
     try {
         return top::ConfigurationSettings::get()->value(key);
-    }
-    catch (...) {
+    } catch (...) {
         return default_value;
     }
-    }
+}
 
 }//namespace top

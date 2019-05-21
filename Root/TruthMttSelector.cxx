@@ -12,22 +12,22 @@ namespace top {
 
 TruthMttSelector::TruthMttSelector(const std::string& params, std::shared_ptr<top::TopConfig> config) :
     SignValueSelector("TRUTH_TTBARMASS_SELECTOR", params, true, true) {
-        m_isMC = config->isMC();
-        // std::cout << "doTopPartonHistory? " << config->doTopPartonHistory() << "\n";
-        if ( m_isMC && !config->doTopPartonHistory() ) {
-            std::cout << "You need to activate `doTopPartonHistory` in `TopConfig` in order to use this tool!\n";
-            exit(1);
-        }
-        std::vector<std::string> tokens;
-        tokenize(valueString(), tokens, ",");
+    m_isMC = config->isMC();
+    // std::cout << "doTopPartonHistory? " << config->doTopPartonHistory() << "\n";
+    if ( m_isMC && !config->doTopPartonHistory() ) {
+        std::cout << "You need to activate `doTopPartonHistory` in `TopConfig` in order to use this tool!\n";
+        exit(1);
+    }
+    std::vector<std::string> tokens;
+    tokenize(valueString(), tokens, ",");
 
-        for ( auto cutString: tokens ){
-            m_mcChannelNumbers.push_back(std::stoul(cutString, nullptr, 0));
-        }
-        if ( m_mcChannelNumbers.empty() ) {
-            std::cout << "You need to provide a comma separated MC channel number list!\n";
-            exit(1);
-        }
+    for ( auto cutString : tokens ) {
+        m_mcChannelNumbers.push_back(std::stoul(cutString, nullptr, 0));
+    }
+    if ( m_mcChannelNumbers.empty() ) {
+        std::cout << "You need to provide a comma separated MC channel number list!\n";
+        exit(1);
+    }
 }
 
 bool TruthMttSelector::apply(const top::Event& event) const {
