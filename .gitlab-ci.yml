@@ -29,7 +29,7 @@ build_image:
 
 include:
   - project: 'ttreshad/hook'
-    file: '.gitlab-ci.yml'
+    file: 'Hook.gitlab-ci.yml'
 
 deploy-ttresfullhad:
   stage: deploy
