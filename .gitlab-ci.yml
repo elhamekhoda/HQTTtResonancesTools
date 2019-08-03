@@ -15,20 +15,6 @@ variables:
     refs:
       - master
 
-.login: &login
-  image: lukasheinrich/recast_cvmfs_assisted:20161231
-  tags:
-    - cvmfs
-  before_script:
-    - pwd
-    - ls
-    - mkdir -p ~/.ssh
-    - source ~/.bashrc || echo ignore alrb
-    - echo "${SERVICE_PASS}" | kinit ${CERN_USER}@CERN.CH
-    - klist
-    - echo -e "Host svn.cern.ch lxplus.cern.ch\n\tUser ${CERN_USER}\n\tStrictHostKeyChecking no\n\tGSSAPIAuthentication yes\n\tGSSAPIDelegateCredentials yes\n\tProtocol 2\n\tForwardX11 no\n\tIdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
-    - cat ~/.ssh/config
-
 build_image:
   stage: deploy
   script:
@@ -41,18 +27,16 @@ build_image:
     - docker-image-build
   <<: *global
 
+include:
+  - project: 'ttreshad/hook'
+    file: '.gitlab-ci.yml'
+
 deploy-ttresfullhad:
-  <<: *login
   stage: deploy
-  script:
-    - lsetup git || echo ignore alrb
-    - git clone https://:@gitlab.cern.ch:8443/atlas-phys/exot/hqt/tt_tb_Resonances_Run2/ttResFullHad.git -b canary
-    - cd ttResFullHad
-    - git submodule update --init --remote source/$PACKAGE_NAME
-    - git add source/$PACKAGE_NAME
-    - git config user.email "${CERN_USER}@cern.ch"
-    - git config user.name "${CERN_USER}" 
-    - git commit -m "Auto Build - ${PACKAGE_NAME}" -m "See atlas-phys/exot/hqt/R21-ttbar-1lep/HQTTtResonancesTools@${CI_COMMIT_SHA}"
-    - git push -u origin canary
+  extends: .deploy
+  variables: 
+    TO_PROJECT: ttResFullHad
+    TO_PROJECT_URL: https://:@gitlab.cern.ch:8443/atlas-phys/exot/hqt/tt_tb_Resonances_Run2/ttResFullHad.git
+    TO_BRANCH: canary
   allow_failure: true
   <<: *global
