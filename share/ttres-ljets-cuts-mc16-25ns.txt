@@ -76,7 +76,7 @@ TruthBlockInfo False
 PDFInfo False
 IsAFII False
 OutputFileNEventAutoFlush 100
-#NEvents 10000
+#NEvents 1000
 
 ObjectSelectionName top::ObjectLoaderTtres
 OutputFormat top::TtresEventSaverFlatNtuple
