@@ -1,49 +1,54 @@
 LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtResonancesTools libTtResonancesTools libBoostedJetTaggersLib
 
-# http://atlas.web.cern.ch/Atlas/GROUPS/DATABASE/GroupData/GoodRunsLists/data16_13TeV/
-# 2015 data: (Runs: 276262 - 284484) --> 3219.56 pb-1
-# 2016 data: (Runs: 297730 - 311481) --> 32988.1 pb-1 
-# 2017 data: (Runs: 325713 - 340453) --> 44307.4 pb-1 
+# http://atlas.web.cern.ch/Atlas/GROUPS/DATABASE/GroupData/GoodRunsLists/
+# 2015 data: (Runs: 276262 - 284484) --> 3219.44 pb-1
+# 2016 data: (Runs: 297730 - 311481) --> 32989.6 pb-1
+# 2017 data: (Runs: 325713 - 340453) --> 44385.7 pb-1
 # 2018 data: (Runs: 348885 - 364292) --> 58450.1 pb-1 [Latest GRL]
+#=======================================================================
+#                       TOTAL = 139,544.84 pb-1
+#=======================================================================
 
 GRLDir  GoodRunsLists
-GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.xml data18_13TeV/20190318/physics_25ns_Triggerno17e33prim.xml
+GRLFile data15_13TeV/20190708/data15_13TeV.periodAllYear_DetStatus-v105-pro22-13_Unknown_PHYS_StandardGRL_All_Good_25ns.xml 
+data16_13TeV/20190708/data16_13TeV.periodAllYear_DetStatus-v105-pro22-13_Unknown_PHYS_StandardGRL_All_Good_25ns_WITH_IGNORES.xml 
+data17_13TeV/20190708/data17_13TeV.periodAllYear_DetStatus-v105-pro22-13_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml 
+data18_13TeV/20190708/data18_13TeV.periodAllYear_DetStatus-v105-pro22-13_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml
 
 
 ######################################## PRW Files ###################################################
 
 ## Pile-up reweighting tool - Metadata determines which to use
+
 # MC16a configuration to compare with 2015-16
-#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root
-#PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root
-#PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root
+PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root
+PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root
+PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20190708/ilumicalc_histograms_None_276262-284484_OflLumi-13TeV-010.root 
+GoodRunsLists/
+data16_13TeV/20190708/ilumicalc_histograms_None_297730-311481_OflLumi-13TeV-010.root
 
 # MC16d configuration to compare with 2017-only
 #PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
 #PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root
-#PRWActualMu_AF GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
-#PRWActualMu_FS GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
-#PRWLumiCalcFiles GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root
-
-# MC16a and MC16d configuration to compare (2015+2016+2017) data
-#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
-#PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root
-#PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root
+#PRWActualMu_AF GoodRunsLists/data17_13TeV/20190708/purw.actualMu.2017.root
+#PRWActualMu_FS GoodRunsLists/data17_13TeV/20190708/purw.actualMu.2017.root
+#PRWLumiCalcFiles GoodRunsLists/data17_13TeV/20190708/ilumicalc_histograms_None_325713-340453_OflLumi-13TeV-010.root
 
 # MC16e configuration to comapre with 2018-only
 #PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root
 #PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
-#PRWActualMu_AF GoodRunsLists/data18_13TeV/20190318/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
-#PRWActualMu_FS GoodRunsLists/data18_13TeV/20190318/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
-#PRWLumiCalcFiles GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
+#PRWActualMu_AF GoodRunsLists/data18_13TeV/20190708/purw.actualMu.2018.root
+#PRWActualMu_FS GoodRunsLists/data18_13TeV/20190708/purw.actualMu.2018.root
+#PRWLumiCalcFiles GoodRunsLists/data18_13TeV/20190708/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
 
 # MC16a, MC16d and MC16e configuration to compare (2015+2016+2017+2018) data
-PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root HQTTtResonancesTools/PRW_ExotComb_mc16a.root HQTTtResonancesTools/PRW_ExotComb_mc16d.root HQTTtResonancesTools/PRW_ExotComb_mc16e.root
-PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
-PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
+#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root HQTTtResonancesTools/PRW_ExotComb_mc16a.root HQTTtResonancesTools/PRW_ExotComb_mc16d.root HQTTtResonancesTools/PRW_ExotComb_mc16e.root
+#PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
+#PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20190708/ilumicalc_histograms_None_276262-284484_OflLumi-13TeV-010.root 
+GoodRunsLists/data16_13TeV/20190708/ilumicalc_histograms_None_297730-311481_OflLumi-13TeV-010.root 
+GoodRunsLists/data17_13TeV/20190708/ilumicalc_histograms_None_325713-340453_OflLumi-13TeV-010.root GoodRunsLists/data18_13TeV/20190708/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
 
 ######################################################################################################
-
 
 ElectronCollectionName Electrons
 MuonCollectionName Muons
@@ -59,7 +64,9 @@ LargeJetSubstructure None
 #LargeJetCollectionName AntiKt10LCTopoJets
 #LargeJetSubstructure Trimmer
 LargeRJESJMSConfig CombMass
-TrackJetCollectionName AntiKt2PV0TrackJets
+#TrackJetCollectionName AntiKt2PV0TrackJets
+TrackJetCollectionName AntiKtVR30Rmax4Rmin02TrackJets
+TrackJetPt 10000
 
 TruthCollectionName TruthParticles
 #TruthCollectionName None
@@ -68,7 +75,7 @@ TopPartonHistory ttbar
 TruthBlockInfo False
 PDFInfo False
 IsAFII False
-OutputFileSetAutoFlushZero True
+OutputFileNEventAutoFlush 100
 #NEvents 10000
 
 ObjectSelectionName top::ObjectLoaderTtres
@@ -117,7 +124,7 @@ TtresSavePartons True
 ExtraTopTaggingWP # DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_CONTAINED80 DNNTOPTAG_CONTAINED50 DNNTOPTAG_TTRES0L0B DNNTOPTAG_TTRES0L1B DNNTOPTAG_TTRES0L2B DNNTOPTAG_TTRES1L50EFF DNNTOPTAG_TTRES1L90EFF ### Activate more taggers as you'd like. Note that if the corresponding EventSelectors are not activated, the branches will be just filled with empty entries!
 # Note that turning `TtresrunEWK` on when running ttbar samples is necessary in order to apply EWKCorrection in the later stage.
 # However, it may increase the running time significantly when running non-ttbar samples. Therefore, it must be only turned OFF with caution.
-TtresrunEWK True 
+TtresrunEWK True
 isTOPQ False
 fakeLeptonSel False
 isSherpaW True
@@ -166,7 +173,8 @@ JET_N 25000 >= 1
 SUB boosted_common
 . COMMON
 JETCLOSELEPTON_N >= 1
-LARGEJETTTRESST_N 300000 >= 1
+LJET_N 300000 >= 1
+#LARGEJETTTRESST_N 300000 >= 1
 #LJET_DNNTOPTAG_CONTAINED50_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_CONTAINED80_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_TTRES1L50EFF_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
@@ -176,7 +184,7 @@ LARGEJETTTRESST_N 300000 >= 1
 #LJET_DNNTOPTAG_TTRES0L0B_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_INCLUSIVE50_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_INCLUSIVE80_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
-ANGULARCUTSSL >= 1
+ANGULARCUTSSL >= 0  #setting it to zero here. Apply angural_cut at TNA
 #TRACKMV2C10_N 0.66 >= 1
 NOBADMUON
 EXAMPLEPLOTS
