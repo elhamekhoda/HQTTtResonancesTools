@@ -15,7 +15,7 @@ public:
     AngularCutsSL(const std::string& name);
     StatusCode initialize();
     StatusCode finalize();
-    virtual Root::TAccept tag(const xAOD::Jet& largeJet) const;
+    virtual Root::TAccept& tag(const xAOD::Jet& largeJet) const;
     mutable const xAOD::IParticle* m_lep;
     mutable const xAOD::Jet* m_selJet;
 };

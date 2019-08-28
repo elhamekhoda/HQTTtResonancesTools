@@ -6,6 +6,8 @@
 #include "TString.h"
 #include "TopEvent/Event.h"
 #include "AsgTools/AsgTool.h"
+// #include "AsgTools/ToolHandleArray.h"
+#include "JetCPInterfaces/ICPJetUncertaintiesTool.h"
 #include "TopEventReconstructionTools/TtresNeutrinoBuilder.h"
 #include "TopPartons/PartonHistory.h"
 #include "TtResonancesTools/Chi2Selector.h"
@@ -48,6 +50,15 @@ struct Tagger {
     std::string TaggerScoreName;
     std::string TaggerScoreBranchName;
     std::vector<double> TaggerScore;
+    std::string TaggerSFName = "";
+    std::string TaggerSFBranchName = "";
+    std::vector<double> TaggerSF = {};
+    std::vector<CP::SystematicSet> SystematicSets1Up = {};
+    std::vector<CP::SystematicSet> SystematicSets1Down = {};
+    std::string TaggerSFVarsBranchName1Up = "";
+    std::string TaggerSFVarsBranchName1Down = "";
+    std::vector<std::vector<double>> TaggerSFVars1Up = {};
+    std::vector<std::vector<double>> TaggerSFVars1Down = {};
 };
 
 class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
@@ -90,7 +101,7 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
 
     void IniVariables();
 
-    int  FindInVector(vector<int>& v, int x);
+    template <typename T> int  FindInVector(vector<T>& v, T x);
     void PrintME(const xAOD::TruthParticle* mcPtr, int depth, int maxDepth = 10);
     void FillME(const xAOD::TruthParticleContainer* truthparticles, const xAOD::TruthEventContainer* truthevents);
     void SetTopTaggingWPs(const std::vector<std::string> WPs);
@@ -143,14 +154,14 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     //Store output PDF weights from LHAPDF
     std::unordered_map<std::string, std::vector<float> > m_PDF_eventWeights;
 
-    std::map<std::string, Tagger> m_taggers;
+    std::unordered_map<std::string, Tagger> m_toptagging;
+    std::unordered_map<std::string, ToolHandle<ICPJetUncertaintiesTool>> m_toptaggingUncTools;
 
     std::vector<int>   m_ljet_good;
     std::vector<int>   m_ljet_notgood;// for WCR
-    std::vector<float> m_ljet_tau32;
     std::vector<float> m_ljet_tau32_wta;
-    std::vector<float> m_ljet_tau21;
     std::vector<float> m_ljet_tau21_wta;
+    std::vector<int>   m_ljet_label;
 #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
     std::vector<float> m_ljet_D2;
     std::vector<float> m_ljet_C2;
@@ -196,7 +207,6 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     std::string m_ZprimeRWGTParams;
     bool m_doZprimeRWGT = false;
     double m_weight_rwgt = -999;
-    std::vector<float> m_part_ljet_tau32;
     std::vector<float> m_part_ljet_tau32_wta;
 
     int m_NB_hadside;
@@ -388,7 +398,6 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     std::vector<float> m_akt10truthjet_eta;
     std::vector<float> m_akt10truthjet_phi;
     std::vector<float> m_akt10truthjet_m;
-    std::vector<float> m_akt10truthjet_tau32;
     std::vector<float> m_akt10truthjet_tau32_wta;
 
     // ME

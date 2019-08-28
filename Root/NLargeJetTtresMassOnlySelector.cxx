@@ -52,7 +52,11 @@ bool NLargeJetTtresMassOnlySelector::apply(const top::Event& event) const {
             good = 1;
         }
 
-        largeJet->auxdecor<char>("topTagged") = good;
+        if (!largeJet->isAvailable<int>("topTagged")) {
+            largeJet->auxdecor<int>("topTagged") = good;
+        } else if (good) {
+            largeJet->auxdecor<int>("topTagged") = 1;
+        }
     }
 
     return checkInt(nGoodJets, (int) multiplicity());

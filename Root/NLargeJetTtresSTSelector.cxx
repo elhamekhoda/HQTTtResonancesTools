@@ -102,7 +102,11 @@ bool NLargeJetTtresSTSelector::apply(const top::Event& event) const {
 */
 
       //Decorate the jet pointer
-      largeJet->auxdecor<int>("topTagged") = good;
+        if (!largeJet->isAvailable<int>("topTagged")) {
+            largeJet->auxdecor<int>("topTagged") = good;
+        } else if (good) {
+            largeJet->auxdecor<int>("topTagged") = 1;
+        }
 
 /*    largeJet->auxdecor<int>("topTaggedSub80") = good_sub_80;
       largeJet->auxdecor<int>("topTaggedSub50") = good_sub_50;
