@@ -7,6 +7,7 @@
 #include "PathResolver/PathResolver.h"
 #include "xAODRootAccess/TEvent.h"
 #include "xAODCore/ShallowCopy.h"
+#include "JetUncertainties/JetUncertaintiesTool.h"
 #include "TopConfiguration/TopConfig.h"
 #include "TopConfiguration/ConfigurationSettings.h"
 #include "TopConfiguration/Tokenize.h"
@@ -17,7 +18,7 @@
 #include "HQTTtResonancesTools/ObjectLoaderTtres.h"
 #include "TtResonancesTools/TtresChi2.h"
 #include "ParticleJetTools/JetFlavourInfo.h"
-
+#include "BoostedJetTaggers/FatjetLabelEnum.h"
 // HEPTopTagger
 //#define USE_HTT 1
 #ifdef USE_HTT
@@ -48,7 +49,6 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
     m_trackjetBtaggingExtra = (configValueDefault("TrackjetBtaggingExtraBranches", "False") == "True") ? true : false ;
     m_dumpToolConfigTo      = configValueDefault("DumpToolConfigTo", "False"); // A string!
     tokenize(configValueDefault("ExtraTopTaggingWP", ""), m_TopTaggingWP, " ", true); // "ExtraTopTaggingWP" should be a space seperated list!
-    SetTopTaggingWPs(m_TopTaggingWP);
     m_ZprimeRWGTParams      = configValueDefault("ZprimeRWGT", ""); // Leave it empty to deactivate this
     m_doZprimeRWGT          = (m_ZprimeRWGTParams.empty()) ? false : true;
 
@@ -112,9 +112,13 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     top::check(m_smoothedTopTaggerQT50->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_QwTau32FixedSignalEfficiency50_MC15c_20161209.dat"), "Failed to set property for ConfigFile");
     top::check(m_bdtTopTagger80->setProperty( "ConfigFile",   "JSSWTopTaggerBDT/JSSBDTTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup80Eff.dat"), "Failed to set property for ConfigFile");
     top::check(m_dnnTopTaggerContained80->setProperty( "CalibArea", "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
-    top::check(m_dnnTopTaggerContained80->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC16d_20190405_80Eff.dat"), "Failed to set property for ConfigFile");
+    top::check(m_dnnTopTaggerContained80->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC16d_20190827_80Eff.dat"), "Failed to set property for ConfigFile");
+    top::check(m_dnnTopTaggerContained80->setProperty( "DSID", (int)config->getDSID()), "Failed to set property for ConfigFile" );
+    top::check(m_dnnTopTaggerContained80->setProperty( "IsMC", config->isMC()), "Failed to set property for ConfigFile" );
     top::check(m_dnnTopTaggerInclusive80->setProperty( "CalibArea", "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
     top::check(m_dnnTopTaggerInclusive80->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkInclusive_MC16d_20190405_80Eff.dat"), "Failed to set property for ConfigFile");
+    top::check(m_dnnTopTaggerInclusive80->setProperty( "DSID", (int)config->getDSID()), "Failed to set property for ConfigFile" );
+    top::check(m_dnnTopTaggerInclusive80->setProperty( "IsMC", config->isMC()), "Failed to set property for ConfigFile" );
     top::check(m_topoTopTagger80->setProperty( "ConfigFile",   "TopoclusterTopTagger/TopoclusterTopTagger_AntiKt10LCTopoTrimmed_TopQuark_MC15c_20170511_ptweighted80Eff.dat"), "Failed to set property for ConfigFile");
 
     top::check(m_smoothedTopTaggerMT80->initialize(), "Initializing failed");
@@ -154,10 +158,9 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         }
     }
 #endif
-
+    SetTopTaggingWPs(m_TopTaggingWP);
     if (m_config->doTopParticleLevel() && particleLevelTreeManager()) {
         auto partTree = particleLevelTreeManager();
-        partTree->makeOutputVariable(m_part_ljet_tau32, "ljet_tau32");
         partTree->makeOutputVariable(m_part_ljet_tau32_wta, "ljet_tau32_wta");
     }
 
@@ -264,9 +267,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_ljet_good, "ljet_good");
         systematicTree->makeOutputVariable(m_ljet_notgood, "ljet_notgood");
 
-        systematicTree->makeOutputVariable(m_ljet_tau32, "ljet_tau32");
         systematicTree->makeOutputVariable(m_ljet_tau32_wta, "ljet_tau32_wta");
-        systematicTree->makeOutputVariable(m_ljet_tau21, "ljet_tau21");
         systematicTree->makeOutputVariable(m_ljet_tau21_wta, "ljet_tau21_wta");
 #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
         systematicTree->makeOutputVariable(m_ljet_ECF1, "ljet_ECF1");
@@ -286,16 +287,26 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_ljet_good_smooth_qt80, "ljet_good_smooth_qt80");
         systematicTree->makeOutputVariable(m_ljet_good_smooth_qt50, "ljet_good_smooth_qt50");
         systematicTree->makeOutputVariable(m_ljet_good_bdt80, "ljet_good_bdt80");
-        for (auto &tagger : m_taggers) {
+        for (auto &tagger : m_toptagging) {
             systematicTree->makeOutputVariable(tagger.second.TaggerAccept, tagger.second.TaggerBranchName);
             if (!tagger.second.TaggerScoreBranchName.empty()) {
                 systematicTree->makeOutputVariable(tagger.second.TaggerScore, tagger.second.TaggerScoreBranchName);
+            }
+            if (!tagger.second.TaggerSFBranchName.empty()) {
+                systematicTree->makeOutputVariable(tagger.second.TaggerSF, tagger.second.TaggerSFBranchName);
+            }
+            if (!tagger.second.TaggerSFVarsBranchName1Up.empty()) {
+                systematicTree->makeOutputVariable(tagger.second.TaggerSFVars1Up, tagger.second.TaggerSFVarsBranchName1Up);
+            }
+            if (!tagger.second.TaggerSFVarsBranchName1Down.empty()) {
+                systematicTree->makeOutputVariable(tagger.second.TaggerSFVars1Down, tagger.second.TaggerSFVarsBranchName1Down);
             }
         }
         systematicTree->makeOutputVariable(m_ljet_good_topo80, "ljet_good_topo80");
         systematicTree->makeOutputVariable(m_ljet_bdt_score,   "ljet_BDTTopTag_score");
         systematicTree->makeOutputVariable(m_ljet_topo_score,   "ljet_topoDNNTopTag_score");
         systematicTree->makeOutputVariable(m_ljet_angular_cuts, "ljet_angular_cuts"); // large-R jet angular cuts
+        systematicTree->makeOutputVariable(m_ljet_label, "ljet_label");
         //track jet b-tagging variables
         systematicTree->makeOutputVariable(m_tjet_mv2rmu,  "tjet_MV2rmu");
         systematicTree->makeOutputVariable(m_tjet_mv2r,  "tjet_MV2r");
@@ -439,7 +450,6 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
             systematicTree->makeOutputVariable(m_akt10truthjet_eta, "akt10truthjet_eta");
             systematicTree->makeOutputVariable(m_akt10truthjet_phi, "akt10truthjet_phi");
             systematicTree->makeOutputVariable(m_akt10truthjet_m,   "akt10truthjet_m");
-            systematicTree->makeOutputVariable(m_akt10truthjet_tau32, "akt10truthjet_tau32");
             systematicTree->makeOutputVariable(m_akt10truthjet_tau32_wta, "akt10truthjet_tau32_wta");
         }
 
@@ -878,13 +888,15 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
 
 void TtresEventSaverFlatNtuple::saveParticleLevelEvent(const top::ParticleLevelEvent& event) {
     if ( m_config->useTruthLargeRJets() ) {
-        m_part_ljet_tau32.resize(event.m_largeRJets->size());
+
         m_part_ljet_tau32_wta.resize(event.m_largeRJets->size());
 
         int i = 0;
         for (const auto & jetPtr : * event.m_largeRJets) {
-            try { m_part_ljet_tau32[i] = jetPtr->getAttribute<float>("Tau3") / jetPtr->getAttribute<float>("Tau2"); } catch (...) { }
-            try { m_part_ljet_tau32_wta[i] = jetPtr->getAttribute<float>("Tau3_wta") / jetPtr->getAttribute<float>("Tau2_wta"); } catch (...) { }
+            static const SG::AuxElement::ConstAccessor<float> acc_ljet_Tau3_wta("Tau3_wta");
+            static const SG::AuxElement::ConstAccessor<float> acc_ljet_Tau2_wta("Tau2_wta");
+            static const SG::AuxElement::ConstAccessor<float> acc_ljet_Tau32_wta("Tau32_wta");
+            m_part_ljet_tau32_wta[i] = acc_ljet_Tau32_wta.isAvailable(*jetPtr) ? acc_ljet_Tau32_wta(*jetPtr) : acc_ljet_Tau3_wta(*jetPtr) / acc_ljet_Tau2_wta(*jetPtr);
             ++i;
         }
     }
@@ -893,10 +905,9 @@ void TtresEventSaverFlatNtuple::saveParticleLevelEvent(const top::ParticleLevelE
 }
 
 void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
+
     //calculate our extra variable:
-#ifdef ENABLE_BTAG_DEBUG
-    std::cout << "DEBUG: TtresEventSaverFlatNtuple::saveEvent" << std::endl;
-#endif
+
     const xAOD::JetContainer* trackjets = &(event.m_trackJets);
     m_lumiblock = event.m_info->lumiBlock();
     int hadtop_index = -1;
@@ -1048,7 +1059,6 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
     // ---------  ################## -------- //
     int i = 0;
-
     //flag for the tight leptons in the nominal ttree
 
     m_el_isTight.resize(event.m_electrons.size());
@@ -1070,8 +1080,16 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     }
 
     calculateWjets(event);
-    i = 0;
-    size_t largeJets_size = event.m_largeJets.size();
+
+    //large-R jets
+    static const SG::AuxElement::ConstAccessor<int> acc_ljet_FatjetTruthLabel("FatjetTruthLabel");
+    static const SG::AuxElement::ConstAccessor<float> acc_ljet_Tau3_wta("Tau3_wta");
+    static const SG::AuxElement::ConstAccessor<float> acc_ljet_Tau2_wta("Tau2_wta");
+    static const SG::AuxElement::ConstAccessor<float> acc_ljet_Tau1_wta("Tau1_wta");
+    static const SG::AuxElement::ConstAccessor<float> acc_ljet_Tau32_wta("Tau32_wta");
+    static const SG::AuxElement::ConstAccessor<float> acc_ljet_Tau21_wta("Tau21_wta");
+
+    const size_t largeJets_size = event.m_largeJets.size();
     m_ljet_ghosttrackjet_idx.resize(largeJets_size, std::vector<int>());
     m_ljet_nghosttrackjet.resize(largeJets_size, 0);
     m_ljet_nghosttrackjetb.resize(largeJets_size, 0);
@@ -1090,12 +1108,23 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     m_ljet_good_smooth_qt80.resize(largeJets_size);
     m_ljet_good_smooth_qt50.resize(largeJets_size);
     m_ljet_good_bdt80.resize(largeJets_size);
-    for (auto& tagger : m_taggers) {
-        tagger.second.TaggerAccept.clear();
-        tagger.second.TaggerAccept.resize(largeJets_size);
+    for (auto & tagger : m_toptagging) {
+        tagger.second.TaggerAccept.assign(largeJets_size, 0);
         if (!tagger.second.TaggerScoreBranchName.empty()) {
-            tagger.second.TaggerScore.clear();
-            tagger.second.TaggerScore.resize(largeJets_size);
+            tagger.second.TaggerScore.assign(largeJets_size, 0);
+        }
+        if (!tagger.second.TaggerSFBranchName.empty()) {
+            tagger.second.TaggerSF.assign(largeJets_size, 1);
+        }
+        if (!tagger.second.TaggerSFVarsBranchName1Up.empty()) {
+            for (auto & SFVars : tagger.second.TaggerSFVars1Up) {
+                SFVars.assign(largeJets_size, 1);
+            }
+        }
+        if (!tagger.second.TaggerSFVarsBranchName1Down.empty()) {
+            for (auto & SFVars : tagger.second.TaggerSFVars1Down) {
+                SFVars.assign(largeJets_size, 1);
+            }
         }
     }
     m_ljet_good_topo80.resize(largeJets_size);
@@ -1104,10 +1133,9 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
     m_ljet_good.resize(largeJets_size);
     m_ljet_notgood.resize(largeJets_size);
-    m_ljet_tau32.resize(largeJets_size);
     m_ljet_tau32_wta.resize(largeJets_size);
-    m_ljet_tau21.resize(largeJets_size);
     m_ljet_tau21_wta.resize(largeJets_size);
+    m_ljet_label.resize(largeJets_size);
 #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
     m_ljet_D2.resize(largeJets_size);
     m_ljet_C2.resize(largeJets_size);
@@ -1118,12 +1146,11 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 #endif
     m_ljtmatch = 0;
     m_ljet_angular_cuts.resize(largeJets_size);
-    for (const auto* const jetPtr : event.m_largeJets) {
+
+    for ( const auto* const jetPtr : event.m_largeJets ) {
         m_ljet_good[i] = 0;
         m_ljet_notgood[i] = 0;
-        m_ljet_tau32[i] = 0;
         m_ljet_tau32_wta[i] = 0;
-        m_ljet_tau21[i] = 0;
         m_ljet_tau21_wta[i] = 0;
         m_ljet_ghosttrackjet_idx[i].clear();
 //===================== By Elham ===============================================
@@ -1161,11 +1188,11 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             if (m_smoothedTopTaggerQT80->tag(*jetPtr)) good_smooth_qt80 = 1;
             if (m_smoothedTopTaggerQT50->tag(*jetPtr)) good_smooth_qt50 = 1;
             if (m_bdtTopTagger80->tag(*jetPtr)) good_bdt_80 = 1;
-            if (!jetPtr->isAvailable<int>(m_taggers["DNNContained80"].TaggerDecorationName)) {
-                jetPtr->auxdecor<int>(m_taggers["DNNContained80"].TaggerDecorationName) = m_dnnTopTaggerContained80->tag(*jetPtr);
+            if (!jetPtr->isAvailable<int>(m_toptagging["DNNContained80"].TaggerDecorationName)) {
+                jetPtr->auxdecor<int>(m_toptagging["DNNContained80"].TaggerDecorationName) = m_dnnTopTaggerContained80->tag(*jetPtr);
             }
-            if (!jetPtr->isAvailable<int>(m_taggers["DNNInclusive80"].TaggerDecorationName)) {
-                jetPtr->auxdecor<int>(m_taggers["DNNInclusive80"].TaggerDecorationName) = m_dnnTopTaggerInclusive80->tag(*jetPtr);
+            if (!jetPtr->isAvailable<int>(m_toptagging["DNNInclusive80"].TaggerDecorationName)) {
+                jetPtr->auxdecor<int>(m_toptagging["DNNInclusive80"].TaggerDecorationName) = m_dnnTopTaggerInclusive80->tag(*jetPtr);
             }
             if (m_topoTopTagger80->tag(*jetPtr)) good_topo_80 = 1;
         }
@@ -1181,14 +1208,51 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         if (good_bdt_80) m_ljet_good_bdt80[i] = good_bdt_80;
         if (good_topo_80) m_ljet_good_topo80[i] = good_topo_80;
         if (jetPtr->isAvailable<float>("BDTTaggerTopQuark80_Score")) m_ljet_bdt_score[i] = jetPtr->auxdata<float>("BDTTaggerTopQuark80_Score");
-        for (auto &tagger : m_taggers) {
+
+        xAOD::Jet* jetCopyPtr = new xAOD::Jet(); // making copies of large-R jets are necessary in order to apply top-tagging SF correction
+
+        for (auto& tagger : m_toptagging) {
+            const std::string WP = tagger.first;
             if (jetPtr->isAvailable<int>(tagger.second.TaggerDecorationName)) {
                 tagger.second.TaggerAccept[i] = jetPtr->auxdecor<int>(tagger.second.TaggerDecorationName);
-                if (!tagger.second.TaggerScoreBranchName.empty()) tagger.second.TaggerScore[i] = jetPtr->auxdata<float>(tagger.second.TaggerScoreName);
-            } else {
-                tagger.second.TaggerAccept[i] = 0;
+                if (!tagger.second.TaggerScoreBranchName.empty()) {
+                    tagger.second.TaggerScore[i] = jetPtr->auxdata<float>(tagger.second.TaggerScoreName);
+                }
+                if (!tagger.second.TaggerSFBranchName.empty()) {
+                    tagger.second.TaggerSF[i] = jetPtr->auxdata<float>(tagger.second.TaggerSFName);
+                    if ( m_toptaggingUncTools.count(WP) ) {
+                        ToolHandle<ICPJetUncertaintiesTool>& toptaggingUnc = m_toptaggingUncTools[WP];
+                        if ( jetPtr->pt() > 350e3 && fabs(jetPtr->eta()) < 2.0 && tagger.second.TaggerAccept[i] ) {
+                            bool validForUncTool = jetPtr->pt() < 4000e3;
+                            validForUncTool &= (jetPtr->m() / jetPtr->pt() >= 0 && jetPtr->m() / jetPtr->pt() <= 1);
+                            // std::cout << "Nominal SF=" << tagger.second.TaggerSF[i] << " truthLabel=" << m_ljet_label[i] << " (1: t->qqb)" << std::endl;
+                            unsigned syst_i = 0;
+                            if ( validForUncTool ) {
+                                for ( const CP::SystematicSet sysSet : tagger.second.SystematicSets1Up ) {
+                                    top::check(toptaggingUnc->applySystematicVariation(sysSet), "apply top-tagging systematics fail!");
+                                    *jetCopyPtr = *jetPtr;
+                                    top::check(toptaggingUnc->applyCorrection(*jetCopyPtr), "retrieve top-tagging systematics SF fail!");
+                                    tagger.second.TaggerSFVars1Up[syst_i][i] = jetCopyPtr->auxdata<float>(tagger.second.TaggerSFName);
+                                    // std::cout << sysSet.name() << " " << tagger.second.TaggerSFVars1Up[syst_i][i] << std::endl;
+                                    syst_i += 1;
+                                }
+                                syst_i = 0;
+                                for ( const CP::SystematicSet sysSet : tagger.second.SystematicSets1Down ) {
+                                    top::check(toptaggingUnc->applySystematicVariation(sysSet), "apply top-tagging systematics fail!");
+                                    *jetCopyPtr = *jetPtr;
+                                    top::check(toptaggingUnc->applyCorrection(*jetCopyPtr), "retrieve top-tagging systematics SF fail!");
+                                    tagger.second.TaggerSFVars1Down[syst_i][i] = jetCopyPtr->auxdata<float>(tagger.second.TaggerSFName);
+                                    // std::cout << sysSet.name() << " " << tagger.second.TaggerSFVars1Down[syst_i][i] << std::endl;
+                                    syst_i += 1;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
+
+        delete jetCopyPtr;
         if (jetPtr->isAvailable<float>("TopotaggerTopQuark80_Score")) m_ljet_topo_score[i] = jetPtr->auxdata<float>("TopotaggerTopQuark80_Score");
         if (jetPtr->isAvailable<int> ("angular_cuts")) m_ljet_angular_cuts[i] = jetPtr->auxdecor<int>("angular_cuts");
 
@@ -1207,11 +1271,10 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                 if (jetPtr->pt() > max_pt) {max_pt = jetPtr->pt(); hadtop_index = i;}
             }
         } catch (...) { }
-        try { m_ljet_tau32[i] = jetPtr->getAttribute<float>("Tau3") / jetPtr->getAttribute<float>("Tau2"); } catch (...) { }
-        try { m_ljet_tau32_wta[i] = jetPtr->getAttribute<float>("Tau3_wta") / jetPtr->getAttribute<float>("Tau2_wta"); } catch (...) { }
-        //        try { m_ljet_tau32_wta[i] = jetPtr->getAttribute<float>("Tau32_wta"); } catch (...) { try { m_ljet_tau32_wta[i] = jetPtr->getAttribute<float>("Tau3_wta")/jetPtr->getAttribute<float>("Tau2_wta"); } catch (...) { } }
-        try { m_ljet_tau21[i] = jetPtr->getAttribute<float>("Tau2") / jetPtr->getAttribute<float>("Tau1"); } catch (...) { }
-        try { m_ljet_tau21_wta[i] = jetPtr->getAttribute<float>("Tau2_wta") / jetPtr->getAttribute<float>("Tau1_wta"); } catch (...) { }
+
+        m_ljet_tau32_wta[i] = acc_ljet_Tau32_wta.isAvailable(*jetPtr) ? acc_ljet_Tau32_wta(*jetPtr) : acc_ljet_Tau3_wta(*jetPtr) / acc_ljet_Tau2_wta(*jetPtr);
+        m_ljet_tau21_wta[i] = acc_ljet_Tau21_wta.isAvailable(*jetPtr) ? acc_ljet_Tau21_wta(*jetPtr) : acc_ljet_Tau2_wta(*jetPtr) / acc_ljet_Tau1_wta(*jetPtr);
+        m_ljet_label[i] = acc_ljet_FatjetTruthLabel.isAvailable(*jetPtr) ? (int) acc_ljet_FatjetTruthLabel(*jetPtr) : -999;
 #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
         try { m_ljet_ECF1[i] = jetPtr->getAttribute<float>("ECF1"); } catch (...) { }
         try { m_ljet_ECF2[i] = jetPtr->getAttribute<float>("ECF2"); } catch (...) { }
@@ -1272,7 +1335,6 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         ++i;
     }
 
-
     m_tjet_mv2rmu.resize(event.m_trackJets.size());
     m_tjet_mv2r.resize(event.m_trackJets.size());
     m_tjet_dl1_pu.resize(event.m_trackJets.size());
@@ -1327,8 +1389,6 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             ++i;
         }
     }
-
-
 
     if (m_runHtt) {
         // Execute HTT
@@ -1986,7 +2046,6 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             m_akt10truthjet_eta.resize(akt10truthjets->size());
             m_akt10truthjet_phi.resize(akt10truthjets->size());
             m_akt10truthjet_m.resize(akt10truthjets->size());
-            m_akt10truthjet_tau32.resize(akt10truthjets->size());
             m_akt10truthjet_tau32_wta.resize(akt10truthjets->size());
             // setup extra branches here
 
@@ -1998,8 +2057,11 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                 m_akt10truthjet_eta[i] = akt10truthjetPtr->eta();
                 m_akt10truthjet_phi[i] = akt10truthjetPtr->phi();
                 m_akt10truthjet_m[i] = akt10truthjetPtr->m();
-                try { m_akt10truthjet_tau32[i] = akt10truthjetPtr->auxdata<float>("Tau3") / akt10truthjetPtr->auxdata<float>("Tau2"); } catch (...) { }
-                try { m_akt10truthjet_tau32_wta[i] = akt10truthjetPtr->auxdata<float>("Tau3_wta") / akt10truthjetPtr->auxdata<float>("Tau2_wta"); } catch (...) { }
+                if (acc_ljet_Tau32_wta.isAvailable(*akt10truthjetPtr)) {
+                    m_akt10truthjet_tau32_wta[i] = acc_ljet_Tau32_wta(*akt10truthjetPtr);
+                } else if (acc_ljet_Tau3_wta.isAvailable(*akt10truthjetPtr) && acc_ljet_Tau2_wta.isAvailable(*akt10truthjetPtr) ) {
+                    m_akt10truthjet_tau32_wta[i] = acc_ljet_Tau3_wta(*akt10truthjetPtr) / acc_ljet_Tau2_wta(*akt10truthjetPtr);
+                }
                 // do dr matching here
                 ++i;
             }
@@ -2533,46 +2595,95 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 void TtresEventSaverFlatNtuple::SetTopTaggingWPs(const std::vector<std::string> WPs) {
     for (auto taggingWP : WPs) {
         std::cout << "INFO: " << taggingWP << std::endl;
+        JetUncertaintiesTool* jetUncToolSF = nullptr;
+        std::string WP = "";
         if (taggingWP.compare("DNNTOPTAG_CONTAINED80") == 0) {
-            m_taggers["DNNContained80"] = {"DNNTaggerTopQuarkContained80", "ljet_good_dnn_contained80", {},
-                                           "DNNTaggerTopQuarkContained80_Score", "ljet_DNNContainedTopTag_score", {}
-                                          };
+            WP = "DNNContained80";
+            jetUncToolSF = new JetUncertaintiesTool("JetUncertaintiesTool_DNNTaggerTopQuarkContained80");
+            m_toptagging[WP] = {"DNNTaggerTopQuarkContained80", "ljet_good_dnn_contained80", {},
+                                "DNNTaggerTopQuarkContained80_Score", "ljet_DNNContainedTopTag_score", {},
+                                "DNNTaggerTopQuarkContained80_SF", "ljet_topTagSF_dnn_contained80", {}
+                               };
+
+            top::check(jetUncToolSF->setProperty("ConfigFile", "rel21/Summer2019/R10_SF_LC_DNNContained80_TopTag.config"), "Failed to set property for ConfigFile");
         } else if (taggingWP.compare("DNNTOPTAG_CONTAINED50") == 0) {
-            m_taggers["DNNContained50"] = {"DNNTaggerTopQuarkContained50", "ljet_good_dnn_contained50", {},
-                                           "", "", {}
-                                          };
+            WP = "DNNContained50";
+            // jetUncToolSF = new JetUncertaintiesTool("JetUncertaintiesTool_DNNTaggerTopQuarkContained50");
+            m_toptagging[WP] = {"DNNTaggerTopQuarkContained50", "ljet_good_dnn_contained50", {},
+                                "DNNTaggerTopQuarkContained50_Score", "", {}, // Note that TopQuarkContained50 shares the same score with TopQuarkContained80. This is not a typo!!!
+                                // "DNNTaggerTopQuarkContained50_SF", "ljet_topTagSF_dnn_contained50", {}
+                               };
+            // top::check(jetUncToolSF->setProperty("ConfigFile", "TagSFUncert_JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_50Eff.config"), "Failed to set property for ConfigFile");
         } else if (taggingWP.compare("DNNTOPTAG_INCLUSIVE80") == 0) {
-            m_taggers["DNNInclusive80"] = {"DNNTaggerTopQuarkInclusive80", "ljet_good_dnn_inclusive80", {},
-                                           "DNNTaggerTopQuarkInclusive80_Score", "ljet_DNNInclusiveTopTag_score", {}
-                                          };
+            WP = "DNNInclusive80";
+            // jetUncToolSF = new JetUncertaintiesTool("JetUncertaintiesTool_DNNTaggerTopQuarkInclusive80");
+            m_toptagging[WP] = {"DNNTaggerTopQuarkInclusive80", "ljet_good_dnn_inclusive80", {},
+                                "DNNTaggerTopQuarkInclusive80_Score", "ljet_DNNInclusiveTopTag_score", {},
+                                // "DNNTaggerTopQuarkInclusive80_SF", "ljet_topTagSF_dnn_inclusive80", {}
+                               };
+            // top::check(jetUncToolSF->setProperty("ConfigFile", "TagSFUncert_JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkInclusive_80Eff.config"), "Failed to set property for ConfigFile");
         } else if (taggingWP.compare("DNNTOPTAG_INCLUSIVE50") == 0) {
-            m_taggers["DNNInclusive50"] = {"DNNTaggerTopQuarkInclusive50", "ljet_good_dnn_inclusive50", {},
-                                           "", "", {}
-                                          };
+            WP = "DNNInclusive50";
+            // jetUncToolSF = new JetUncertaintiesTool("JetUncertaintiesTool_DNNTaggerTopQuarkInclusive50");
+            m_toptagging[WP] = {"DNNTaggerTopQuarkInclusive50", "ljet_good_dnn_inclusive50", {},
+                                "DNNTaggerTopQuarkInclusive50_Score", "", {},
+                                // "DNNTaggerTopQuarkInclusive50_SF", "ljet_topTagSF_dnn_inclusive50", {}
+                               };
+            // top::check(jetUncToolSF->setProperty("ConfigFile", "TagSFUncert_JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkInclusive_50Eff.config"), "Failed to set property for ConfigFile");
         } else if (taggingWP.compare("DNNTOPTAG_TTRES0L0B") == 0) {
-            m_taggers["DNNTtres0L0B"] = {"DNNTaggerTopQuarkContainedTtres0L0B", "ljet_good_dnn_ttres0l0b", {},
-                                         "DNNTaggerTopQuarkTtres0L0B_Score", "ljet_DNNContainedTopTagRel207_score", {}
-                                        };
+            WP = "DNNTtres0L0B";
+            m_toptagging[WP] = {"DNNTaggerTopQuarkContainedTtres0L0B", "ljet_good_dnn_ttres0l0b", {},
+                                "DNNTaggerTopQuarkTtres0L0B_Score", "ljet_DNNContainedTopTagRel207_score", {}
+                               };
         } else if (taggingWP.compare("DNNTOPTAG_TTRES0L1B") == 0) {
-            m_taggers["DNNTtres0L1B"] = {"DNNTaggerTopQuarkContainedTtres0L1B", "ljet_good_dnn_ttres0l1b", {},
-                                         "DNNTaggerTopQuarkTtres0L1B_Score", "ljet_DNNContainedTopTagRel207_score", {}
-                                        };
+            WP = "DNNTtres0L1B";
+            m_toptagging[WP] = {"DNNTaggerTopQuarkContainedTtres0L1B", "ljet_good_dnn_ttres0l1b", {},
+                                "DNNTaggerTopQuarkTtres0L1B_Score", "ljet_DNNContainedTopTagRel207_score", {}
+                               };
         } else if (taggingWP.compare("DNNTOPTAG_TTRES0L2B") == 0) {
-            m_taggers["DNNTtres0L2B"] = {"DNNTaggerTopQuarkContainedTtres0L2B", "ljet_good_dnn_ttres0l2b", {},
-                                         "DNNTaggerTopQuarkTtres0L2B_Score", "ljet_DNNContainedTopTagRel207_score", {}
-                                        };
+            WP = "DNNTtres0L2B";
+            m_toptagging[WP] = {"DNNTaggerTopQuarkContainedTtres0L2B", "ljet_good_dnn_ttres0l2b", {},
+                                "DNNTaggerTopQuarkTtres0L2B_Score", "ljet_DNNContainedTopTagRel207_score", {}
+                               };
         } else if (taggingWP.find("DNNTOPTAG_TTRES1L") == 0) {
             size_t pos = taggingWP.find("EFF");
             std::string eff = taggingWP.substr(pos - 2, 2);
-            m_taggers["DNNTtres1L" + eff + "Eff"] = {"DNNTaggerTopQuarkContainedTtres1L" + eff + "Eff", "ljet_good_dnn_ttres1l" + eff + "eff", {},
-                                                     "DNNTaggerTopQuarkTtres1L" + eff + "Eff_Score", "ljet_DNNContainedTopTagRel207_score", {}
-                                                    };
+            WP = "DNNTtres1L" + eff + "Eff";
+            m_toptagging[WP] = {"DNNTaggerTopQuarkContainedTtres1L" + eff + "Eff", "ljet_good_dnn_ttres1l" + eff + "eff", {},
+                                "DNNTaggerTopQuarkTtres1L" + eff + "Eff_Score", "ljet_DNNContainedTopTagRel207_score", {}
+                               };
         } else {
             std::stringstream errMsg;
             errMsg << "TopTagging WP: " << "\"" << taggingWP << "\"" << " is not available!";
             throw std::invalid_argument(errMsg.str());
         }
+        if (jetUncToolSF != nullptr) {
+            m_toptagging[WP].TaggerSFVarsBranchName1Up = m_toptagging[WP].TaggerSFBranchName + "_effvars__1up";
+            m_toptagging[WP].TaggerSFVarsBranchName1Down = m_toptagging[WP].TaggerSFBranchName + "_effvars__1down";
+            top::check(jetUncToolSF->setProperty("JetDefinition", "AntiKt10LCTopoTrimmedPtFrac5SmallR20"), "Failed to set property for ConfigFile");
+            top::check(jetUncToolSF->setProperty("IsData"       , !m_config->isMC()), "Failed to set property for ConfigFile");
+            top::check(jetUncToolSF->setProperty("MCType"       , "MC16"), "Failed to set property for ConfigFile");
+            top::check(jetUncToolSF->initialize(), "Failed to initialize");
+            m_toptaggingUncTools[WP] = jetUncToolSF;
+            CP::SystematicSet jetUnc_sysSet = jetUncToolSF->recommendedSystematics();
+            const std::set<std::string> sysNames = jetUnc_sysSet.getBaseNames();
+            for (const std::string sysName : sysNames) {
+                m_toptagging[WP].SystematicSets1Up.push_back(CP::SystematicSet(sysName + "__1up"));
+                m_toptagging[WP].TaggerSFVars1Up.push_back({});
+                m_toptagging[WP].SystematicSets1Down.push_back(CP::SystematicSet(sysName + "__1down"));
+                m_toptagging[WP].TaggerSFVars1Down.push_back({});
+            }
+        }
     }
+    if (!m_config->isMC()) {
+        for (auto &tagger : m_toptagging) {
+            tagger.second.TaggerSFName = "";
+            tagger.second.TaggerSFBranchName = "";
+            tagger.second.TaggerSFVarsBranchName1Up = "";
+            tagger.second.TaggerSFVarsBranchName1Down = "";
+        }
+    }
+
 }
 
 void TtresEventSaverFlatNtuple::DeltaR_min(TLorentzVector p1, TLorentzVector p2, int i, float & tmp_dr, int & truth_idx) {
@@ -2585,7 +2696,7 @@ void TtresEventSaverFlatNtuple::DeltaR_min(TLorentzVector p1, TLorentzVector p2,
 
 }//DeltaR_min
 
-void TtresEventSaverFlatNtuple::MA_eParton_reco(const top::Event& event, TLorentzVector parton_e, int & reco_idx, float & reco_dr, float criteria) {
+void TtresEventSaverFlatNtuple::MA_eParton_reco(const top::Event & event, TLorentzVector parton_e, int & reco_idx, float & reco_dr, float criteria) {
 
     float tmp_idx = -1;
     float tmp_dr  = criteria;
@@ -2614,7 +2725,7 @@ void TtresEventSaverFlatNtuple::MA_eParton_reco(const top::Event& event, TLorent
 
 }//PartonRecoLeptonMA_e
 
-void TtresEventSaverFlatNtuple::MA_muParton_reco(const top::Event& event, TLorentzVector parton_mu, int & reco_idx, float & reco_dr, float criteria) {
+void TtresEventSaverFlatNtuple::MA_muParton_reco(const top::Event & event, TLorentzVector parton_mu, int & reco_idx, float & reco_dr, float criteria) {
 
     float tmp_idx = -1;
     float tmp_dr  = criteria;
@@ -2698,7 +2809,7 @@ TLorentzVector * TtresEventSaverFlatNtuple::MA_nuParton_met(TLorentzVector * met
 }//PartonRecoLeptonMA_mu
 
 
-void TtresEventSaverFlatNtuple::TLorentzFill(const TLorentzVector& p1, float & mass, float & pt, float & eta, float & phi) {
+void TtresEventSaverFlatNtuple::TLorentzFill(const TLorentzVector & p1, float & mass, float & pt, float & eta, float & phi) {
 
     mass  = p1.M();
     pt    = p1.Pt();
@@ -2707,7 +2818,7 @@ void TtresEventSaverFlatNtuple::TLorentzFill(const TLorentzVector& p1, float & m
 
 }//partonFill
 
-void TtresEventSaverFlatNtuple::MA_truthjet_recojet(const top::Event& event, const xAOD::Jet* trueJet, float & reco_dr, int & reco_idx, float & pt, float & eta, float & phi, float & mass, float criteria, bool useFatJet) {
+void TtresEventSaverFlatNtuple::MA_truthjet_recojet(const top::Event & event, const xAOD::Jet * trueJet, float & reco_dr, int & reco_idx, float & pt, float & eta, float & phi, float & mass, float criteria, bool useFatJet) {
 
 
     TLorentzVector akttruthjets_p4 = trueJet->p4();
@@ -3647,7 +3758,7 @@ void TtresEventSaverFlatNtuple::IniVariables() {
 
 }//IniVariables
 
-void TtresEventSaverFlatNtuple::calculateWjets(const top::Event &event) {
+void TtresEventSaverFlatNtuple::calculateWjets(const top::Event & event) {
 
     ////////////////////////////////////////////////////// W+jets
     // ################################################################
@@ -4197,12 +4308,13 @@ void TtresEventSaverFlatNtuple::calculateWjets(const top::Event &event) {
     } //if isSherpaW
 }
 
-int TtresEventSaverFlatNtuple::FindInVector(vector<int>& v, int x) {
-    std::vector<int>::iterator it = find(v.begin(), v.end(), x);
+template <typename T>
+int TtresEventSaverFlatNtuple::FindInVector(vector<T>& v, T x) {
+    typename std::vector<T>::iterator it = find(v.begin(), v.end(), x);
     int index = (it != v.end()) ? distance(v.begin(), it) : -1;
     return index;
 }
-void TtresEventSaverFlatNtuple::PrintME(const xAOD::TruthParticle* mcPtr, int depth, int maxDepth) {
+void TtresEventSaverFlatNtuple::PrintME(const xAOD::TruthParticle * mcPtr, int depth, int maxDepth) {
     if (depth > maxDepth) return;
     std::cout << "[" << depth << "]" << " id=" << mcPtr->pdgId() << " st=" << mcPtr->status() << " bc=" << mcPtr->barcode() << ", E=" << mcPtr->e() / 1000. << " GeV" << std::endl;
     if (mcPtr->nParents()) cout << "  parents:";
@@ -4218,7 +4330,7 @@ void TtresEventSaverFlatNtuple::PrintME(const xAOD::TruthParticle* mcPtr, int de
     }
     if (mcPtr->nChildren()) cout << endl;
 }
-void TtresEventSaverFlatNtuple::FillME(const xAOD::TruthParticleContainer* truthparticles, const xAOD::TruthEventContainer* truthevents) {
+void TtresEventSaverFlatNtuple::FillME(const xAOD::TruthParticleContainer * truthparticles, const xAOD::TruthEventContainer * truthevents) {
     // Find the indices of the ME participants
     TMapTSiarr mebarcodes;
     vector<int> vtmp;
@@ -4319,7 +4431,7 @@ void TtresEventSaverFlatNtuple::dumpToolConfig(std::string fname) {
     std::cout.rdbuf(coutbuf);
 }
 
-const std::string& TtresEventSaverFlatNtuple::configValueDefault(const std::string& key, const std::string& default_value) const {
+const std::string& TtresEventSaverFlatNtuple::configValueDefault(const std::string & key, const std::string & default_value) const {
     // To be nice to other analysis, I think it is neccessary to give those dynamic keys a default value so that it behave like vanilla AnalysisTop,
     //  and don't throw non-neccessary errors.
     try {

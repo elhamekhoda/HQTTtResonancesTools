@@ -5,9 +5,26 @@ from itertools import islice
 import ROOT
 from TopExamples.grid import *
 from HQTTtResonancesTools import clusters
+import logging
+# logging.captureWarnings(True)
+msgfmt = '%(asctime)s %(levelname)-7s %(name)-35s %(message)s'
+datefmt = '%H:%M:%S'
 
-def get_fct(logger = None):
-    if logger == None:
+def getLogger(name = None, level = logging.DEBUG):
+    mlogger = logging.getLogger(name)
+    try:
+        import coloredlogs
+        coloredlogs.install(logger = mlogger, level = level, fmt = msgfmt, datefmt = datefmt)
+    except ImportError:
+        logging.basicConfig(format = msgfmt, datefmt = datefmt)
+        mlogger.setLevel(level)
+    return mlogger
+mlogger = getLogger('top-xaod')
+
+def get_fct(logger = 'logging'):
+    if logger == 'logging':
+        logger = mlogger
+    if logger is None:
         def fct(idle, run, finish):
             l = "Idle: {:3},  Running: {:3},  Completed: {:3}".format(idle, run, finish)
             print l
@@ -18,31 +35,25 @@ def get_fct(logger = None):
     return fct
 
 def create_executable(fname = 'top-xaod.sh'):
-    lines = '''#{SHELL}
+    lines = '''#!{SHELL}
 pwd="$PWD"
 export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase
 source ${{ATLAS_LOCAL_ROOT_BASE}}/user/atlasLocalSetup.sh
 export X509_USER_PROXY=$HOME/.globus/job_proxy.pem
-export TestArea=$1
-cd $TestArea
+cd {TestArea}
 acmSetup
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$4
-# export LD_LIBRARY_PATH=${{WorkDir_DIR}}/lib:$LD_LIBRARY_PATH
-echo $LD_LIBRARY_PATH
 cd $pwd
-lsetup xrootd rucio
-# lsetup pyami rucio -f
-top-xaod $2 $3
-    '''.format(SHELL = os.getenv('SHELL'))
+top-xaod $1 $2'''.format(SHELL = os.getenv('SHELL'), TestArea = os.getenv("TestArea"))
     with open(fname, 'w') as f:
         f.write(lines)
-        subprocess.check_call(['chmod', 'u+x', fname])
+    subprocess.check_call(['chmod', 'u+x', fname])
     return fname
 
-def submit_to_cluster(config, allSamples, to_dir = None, cluster_type = 'condor'):
-    cluster = clusters.from_name[cluster_type](cluster_type = None, cluster_status_update=(600,30), cluster_queue='None')
+def submit_to_cluster(config, allSamples, to_dir = None, cluster = 'condor', max_runtime = 3600*3, wait = True):
+    if isinstance(cluster, basestring):
+        cluster = clusters.from_name[cluster](cluster_type = None, cluster_status_update=(600,30), cluster_queue='None')
     # cluster.cluster_queue = '( OpSysAndVer == "CentOS7")'
-    cluster.max_runtime = 3600 * 12
+    cluster.max_runtime = max_runtime
     checkMergeType(config)
     config.details()
     if not config.skipShowerCheck:
@@ -181,9 +192,7 @@ def submit_to_cluster(config, allSamples, to_dir = None, cluster_type = 'condor'
     print ''
     print logger.OKBLUE + 'Starting submission of %d sample%s' % (len(these), plural) + logger.ENDC
     print ''
-
-    isfirst = True
-
+    exe = create_executable('top-xaod.sh')
     for i, d_concatenated in enumerate(these):
         d = getShortenedConcatenatedSample(d_concatenated) # in case of coma-separated list of samples with same DSID and same first tag of each type
         print logger.OKBLUE + 'Submitting %d of %d' % (i+1, len(these)) + logger.ENDC
@@ -196,20 +205,25 @@ def submit_to_cluster(config, allSamples, to_dir = None, cluster_type = 'condor'
             output = 'user.' + config.gridUsername + '.' + config.nameShortener(d) + '.' + config.suffix
         if to_dir == None:
             to_dir = os.curdir
-        outdir = os.path.join(to_dir, output)
+        outdir = os.path.abspath(os.path.join(to_dir, output))
         logdir = os.path.join(outdir, 'log')
         if not os.path.exists(outdir):
             os.makedirs(outdir)
         if not os.path.exists(logdir):
             os.makedirs(logdir)
         job_id = cluster.get_identifier()
-        for configf, inputsf in dump_inputs(d_concatenated, 'output'+'._{:06d}.input', config.settingsFile, dirname = os.path.relpath(logdir, outdir), rootdir = outdir, n = int(config.maxNFilesPerJob)):
-            cluster.submit2(create_executable('top-xaod.sh'),
-                            [os.getenv('TestArea'), configf, inputsf, os.getenv('LD_LIBRARY_PATH')],
-                            stdout = os.path.join(logdir, 'out.%s' % job_id),
-                            stderr = os.path.join(logdir, 'out.%s' % job_id),
-                            log    = os.path.join(logdir, 'log.%s' % job_id))
-    cluster.wait(None, fct = get_fct())
+        for configf, inputsf in dump_inputs(d_concatenated, 'output'+'._{:06d}.input', config.settingsFile,
+                                            dirname = os.path.relpath(logdir, outdir),
+                                            rootdir = outdir,
+                                            n = int(config.maxNFilesPerJob),
+                                            source = config.source):
+            cluster.submit(exe,
+                           [configf, inputsf],
+                           stdout = os.path.join(logdir, 'out.%s' % job_id),
+                           stderr = os.path.join(logdir, 'out.%s' % job_id),
+                           log    = os.path.join(logdir, 'log.%s' % job_id))
+    if wait:
+        cluster.wait(None, fct = get_fct(mlogger))
 
 
 def split_every(n, iterable):
@@ -219,9 +233,14 @@ def split_every(n, iterable):
         yield piece
         piece = list(islice(i, n))
 
-def dump_inputs(dids, input_f = None, config_f = None, dirname = None, rootdir = None, n = 5, **kwds):
+def dump_inputs(dids, input_f = None, config_f = None, dirname = None, rootdir = None, n = 5, source = 'grid', **kwds):
     sh = ROOT.SH.SampleHandler()
-    ROOT.SH.addGrid(sh, dids)
+    if source != 'grid':
+        ROOT.SH.readFileList(sh, 'sample', source)
+    else:
+        ROOT.SH.addGrid(sh, dids)
+
+    sh.printContent()
     rootdir = rootdir if rootdir != None else os.curdir
     dirname = os.path.join(rootdir, dirname if dirname != None else os.curdir)
     
@@ -229,11 +248,6 @@ def dump_inputs(dids, input_f = None, config_f = None, dirname = None, rootdir =
     config_f_fmt = '{1}{0}{2}'.format('._{:06d}', *os.path.splitext(os.path.basename(config_f)))
     for s in sh:
         for i, f in enumerate(split_every(n, s.makeFileList()), 1):
-            if input_f == None:
-                input_f = dids+'._{:06d}.input'
-            _input_f = os.path.join(dirname, input_f.format(i))
-            with open(_input_f, 'w') as of:
-                of.write('\n'.join(f))
             with open(config_f) as config_of:
                 lines = []
                 outputFilename = 'EMPTY'
@@ -245,12 +259,21 @@ def dump_inputs(dids, input_f = None, config_f = None, dirname = None, rootdir =
                         outputFilename = os.path.join('{outdir}', dname, stem + '._{id:06d}' + ext).format(outdir = rootdir, id = i)
                         l = 'OutputFilename ' + outputFilename + '\n'
                     lines.append(l)
-                if outputFilename == 'EMPTY':
-                    print logger.FAIL + 'OutputFilename not found in ' + configFile + logger.ENDC
-                    sys.exit(1)
-            _config_f = os.path.join(dirname, config_f_fmt).format(i)
+            if outputFilename == 'EMPTY':
+                print logger.FAIL + 'OutputFilename not found in ' + configFile + logger.ENDC
+                sys.exit(1)
+            if os.path.exists(outputFilename):
+                mlogger.info('Output("{}") exists. SKIP!'.format(outputFilename))
+                break
+            else:
+                if input_f == None:
+                    input_f = dids+'._{:06d}.input'
+                _input_f = os.path.join(dirname, input_f.format(i))
+                with open(_input_f, 'w') as of:
+                    of.write('\n'.join(f))
+                _config_f = os.path.join(dirname, config_f_fmt).format(i)
 
-            with open(_config_f, 'w') as of:
-                of.writelines(lines)
-            yield _config_f, _input_f
+                with open(_config_f, 'w') as of:
+                    of.writelines(lines)
+                yield _config_f, _input_f
 

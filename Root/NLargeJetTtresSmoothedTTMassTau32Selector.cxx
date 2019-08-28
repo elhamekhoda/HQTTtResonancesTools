@@ -84,7 +84,11 @@ bool NLargeJetTtresSmoothedTTMassTau32Selector::apply(const top::Event& event) c
 */
 
       //Decorate the jet pointer with the "toptagged" label
-      largeJet->auxdecor<int>("topTagged") = good; 
+        if (!largeJet->isAvailable<int>("topTagged")) {
+            largeJet->auxdecor<int>("topTagged") = good;
+        } else if (good) {
+            largeJet->auxdecor<int>("topTagged") = 1;
+        }
     }
 
     return checkInt(nGoodJets, (int) multiplicity());

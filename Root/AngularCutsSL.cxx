@@ -13,7 +13,7 @@ StatusCode AngularCutsSL::initialize(){
     return StatusCode::SUCCESS;
 }
 
-Root::TAccept AngularCutsSL::tag(const xAOD::Jet& largeJet) const {
+Root::TAccept& AngularCutsSL::tag(const xAOD::Jet& largeJet) const {
     m_accept.clear();
     if ( std::fabs(top::deltaPhi(largeJet, *m_lep)) > 2.3 ) {
         m_accept.setCutResult("deltaPhiHigh", true);

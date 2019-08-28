@@ -43,7 +43,11 @@ namespace top {
           good = 1;
       }
       
-      largeJet->auxdecor<int>("topTagged") = good;
+        if (!largeJet->isAvailable<int>("topTagged")) {
+            largeJet->auxdecor<int>("topTagged") = good;
+        } else if (good) {
+            largeJet->auxdecor<int>("topTagged") = 1;
+        }
     }
     
     return checkInt(nGoodJets, (int) multiplicity());

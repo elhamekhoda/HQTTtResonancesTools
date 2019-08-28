@@ -12,8 +12,10 @@ import HQTTtResonancesTools.cluster
 
 # import HQTTtResonancesTools.Data_EXOT4_rel21
 # import HQTTtResonancesTools.Data_EXOT7_rel21
+import HQTTtResonancesTools.MC16a_EXOT4
 import HQTTtResonancesTools.MC16a_EXOT7
-# import HQTTtResonancesTools.MC16d_EXOT7
+import HQTTtResonancesTools.MC16d_EXOT4
+import HQTTtResonancesTools.MC16d_EXOT7
 
 # Configuration
 user = os.getenv('CERN_USER')
@@ -29,9 +31,10 @@ config.memory          = '2000'
 config.forceSite = 'DESY-HH,AUTO'
 config.maxNFilesPerJob  = '5'
 config.reuseTarBall    =  True
+config.source = 'grid' # can be 'grid' or a name of a text file with file paths inside
 #config.checkPRW = True
-config.suffix = 'SL.20181103.v2'
-config.destSE          = 'DESY-HH_LOCALGROUPDISK'
+config.suffix = 'FH.20190709.v00'
+config.destSE = 'DESY-HH_LOCALGROUPDISK'
 
 if user=='meehan':
     config.suffix          = '20181029_Data1718v0'
@@ -42,20 +45,21 @@ if user=='scalvet':
 
 # Input Samples
 names   = []
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime400']
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime500']
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime750']
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime1000']
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime1250']
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime1500']
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime1750']
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime2000']
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime2250']
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime2500']
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime2750']
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime3000']
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime4000']
-names  += ['MC16_13TeV_25ns_FS_EXOT4_Zprime5000']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime400']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime500']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime750']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime1000']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime1250']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime1500']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime1750']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime2000']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime2250']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime2500']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime2750']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime3000']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime4000']
+names  += ['MC16a_13TeV_25ns_FS_EXOT4_Zprime5000']
+# names  += ['MC16a_13TeV_25ns_FS_EXOT7_Zprime6000']
 
 samples = TopExamples.grid.Samples(names)
 

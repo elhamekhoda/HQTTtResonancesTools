@@ -57,23 +57,23 @@ top::EventSelectorBase* HQTTtResonancesToolsLoader::initTool(const std::string& 
     else if (toolname == "LARGEJETTTRESSTTMT_N")
         return new top::NLargeJetTtresSmoothedTTMassTau32Selector(param);
     else if (toolname == "LJET_DNNTOPTAG_CONTAINED80_N")
-        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "Contained80");
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "Contained80", config);
     else if (toolname == "LJET_DNNTOPTAG_CONTAINED50_N")
-        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "Contained50");
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "Contained50", config);
     else if (toolname == "LJET_DNNTOPTAG_INCLUSIVE80_N")
-        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "Inclusive80");
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "Inclusive80", config);
     else if (toolname == "LJET_DNNTOPTAG_INCLUSIVE50_N")
-        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "Inclusive50");
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "Inclusive50", config);
     else if (toolname == "LJET_DNNTOPTAG_TTRES0L0B_N")
-        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres0L0B");
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres0L0B", config);
     else if (toolname == "LJET_DNNTOPTAG_TTRES0L1B_N")
-        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres0L1B");
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres0L1B", config);
     else if (toolname == "LJET_DNNTOPTAG_TTRES0L2B_N")
-        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres0L2B");
+        return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres0L2B", config);
     else if (toolname.find("LJET_DNNTOPTAG_TTRES1L")==0) {
         std::smatch sm;
         if ( std::regex_match(toolname, sm, std::regex("LJET_DNNTOPTAG_TTRES1L(\\d+)EFF_N")) ) {
-            return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres1L" + sm[1].str() + "Eff");
+            return new top::NLargeJetTtresFHDNNTopTagSelector(param, "ContainedTtres1L" + sm[1].str() + "Eff", config);
         }
     }
     else if (toolname == "LJET_ANYTOPTAG_N")

@@ -890,7 +890,7 @@ class CondorCluster(Cluster):
                   notification = Error
                   Initialdir = %(cwd)s
                   %(requirement)s
-                  getenv=True
+                  getenv=False
                   queue 1
                """
         

@@ -18,36 +18,35 @@ Here we intialize the tool with 80% WP based on mass and tau32
 */
 
 namespace top {
-  
-  NLargeJetTtresSubstructureTopTag80Selector::NLargeJetTtresSubstructureTopTag80Selector(const std::string& params) :
+
+NLargeJetTtresSubstructureTopTag80Selector::NLargeJetTtresSubstructureTopTag80Selector(const std::string& params) :
     SignValueSelector("NLARGEJETTTRESSUBTOPTAG80_N", params, true) {
     checkValueIsInteger();
     //STL = STTHelpers::configSubstTagger("TightSmoothTopTag", "SmoothCut_80");
     STL = STTHelpers::configSubstTagger("LooseSmoothTopTag", "SmoothCut_80");
+}
 
-
-    
-  }
-  
-  bool NLargeJetTtresSubstructureTopTag80Selector::apply(const top::Event& event) const {    
+bool NLargeJetTtresSubstructureTopTag80Selector::apply(const top::Event& event) const {
     //do stuff with large Jets
     int nGoodJets = 0;
     for (const auto* const largeJet : event.m_largeJets) {
-      
-      // pt and eta should already have been applied in object definition
-      // but re-apply just in case it has been lowered for CR studies
-      int good = 0;
-      if (largeJet->pt() > value() && std::fabs(largeJet->eta()) < 2.0 &&
-        STL->isTagged(*largeJet) == true ){
 
-          ++nGoodJets;
-          good = 1;
-      }
-      
-      largeJet->auxdecor<int>("topTagged") = good;
+        // pt and eta should already have been applied in object definition
+        // but re-apply just in case it has been lowered for CR studies
+        int good = 0;
+        if (largeJet->pt() > value() && std::fabs(largeJet->eta()) < 2.0 &&
+            STL->isTagged(*largeJet) == true ) {
+            ++nGoodJets;
+            good = 1;
+        }
+        if (!largeJet->isAvailable<int>("topTagged")) {
+            largeJet->auxdecor<int>("topTagged") = good;
+        } else if (good) {
+            largeJet->auxdecor<int>("topTagged") = 1;
+        }
     }
-    
+
     return checkInt(nGoodJets, (int) multiplicity());
-  }
-  
+}
+
 }
