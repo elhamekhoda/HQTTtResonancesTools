@@ -23,9 +23,7 @@ data18_13TeV/20190708/data18_13TeV.periodAllYear_DetStatus-v105-pro22-13_Unknown
 # MC16a configuration to compare with 2015-16
 PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root
 PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root
-PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20190708/ilumicalc_histograms_None_276262-284484_OflLumi-13TeV-010.root 
-GoodRunsLists/
-data16_13TeV/20190708/ilumicalc_histograms_None_297730-311481_OflLumi-13TeV-010.root
+PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20190708/ilumicalc_histograms_None_276262-284484_OflLumi-13TeV-010.root GoodRunsLists/data16_13TeV/20190708/ilumicalc_histograms_None_297730-311481_OflLumi-13TeV-010.root
 
 # MC16d configuration to compare with 2017-only
 #PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
@@ -99,7 +97,7 @@ BTaggingWP MV2c10:FixedCutBEff_70 DL1:FixedCutBEff_70
 
 
 JetUncertainties_NPModel GlobalReduction
-#LargeRJESUncertaintyConfig TopTagging
+#LargeRJetUncertainties_NPModel CategoryReduction # insitu calibration
 JetUncertainties_BunchSpacing 25ns
 
 ElectronID TightLH

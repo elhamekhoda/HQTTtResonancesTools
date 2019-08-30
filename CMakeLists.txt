@@ -6,6 +6,7 @@ atlas_subdir( HQTTtResonancesTools None )
 # This package depends on other packages:
 atlas_depends_on_subdirs( PUBLIC
                           # AnalysisTop
+                          TopCPTools
                           TopObjectSelectionTools
                           TopEventSelectionTools
                           TopConfiguration 
@@ -91,6 +92,7 @@ atlas_add_library( HQTTtResonancesTools Root/*.cxx Root/*.h Root/*.icc
                    HQTTtResonancesTools/*/*.icc ${_cintDictSource}
                    PUBLIC_HEADERS HQTTtResonancesTools
                    LINK_LIBRARIES # AnalysisTop
+                                  TopCPTools
                                   TopObjectSelectionTools
                                   TopEventSelectionTools
                                   TopConfiguration 
