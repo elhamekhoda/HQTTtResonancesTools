@@ -226,6 +226,9 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     std::vector<float>  m_el_z0sig;
 
     std::vector<float> m_el_ptvarcone20_TightTTVA_pt1000;
+    std::vector<float> m_el_ptvarcone30_TightTTVA_pt1000;
+    std::vector<float> m_el_ptvarcone30_TightTTVALooseCone_pt1000;
+    std::vector<float> m_el_ptcone20_TightTTVALooseCone_pt1000;
     std::vector<float> m_el_ptcone20_TightTTVA_pt1000;
     std::vector<float> m_el_ptcone20_ttres;
     std::vector<float> m_el_ptvarcone20_ttres;

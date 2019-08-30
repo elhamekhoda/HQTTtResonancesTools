@@ -364,6 +364,9 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         //systematicTree->makeOutputVariable(m_el_d0sig,   "el_d0sig");
         systematicTree->makeOutputVariable(m_el_z0sig,   "el_z0sig");
         systematicTree->makeOutputVariable(m_el_ptvarcone20_TightTTVA_pt1000, "el_ptvarcone20_TightTTVA_pt1000");
+        systematicTree->makeOutputVariable(m_el_ptvarcone30_TightTTVA_pt1000, "el_ptvarcone30_TightTTVA_pt1000");
+        systematicTree->makeOutputVariable(m_el_ptvarcone30_TightTTVALooseCone_pt1000, "el_ptvarcone30_TightTTVALooseCone_pt1000");
+        systematicTree->makeOutputVariable(m_el_ptcone20_TightTTVALooseCone_pt1000, "el_ptcone20_TightTTVALooseCone_pt1000");
         systematicTree->makeOutputVariable(m_el_ptcone20_TightTTVA_pt1000, "el_ptcone20_TightTTVA_pt1000");
         systematicTree->makeOutputVariable(m_el_ptcone20_ttres, "el_ptcone20_ttres");
         systematicTree->makeOutputVariable(m_el_ptvarcone20_ttres, "el_ptvarcone20_ttres");
@@ -936,6 +939,9 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
     // electron Isolation variables:
     m_el_ptvarcone20_TightTTVA_pt1000.resize(event.m_electrons.size());
+    m_el_ptvarcone30_TightTTVA_pt1000.resize(event.m_electrons.size());
+    m_el_ptvarcone30_TightTTVALooseCone_pt1000.resize(event.m_electrons.size());
+    m_el_ptcone20_TightTTVALooseCone_pt1000.resize(event.m_electrons.size());
     m_el_ptcone20_TightTTVA_pt1000.resize(event.m_electrons.size());
     m_el_ptcone20_ttres.resize(event.m_electrons.size());
     m_el_ptvarcone20_ttres.resize(event.m_electrons.size());
@@ -963,10 +969,20 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         if (elPtr->isAvailable<float>("ptcone20_TightTTVA_pt1000")) {
             m_el_ptcone20_TightTTVA_pt1000[k] = elPtr->auxdata<float>("ptcone20_TightTTVA_pt1000");
         } //if loop
-        if (elPtr->auxdata<float>("ptvarcone20")) {
+        if (elPtr->isAvailable<float>("ptvarcone30_TightTTVA_pt1000")) {
+            m_el_ptvarcone30_TightTTVA_pt1000[k] = elPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000");
+            //ATH_MSG_INFO("\e[1;31m(ptvarcone30_TightTTVA_pt1000)" << muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000") << "   pT   " << muPtr->pt() << "\e[0m");
+        }
+        if (elPtr->isAvailable<float>("ptvarcone30_TightTTVALooseCone_pt1000")) {
+            m_el_ptvarcone30_TightTTVALooseCone_pt1000[k] = elPtr->auxdata<float>("ptvarcone30_TightTTVALooseCone_pt1000");
+        }
+        if (elPtr->isAvailable<float>("ptcone20_TightTTVALooseCone_pt1000")) {
+            m_el_ptcone20_TightTTVALooseCone_pt1000[k] = elPtr->auxdata<float>("ptcone20_TightTTVALooseCone_pt1000");
+        }
+        if (elPtr->isAvailable<float>("ptvarcone20")) {
             m_el_ptvarcone20_ttres[k] =  elPtr->auxdata<float>("ptvarcone20");
         }
-        elPtr->isolationValue( m_el_ptcone20_ttres[k] , xAOD::Iso::ptcone20 );
+        elPtr->isolationValue( m_el_ptcone20_ttres[k] , xAOD::Iso::ptcone20);
     }//for
 
     //muons
