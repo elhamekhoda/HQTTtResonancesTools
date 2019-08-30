@@ -79,8 +79,8 @@ PerfStats No
 
 CalculateSF True
 #Systematics All
-Systematics CombMass_strong_JET_Comb_Baseline_All__1down,CombMass_strong_JET_Comb_Baseline_All__1up,CombMass_strong_JET_Comb_Modelling_All__1down,CombMass_strong_JET_Comb_Modelling_All__1up,CombMass_strong_JET_Comb_TotalStat_All__1down,CombMass_strong_JET_Comb_TotalStat_All__1up,CombMass_strong_JET_MassRes_Top__1up
-# Systematics Nominal
+# Systematics CombMass_strong_JET_Comb_Baseline_All__1down,CombMass_strong_JET_Comb_Baseline_All__1up,CombMass_strong_JET_Comb_Modelling_All__1down,CombMass_strong_JET_Comb_Modelling_All__1up,CombMass_strong_JET_Comb_TotalStat_All__1down,CombMass_strong_JET_Comb_TotalStat_All__1up,CombMass_strong_JET_MassRes_Top__1up
+Systematics Nominal
 
 #B-tagging configuration
 #BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_85 DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 MV2c10:HybBEff_60 MV2c10:HybBEff_70 MV2c10:HybBEff_77 MV2c10:HybBEff_85 DL1:HybBEff_60 DL1:HybBEff_70 DL1:HybBEff_77 DL1:HybBEff_85 MV2c10:Continuous DL1:Continuous
@@ -111,9 +111,10 @@ ApplyElectronInJetSubtraction False
 
 OverlapRemovalProcedure BoostedSlidingDRMu
 
-DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord,DumpToolConfigTo,ExtraTopTaggingWP,TrackJetCleaningProcedure
+DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord,DumpToolConfigTo,ExtraTopTaggingWP,TrackJetCleaningProcedure,LargeRJetUncertaintiesRelease
 
 TrackJetCleaningProcedure ObjectLevel
+LargeRJetUncertaintiesRelease Moriond2018 #default is Summer2019, which does not support Rtrk-based AKT10 jets uncertainties
 TtresRunHTT False
 TtresSavePartons True
 ExtraTopTaggingWP DNNTOPTAG_CONTAINED80 DNNTOPTAG_CONTAINED50 DNNTOPTAG_TTRES0L1B DNNTOPTAG_TTRES0L2B # DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_TTRES0L0B ### Activate more taggers as you'd like. Note that if the corresponding EventSelectors are not activated, the branches will be just filled with empty entries!
