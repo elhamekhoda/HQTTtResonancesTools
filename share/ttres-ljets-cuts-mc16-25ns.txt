@@ -78,14 +78,14 @@ OutputFilename output.root
 PerfStats No
 
 CalculateSF True
-#Systematics Nominal
-Systematics AllJets
+Systematics Nominal
+#Systematics AllJets
 
 #Just of Btagging WP
-BTaggingWP MV2c10:FixedCutBEff_70 DL1:FixedCutBEff_70
+#BTaggingWP MV2c10:FixedCutBEff_70 DL1:FixedCutBEff_70
 
 #B-tagging configuration for multiple WP
-#BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_85 DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 MV2c10:HybBEff_60 MV2c10:HybBEff_70 MV2c10:HybBEff_77 MV2c10:HybBEff_85 DL1:HybBEff_60 DL1:HybBEff_70 DL1:HybBEff_77 DL1:HybBEff_85 MV2c10:Continuous DL1:Continuous
+BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_85 DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 MV2r:FixedCutBEff_60 MV2r:FixedCutBEff_70 MV2r:FixedCutBEff_77 MV2r:FixedCutBEff_85 MV2rmu:FixedCutBEff_60 MV2rmu:FixedCutBEff_70 MV2rmu:FixedCutBEff_77 MV2rmu:FixedCutBEff_85 DL1r:FixedCutBEff_60 DL1r:FixedCutBEff_70 DL1r:FixedCutBEff_77 DL1r:FixedCutBEff_85 DL1rmu:FixedCutBEff_60 DL1rmu:FixedCutBEff_70 DL1rmu:FixedCutBEff_77 DL1rmu:FixedCutBEff_85
 
 #Different algorithms of 70% WP
 #BTaggingWP MV2c10:FixedCutBEff_70 MV2c10mu:FixedCutBEff_70 MV2c10rnn:FixedCutBEff_70 MV2c10:HybBEff_70 MV2c10mu:HybBEff_70 MV2c10rnn:HybBEff_70 DL1:FixedCutBEff_70 DL1mu:FixedCutBEff_70 DL1rnn:FixedCutBEff_70 DL1:HybBEff_70 DL1mu:HybBEff_70 DL1rnn:HybBEff_70
