@@ -23,14 +23,14 @@ TopExamples.grid.Add("Data16_13TeV_25ns_EXOT4").datasets = [
 ]
 
 TopExamples.grid.Add("Data17_13TeV_25ns_EXOT4").datasets = [
-'data17_13TeV.periodB.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3730',
-'data17_13TeV.periodC.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3730',
-'data17_13TeV.periodD.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3730',
-'data17_13TeV.periodE.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3730',
-'data17_13TeV.periodF.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3730',
-'data17_13TeV.periodH.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3730',
-'data17_13TeV.periodI.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3730',
-'data17_13TeV.periodK.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3730',
+'data17_13TeV.periodB.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3865',
+'data17_13TeV.periodC.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3865',
+'data17_13TeV.periodD.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3865',
+'data17_13TeV.periodE.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3865',
+'data17_13TeV.periodF.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3865',
+'data17_13TeV.periodH.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3865',
+'data17_13TeV.periodI.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3865',
+'data17_13TeV.periodK.physics_Main.PhysCont.DAOD_EXOT4.grp17_v01_p3865',
 ]
 
 TopExamples.grid.Add("Data18_13TeV_25ns_EXOT4").datasets = [
