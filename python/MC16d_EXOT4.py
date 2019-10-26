@@ -3,7 +3,7 @@ import TopExamples.grid
 
 #ttbar background: inclusive
 TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_ttbar_nonallhad").datasets = [
-"mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.deriv.DAOD_EXOT4.e6337_s3126_r10201_p3729",
+"mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.deriv.DAOD_EXOT4.e6337_s3126_r10201_p3864",
 ]
 
 #ttbar backgrounds: all-had
