@@ -3,7 +3,7 @@ import TopExamples.grid
 
 #ttbar background: inclusive
 TopExamples.grid.Add("MC16e_13TeV_25ns_FS_EXOT4_ttbar_nonallhad").datasets = [
-"mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.deriv.DAOD_EXOT4.e6337_s3126_r10724_p3729"
+"mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.deriv.DAOD_EXOT4.e6337_s3126_r10724_p3864"
 ]
 
 #ttbar backgrounds: all-had
@@ -31,17 +31,17 @@ TopExamples.grid.Add("MC16e_13TeV_25ns_FS_EXOT4_ttbar_allhad_mttsliced").dataset
 
 #Single top samples
 TopExamples.grid.Add("MC16e_13TeV_25ns_FS_EXOT4_singletop").datasets = [
-'mc16_13TeV.410644.PowhegPythia8EvtGen_A14_singletop_schan_lept_top.deriv.DAOD_EXOT4.e6527_s3126_r10724_p3729',
-'mc16_13TeV.410645.PowhegPythia8EvtGen_A14_singletop_schan_lept_antitop.deriv.DAOD_EXOT4.e6527_s3126_r10724_p3729',
-'mc16_13TeV.410646.PowhegPythia8EvtGen_A14_Wt_DR_inclusive_top.deriv.DAOD_EXOT4.e6552_s3126_r10724_p3729',
-'mc16_13TeV.410647.PowhegPythia8EvtGen_A14_Wt_DR_inclusive_antitop.deriv.DAOD_EXOT4.e6552_s3126_r10724_p3729',
-'mc16_13TeV.410658.PhPy8EG_A14_tchan_BW50_lept_top.deriv.DAOD_EXOT4.e6671_s3126_r10724_p3729',
-'mc16_13TeV.410659.PhPy8EG_A14_tchan_BW50_lept_antitop.deriv.DAOD_EXOT4.e6671_s3126_r10724_p3729',
+'mc16_13TeV.410644.PowhegPythia8EvtGen_A14_singletop_schan_lept_top.deriv.DAOD_EXOT4.e6527_s3126_r10724_p3864',
+'mc16_13TeV.410645.PowhegPythia8EvtGen_A14_singletop_schan_lept_antitop.deriv.DAOD_EXOT4.e6527_s3126_r10724_p3864',
+'mc16_13TeV.410646.PowhegPythia8EvtGen_A14_Wt_DR_inclusive_top.deriv.DAOD_EXOT4.e6552_s3126_r10724_p3864',
+'mc16_13TeV.410647.PowhegPythia8EvtGen_A14_Wt_DR_inclusive_antitop.deriv.DAOD_EXOT4.e6552_s3126_r10724_p3864',
+'mc16_13TeV.410658.PhPy8EG_A14_tchan_BW50_lept_top.deriv.DAOD_EXOT4.e6671_s3126_r10724_p3864',
+'mc16_13TeV.410659.PhPy8EG_A14_tchan_BW50_lept_antitop.deriv.DAOD_EXOT4.e6671_s3126_r10724_p3864',
 ]
 
 #ttbar+V samples
 TopExamples.grid.Add("MC16e_13TeV_25ns_FS_EXOT4_ttbarV").datasets = [
-#no very necessary at this point
+#not very necessary at this point
 ]
 
 #Di-boson
@@ -52,7 +52,7 @@ TopExamples.grid.Add("MC16e_13TeV_25ns_FS_EXOT4_VV").datasets = [
 'mc16_13TeV.363358.Sherpa_221_NNPDF30NNLO_WqqZll.deriv.DAOD_EXOT4.e5525_s3126_r10724_p3729',
 'mc16_13TeV.363359.Sherpa_221_NNPDF30NNLO_WpqqWmlv.deriv.DAOD_EXOT4.e5583_s3126_r10724_p3729',
 'mc16_13TeV.363360.Sherpa_221_NNPDF30NNLO_WplvWmqq.deriv.DAOD_EXOT4.e5983_s3126_r10724_p3729',
-#mc16_13TeV.363489.Sherpa_221_NNPDF30NNLO_WlvZqq.deriv.DAOD_EXOT4.e5525_s3126_r10724_p3596
+'mc16_13TeV.363489.Sherpa_221_NNPDF30NNLO_WlvZqq.deriv.DAOD_EXOT4.e5525_s3126_r10724_p3864',
 ]
 
 #Di-jets
