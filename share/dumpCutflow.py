@@ -7,33 +7,34 @@ import glob
 #torun = ["bejets/cutflow_scale_factors", "bmujets/cutflow_scale_factors"]
 #torun = ["bejets/cutflow_btag_scale_factors", "bmujets/cutflow_btag_scale_factors"]
 
-torun = ["bejets/cutflow_mc_pu", ]
+torun = ["rejets_2017/cutflow", ]
 
 
 yields={}
 Nevents = {}
 
-outdir = '/afs/cern.ch/user/d/dferreir/work/eos/atlas/user/d/dferreir/topana/01122015v1'
+outdir = '/eos/user/b/bngair/Badr/wl/'
 #outdir = '/AtlasDisk/group/Zprime/grid_v2.0/std/'
-lumi = 3.20905e3
+lumi = 44.3e3
 
 def CutDef(cut):
     if cut=="C1": return "Initial count"
     if cut=="C2": return "GRL"
     if cut=="C3": return "Calorimeter quality"
     if cut=="C4": return "Primary vertex quality"
-    if cut=="C5": return "Trigger"
-    if cut=="C6": return "$\geq$1 lepton"
-    if cut=="C7": return "1 lepton"
-    if cut=="C8": return "veto other flavor"
-    if cut=="C9": return "trigger matching"
-    if cut=="C10": return "bad jet veto"
-    if cut=="C11": return "MET$>$20"
-    if cut=="C12": return "MWT+MET$>$60"
-    if cut=="C13": return "$\geq$1 small-$R$ jet"
-    if cut=="C14": return "$\Delta R(\\textrm{jet}, \\textrm{lepton}) < 1.5$"
-    if cut=="C15": return "$\geq$1 top-tagged jet"
-    if cut=="C16": return "$\geq$1 b-tagged track-jet"
+    if cut=="C5": return "RUN_NUMBER $\geq$ 325713 "
+    if cut=="C6": return " 340453 $\geq$ RUN_NUMBER  "
+    if cut=="C7": return " Trigger  "
+    if cut=="C8": return "$\geq$1 lepton"
+    if cut=="C9": return "1 lepton"
+    if cut=="C10": return "veto other flavor"
+    if cut=="C11": return "trigger matching"
+    if cut=="C12": return "bad jet veto"
+    if cut=="C13": return "JET_N 25000 $\geq$ 1"
+    if cut=="C14": return "JET_N 25000 $\geq$ 2"
+    if cut=="C15": return "JET_N 25000 $\geq$ 3"
+    if cut=="C16": return "JET_N 25000 $\geq$ 4"
+    if cut=="C17": return "veto bad muon"
     return ""
 
 def cutOff(value):
@@ -232,38 +233,55 @@ Xsections = ReadTDP("../../TopDataPreparation/data/XSection-MC15-13TeV-fromSusyG
 
 #getDataYields("data")
 
-#getYieldsForThisSample("$t\\bar{t}$", [410000,], Xsections)
-#getYieldsForThisSample("W", range(361300,361371+1), Xsections)
-#getYieldsForThisSample("W", range(361300,361324)+range(361325,361371+1), Xsections)
-#getYieldsForThisSample("single-t", range(410011,410016+1), Xsections)
-#getYieldsForThisSample("Z", range(361372,361443+1), Xsections)
-#getYieldsForThisSample("VV", range(361081,361087+1), Xsections)
-
-#printAll(["data", "$t\\bar{t}$", "W", "single-t", "Z", "VV"])
 all=[]
-torun = ["bejets/cutflow_mc_pu", ]
+torun = ["rejets_2017/cutflow", ]
+getYieldsForThisSample("W+jets", range(364156,364197+1), Xsections)
+getYieldsForThisSample("$t\\bar{t}$", [410470,], Xsections)
+getYieldsForThisSample("single-t", range(410644,410659), Xsections)
+getYieldsForThisSample("Z+jets", range(364100,364141+1), Xsections)
+getYieldsForThisSample("VV", range(410155,410157+1), Xsections)
 
-getYieldsForThisSample("We  0-70",   range(361300,361302+1), Xsections)
-getYieldsForThisSample("We 70-140",  range(361303,361305+1), Xsections)
-getYieldsForThisSample("We 140-280", range(361306,361308+1), Xsections)
-getYieldsForThisSample("We 280-500", range(361309,361311+1), Xsections)
-getYieldsForThisSample("We 500-700", range(361309,361311+1), Xsections)
+torun = ["rmujets_2017/cutflow", ]
+getYieldsForThisSample("W+jets", range(364156,364197+1), Xsections)
+getYieldsForThisSample("$t\\bar{t}$", [410470,], Xsections)
+getYieldsForThisSample("single-t", range(410644,410659), Xsections)
+getYieldsForThisSample("Z+jets", range(364100,364141+1), Xsections)
+getYieldsForThisSample("VV", range(410155,410157+1), Xsections)
 
-torun = ["bmujets/cutflow_mc_pu", ]
-getYieldsForThisSample("Wm  0-70",   range(361324,361326+1), Xsections)
-getYieldsForThisSample("Wm 70-140",  range(361327,361329+1), Xsections)
-getYieldsForThisSample("Wm 140-280", range(361330,361332+1), Xsections)
-getYieldsForThisSample("Wm 280-500", range(361333,361335+1), Xsections)
-getYieldsForThisSample("Wm 500-700", range(361336,361338+1), Xsections)
+torun = ["rejets_2017/cutflow", ]
+getYieldsForThisSample("W+jets", range(364156,364197+1), Xsections)
+getYieldsForThisSample("$t\\bar{t}$", [410470,], Xsections)
+getYieldsForThisSample("single-t", range(410644,410659), Xsections)
+getYieldsForThisSample("Z+jets", range(364100,364141+1), Xsections)
+getYieldsForThisSample("VV", range(410155,410157+1), Xsections)
 
 
-torun = ["bejets/cutflow_mc_pu", ]
-all=["We  0-70", "We 70-140","We 140-280","We 280-500", "We 500-700",  ]
+torun = ["rmujets_2017/cutflow", ]
+getYieldsForThisSample("W+jets", range(364156,364197+1), Xsections)
+getYieldsForThisSample("$t\\bar{t}$", [410470,], Xsections)
+getYieldsForThisSample("single-t", range(410644,410659), Xsections)
+getYieldsForThisSample("Z+jets", range(364100,364141+1), Xsections)
+getYieldsForThisSample("VV", range(410155,410157+1), Xsections)
+
+
+torun = ["bejets_2017/cutflow", ]
+all=["W+jets","$t\\bar{t}$","single-t","Z+jets","VV",  ]
 printAll(all , False)
 printAllEff(all)
 
-torun = ["bmujets/cutflow_mc_pu", ]
-all=["Wm  0-70", "Wm 70-140","Wm 140-280","Wm 280-500", "Wm 500-700",  ]
+torun = ["bmujets_2017/cutflow", ]
+all=["W+jets","$t\\bar{t}$","single-t","Z+jets","VV",   ]
 printAll(all, False)
 printAllEff(all)
+
+torun = ["rejets_2017/cutflow", ]
+all=["W+jets","$t\\bar{t}$","single-t","Z+jets","VV",   ]
+printAll(all , False)
+printAllEff(all)
+
+torun = ["rmujets_2017/cutflow", ]
+all=["W+jets","$t\\bar{t}$","single-t","Z+jets","VV",   ]
+printAll(all, False)
+printAllEff(all)
+
 
