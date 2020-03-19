@@ -1212,7 +1212,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             jetPtr->auxdecor<int>(m_toptagging["DNNInclusive80"].TaggerDecorationName) = m_dnnTopTaggerInclusive80->tag(*jetPtr);
             //}
             if (m_topoTopTagger80->tag(*jetPtr)) good_topo_80 = 1;
-        }	
+        }
         if (good_sub_80) m_ljet_good_sub80[i] = good_sub_80;
         if (good_sub_50) m_ljet_good_sub50[i] = good_sub_50;
         if (good_smooth_mt80) m_ljet_good_smooth_mt80[i] = good_smooth_mt80;
@@ -1227,7 +1227,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
         //cout << "Inclusive score: " << m_ljet_incldnn_score[i] << "  pt "<< jetPtr->pt() << " eta: " << std::fabs(jetPtr->eta()) <<endl;
         //cout << "Contained score: " << m_ljet_contdnn_score[i] << "  pt "<< jetPtr->pt() << " eta: " << std::fabs(jetPtr->eta()) <<endl;
-	
+
         xAOD::Jet* jetCopyPtr = new xAOD::Jet(); // making copies of large-R jets are necessary in order to apply top-tagging SF correction
 
         for (auto& tagger : m_toptagging) {
