@@ -1203,16 +1203,16 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             if (m_smoothedTopTaggerTS50->tag(*jetPtr)) good_smooth_ts50 = 1;
             if (m_smoothedTopTaggerQT80->tag(*jetPtr)) good_smooth_qt80 = 1;
             if (m_smoothedTopTaggerQT50->tag(*jetPtr)) good_smooth_qt50 = 1;
-            if (m_bdtTopTagger80->tag(*jetPtr)) good_bdt_80 = 1;
-            if (!jetPtr->isAvailable<int>(m_toptagging["DNNContained80"].TaggerDecorationName)) {
-                jetPtr->auxdecor<int>(m_toptagging["DNNContained80"].TaggerDecorationName) = m_dnnTopTaggerContained80->tag(*jetPtr);
-            }
-            if (!jetPtr->isAvailable<int>(m_toptagging["DNNInclusive80"].TaggerDecorationName)) {
-                jetPtr->auxdecor<int>(m_toptagging["DNNInclusive80"].TaggerDecorationName) = m_dnnTopTaggerInclusive80->tag(*jetPtr);
-            }
+            if (m_bdtTopTagger80->tag(*jetPtr)) good_bdt_80 = 1; 
+            // Commenting out the decrator check if condition: --> were having issues with top-tagging for the sublead jets. Only the lead jet was getting top-tagged
+            //if (!jetPtr->isAvailable<int>(m_toptagging["DNNContained80"].TaggerDecorationName)) {
+            jetPtr->auxdecor<int>(m_toptagging["DNNContained80"].TaggerDecorationName) = m_dnnTopTaggerContained80->tag(*jetPtr);
+            //}
+            //if (!jetPtr->isAvailable<int>(m_toptagging["DNNInclusive80"].TaggerDecorationName)) {
+            jetPtr->auxdecor<int>(m_toptagging["DNNInclusive80"].TaggerDecorationName) = m_dnnTopTaggerInclusive80->tag(*jetPtr);
+            //}
             if (m_topoTopTagger80->tag(*jetPtr)) good_topo_80 = 1;
-        }
-
+        }	
         if (good_sub_80) m_ljet_good_sub80[i] = good_sub_80;
         if (good_sub_50) m_ljet_good_sub50[i] = good_sub_50;
         if (good_smooth_mt80) m_ljet_good_smooth_mt80[i] = good_smooth_mt80;
@@ -1225,6 +1225,9 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         if (good_topo_80) m_ljet_good_topo80[i] = good_topo_80;
         if (jetPtr->isAvailable<float>("BDTTaggerTopQuark80_Score")) m_ljet_bdt_score[i] = jetPtr->auxdata<float>("BDTTaggerTopQuark80_Score");
 
+        //cout << "Inclusive score: " << m_ljet_incldnn_score[i] << "  pt "<< jetPtr->pt() << " eta: " << std::fabs(jetPtr->eta()) <<endl;
+        //cout << "Contained score: " << m_ljet_contdnn_score[i] << "  pt "<< jetPtr->pt() << " eta: " << std::fabs(jetPtr->eta()) <<endl;
+	
         xAOD::Jet* jetCopyPtr = new xAOD::Jet(); // making copies of large-R jets are necessary in order to apply top-tagging SF correction
 
         for (auto& tagger : m_toptagging) {
@@ -1350,7 +1353,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
         ++i;
     }
-
+    
     m_tjet_mv2rmu.resize(event.m_trackJets.size());
     m_tjet_mv2r.resize(event.m_trackJets.size());
     m_tjet_dl1_pu.resize(event.m_trackJets.size());
