@@ -102,6 +102,8 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     m_bdtTopTagger80 = std::unique_ptr<JSSWTopTaggerBDT>( new JSSWTopTaggerBDT( "EventSaverJSSWTopTaggerBDT80" ) );
     m_dnnTopTaggerContained80 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNContained80" ) );
     m_dnnTopTaggerInclusive80 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNInclusive80" ) );
+    m_dnnTopTaggerContained50 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNContained50" ) );
+    m_dnnTopTaggerInclusive50 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNInclusive50" ) );
     m_topoTopTagger80 = std::unique_ptr<TopoclusterTopTagger>( new TopoclusterTopTagger( "EventSaverTopoclusterTopTagger80" ) );
 
     top::check(m_smoothedTopTaggerMT80->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_MassTau32FixedSignalEfficiency80_MC15c_20161209.dat"), "Failed to set property for ConfigFile");
@@ -120,6 +122,14 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     top::check(m_dnnTopTaggerInclusive80->setProperty( "DSID", (int)config->getDSID()), "Failed to set property for ConfigFile" );
     top::check(m_dnnTopTaggerInclusive80->setProperty( "IsMC", config->isMC()), "Failed to set property for ConfigFile" );
     top::check(m_topoTopTagger80->setProperty( "ConfigFile",   "TopoclusterTopTagger/TopoclusterTopTagger_AntiKt10LCTopoTrimmed_TopQuark_MC15c_20170511_ptweighted80Eff.dat"), "Failed to set property for ConfigFile");
+    top::check(m_dnnTopTaggerContained50->setProperty( "CalibArea", "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
+    top::check(m_dnnTopTaggerContained50->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC16d_20190405_50Eff.dat"), "Failed to set property for ConfigFile");
+    top::check(m_dnnTopTaggerContained50->setProperty( "DSID", (int)config->getDSID()), "Failed to set property for ConfigFile" );
+    top::check(m_dnnTopTaggerContained50->setProperty( "IsMC", config->isMC()), "Failed to set property for ConfigFile" );
+    top::check(m_dnnTopTaggerInclusive50->setProperty( "CalibArea", "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
+    top::check(m_dnnTopTaggerInclusive50->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkInclusive_MC16d_20190405_50Eff.dat"), "Failed to set property for ConfigFile");
+    top::check(m_dnnTopTaggerInclusive50->setProperty( "DSID", (int)config->getDSID()), "Failed to set property for ConfigFile" );
+    top::check(m_dnnTopTaggerInclusive50->setProperty( "IsMC", config->isMC()), "Failed to set property for ConfigFile" );
 
     top::check(m_smoothedTopTaggerMT80->initialize(), "Initializing failed");
     top::check(m_smoothedTopTaggerMT50->initialize(), "Initializing failed");
@@ -130,6 +140,8 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     top::check(m_bdtTopTagger80->initialize(), "Initializing failed");
     top::check(m_dnnTopTaggerContained80->initialize(), "Initializing failed");
     top::check(m_dnnTopTaggerInclusive80->initialize(), "Initializing failed");
+    top::check(m_dnnTopTaggerContained50->initialize(), "Initializing failed");
+    top::check(m_dnnTopTaggerInclusive50->initialize(), "Initializing failed");
     top::check(m_topoTopTagger80->initialize(), "Initializing failed");
 
     if (config->isMC()) {
@@ -1208,9 +1220,11 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             //if (!jetPtr->isAvailable<int>(m_toptagging["DNNContained80"].TaggerDecorationName)) {
             jetPtr->auxdecor<int>(m_toptagging["DNNContained80"].TaggerDecorationName) = m_dnnTopTaggerContained80->tag(*jetPtr);
             //}
+            jetPtr->auxdecor<int>(m_toptagging["DNNContained50"].TaggerDecorationName) = m_dnnTopTaggerContained50->tag(*jetPtr);
             //if (!jetPtr->isAvailable<int>(m_toptagging["DNNInclusive80"].TaggerDecorationName)) {
             jetPtr->auxdecor<int>(m_toptagging["DNNInclusive80"].TaggerDecorationName) = m_dnnTopTaggerInclusive80->tag(*jetPtr);
             //}
+            jetPtr->auxdecor<int>(m_toptagging["DNNInclusive50"].TaggerDecorationName) = m_dnnTopTaggerInclusive50->tag(*jetPtr);
             if (m_topoTopTagger80->tag(*jetPtr)) good_topo_80 = 1;
         }
         if (good_sub_80) m_ljet_good_sub80[i] = good_sub_80;

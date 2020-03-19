@@ -112,7 +112,7 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     virtual void dumpToolConfig(std::string fname);
     const std::string& configValueDefault(const std::string& key, const std::string& default_value = "False") const;
     std::string m_dumpToolConfigTo;
-    std::vector<std::string> m_TopTaggingWP = {"DNNTOPTAG_CONTAINED80", "DNNTOPTAG_INCLUSIVE80"}; // We always store variables of DNNContained/DNNInclusive FC 80%;
+    std::vector<std::string> m_TopTaggingWP = {"DNNTOPTAG_CONTAINED80", "DNNTOPTAG_INCLUSIVE80", "DNNTOPTAG_CONTAINED50", "DNNTOPTAG_INCLUSIVE50"}; // We always store variables of DNNContained/DNNInclusive FC 80% and 50%;
     bool m_isMC;
 
     bool m_isTOPQ;
@@ -200,6 +200,8 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     std::unique_ptr<JSSWTopTaggerBDT> m_bdtTopTagger80;//BDT top tagger 80%
     std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerContained80;//DNN contained top tagger 80%
     std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerInclusive80;//DNN inclusive top tagger 80%
+    std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerContained50;//DNN contained top tagger 50%
+    std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerInclusive50;//DNN inclusive top tagger 50%
     std::unique_ptr<TopoclusterTopTagger> m_topoTopTagger80;//Topo Cluster top tagger 80%
 #ifdef ENABLE_ZPRIMERWGT
     ZprimeRWGTTool &m_zprimerwgt_tool = ZprimeRWGTTool::getInstance();
