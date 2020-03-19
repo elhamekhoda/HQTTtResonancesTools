@@ -4,10 +4,14 @@ This Tool is developed to fulfill the purpose of the exotics ttbar resonances se
 
 ## Current Version:
 
-**AanalysisTop, 21.2.65** 
+**AanalysisTop, 21.2.113** 
 
 ### Latest release based updates
-* Do not use AnalysisTop release 21.2.30 - 21.2.33. There are different bugs there.
+* Do not use AnalysisTop release < 21.2.90. The derivations are updated now.
+* Note that `AnalysisTop` and `AnalysisBase` is merged abover AnalysisTop 21.2.100. So you have to set `AnalysisBase` environment now.
+* Recommendation is to use release >= `AnalysisBase 21.2.113`
+* You need CentOS 7 operating system to run the latest AnalysisTop/AnalysisBase releases
+* Top-tagging issue: #5
 * Due to a typo in the default config option in AnalysisTop, large-R jet JES/JMS config has been defined in our config text file like `LargeRJESJMSConfig CombMass`
 * A new selection class for top-tagged large-jets is added in the tool: **NLargeJetTtresSmoothedTTMassTau32Selector**. Top tagging is done using SmoothTopTagger with 80% WP using mass and tau32 variable.
 
