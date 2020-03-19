@@ -12,7 +12,7 @@ LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtRe
 GRLDir  GoodRunsLists
 GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.xml data18_13TeV/20190318/physics_25ns_Triggerno17e33prim.xml
 
-
+TDPPath dev/AnalysisTop/TopDataPreparation/versions/XSection-MC16-13TeV.data/XSection-MC16-13TeV-20200305-375baf1a.data
 ######################################## PRW Files ###################################################
 
 ## Pile-up reweighting tool - Metadata determines which to use
@@ -47,28 +47,33 @@ ElectronCollectionName Electrons
 MuonCollectionName Muons
 PhotonCollectionName None
 TauCollectionName None
-JetCollectionName AntiKt4EMTopoJets
-# original xAOD without trimmed jets
+
+#Small-R jet configuration
+JetCollectionName AntiKt4EMPFlowJets_BTagging201903
+#JetCollectionName AntiKt4EMTopoJets_BTagging201810
+
+#Large-R jet configuration
+#original xAOD without trimmed jets
 LargeJetCollectionName AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets
-LargeRJetPt 100000.
-TruthLargeRJetPt 100000.
+LargeRJetPt 200000.
+TruthLargeRJetPt 200000.
 TruthLargeRJetCollectionName AntiKt10TruthTrimmedPtFrac5SmallR20Jets
 LargeJetSubstructure None
-#LargeJetCollectionName AntiKt10LCTopoJets
 #LargeJetSubstructure Trimmer
 LargeRJESJMSConfig CombMass
-#TrackJetCollectionName AntiKt2PV0TrackJets
+
+#Track jet (VR track jet) configuration
 TrackJetCollectionName AntiKtVR30Rmax4Rmin02TrackJets
 TrackJetPt 10000
 
 TruthCollectionName TruthParticles
-#TruthCollectionName None
 TruthJetCollectionName AntiKt4TruthJets
 TopPartonHistory ttbar
 TruthBlockInfo False
 PDFInfo False
+
 IsAFII False
-OutputFileNEventAutoFlush 10
+OutputFileNEventAutoFlush 100
 #NEvents 1000
 
 ObjectSelectionName top::ObjectLoaderTtres
@@ -78,37 +83,28 @@ OutputFilename output.root
 PerfStats No
 
 CalculateSF True
-#Systematics Nominal
-Systematics AllJets
+#Systematics AllJets
+Systematics Nominal
 
 #Just of Btagging WP
-#BTaggingWP MV2c10:FixedCutBEff_70 DL1:FixedCutBEff_70
-
-#B-tagging configuration for multiple WP
-BTaggingWP DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85
-
-#BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_85 DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 MV2r:FixedCutBEff_60 MV2r:FixedCutBEff_70 MV2r:FixedCutBEff_77 MV2r:FixedCutBEff_85 MV2rmu:FixedCutBEff_60 MV2rmu:FixedCutBEff_70 MV2rmu:FixedCutBEff_77 MV2rmu:FixedCutBEff_85 DL1r:FixedCutBEff_60 DL1r:FixedCutBEff_70 DL1r:FixedCutBEff_77 DL1r:FixedCutBEff_85 DL1rmu:FixedCutBEff_60 DL1rmu:FixedCutBEff_70 DL1rmu:FixedCutBEff_77 DL1rmu:FixedCutBEff_85
-
-#Different algorithms of 70% WP
-#BTaggingWP MV2c10:FixedCutBEff_70 MV2c10mu:FixedCutBEff_70 MV2c10rnn:FixedCutBEff_70 MV2c10:HybBEff_70 MV2c10mu:HybBEff_70 MV2c10rnn:HybBEff_70 DL1:FixedCutBEff_70 DL1mu:FixedCutBEff_70 DL1rnn:FixedCutBEff_70 DL1:HybBEff_70 DL1mu:HybBEff_70 DL1rnn:HybBEff_70
-
+BTaggingWP DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 DL1r:FixedCutBEff_60 DL1r:FixedCutBEff_70 DL1r:FixedCutBEff_77 DL1r:FixedCutBEff_85
 
 JetUncertainties_NPModel CategoryReduction
-LargeRJetUncertainties_NPModel CategoryReduction #GlobalReduction # insitu calibration
+LargeRJetUncertainties_NPModel CategoryReduction # insitu calibration
 JetUncertainties_BunchSpacing 25ns
 
 ElectronID TightLH
 ElectronIDLoose MediumLH
 MuonQuality Medium
 MuonQualityLoose Loose
-ElectronIsolation None #FixedCutTightTrackOnly #setting up to NONE for now, FCTTO is not avaialble
-MuonIsolation FCTightTrackOnly #FixedCutTightTrackOnly #FixedCutTightTrackOnly is not avaialble
+ElectronIsolation TightTrackOnly
+MuonIsolation FCTightTrackOnly
 ElectronIsolationLoose None
 MuonIsolationLoose None
 
 FakesControlRegionDoLooseMC False
 OverlapRemovalLeptonDef Tight
-ApplyElectronInJetSubtraction False
+ApplyElectronInJetSubtraction True
 
 OverlapRemovalProcedure BoostedSlidingDRMu
 
@@ -116,7 +112,7 @@ DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSher
 
 TtresRunHTT False
 TtresSavePartons True
-ExtraTopTaggingWP # DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_CONTAINED80 DNNTOPTAG_CONTAINED50 DNNTOPTAG_TTRES0L0B DNNTOPTAG_TTRES0L1B DNNTOPTAG_TTRES0L2B DNNTOPTAG_TTRES1L50EFF DNNTOPTAG_TTRES1L90EFF ### Activate more taggers as you'd like. Note that if the corresponding EventSelectors are not activated, the branches will be just filled with empty entries!
+ExtraTopTaggingWP DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_CONTAINED80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_CONTAINED50 # DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_CONTAINED80 DNNTOPTAG_CONTAINED50 DNNTOPTAG_TTRES0L0B DNNTOPTAG_TTRES0L1B DNNTOPTAG_TTRES0L2B DNNTOPTAG_TTRES1L50EFF DNNTOPTAG_TTRES1L90EFF ### Activate more taggers as you'd like. Note that if the corresponding EventSelectors are not activated, the branches will be just filled with empty entries!
 # Note that turning `TtresrunEWK` on when running ttbar samples is necessary in order to apply EWKCorrection in the later stage.
 # However, it may increase the running time significantly when running non-ttbar samples. Therefore, it must be only turned OFF with caution.
 TtresrunEWK True
@@ -125,6 +121,14 @@ fakeLeptonSel False
 isSherpaW True
 SaveFullTruthRecord True
 DumpToolConfigTo toolConfig.txt
+
+### Global lepton trigger scale factor example
+UseGlobalLeptonTriggerSF True
+GlobalTriggers 2015@e24_lhmedium_L1EM20VH_OR_e60_lhmedium_OR_e120_lhloose,mu20_iloose_L1MU15_OR_mu50 2016@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50 2017@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50 2018@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50
+
+GlobalTriggersLoose 2015@e24_lhmedium_L1EM20VH_OR_e60_lhmedium_OR_e120_lhloose,mu20_iloose_L1MU15_OR_mu50 2016@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50 2017@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50 2018@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50
+
+
 
 ########################
 ### basic selection with mandatory cuts for reco level
@@ -212,36 +216,36 @@ EL_N 25000 == 0
 SELECTION bejets_2015
 . BASIC
 . period_2015
-TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+GTRIGDEC
 . single_el
-TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+GTRIGMATCH
 . boosted_common
 SAVE
 
 SELECTION bejets_2016
 . BASIC
 . period_2016
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+GTRIGDEC
 . single_el
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+GTRIGMATCH
 . boosted_common
 SAVE
 
 SELECTION bejets_2017
 . BASIC
 . period_2017
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+GTRIGDEC
 . single_el
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+GTRIGMATCH
 . boosted_common
 SAVE
 
 SELECTION bejets_2018
 . BASIC
 . period_2018
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+GTRIGDEC
 . single_el
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+GTRIGMATCH
 . boosted_common
 SAVE
 
@@ -252,36 +256,36 @@ SAVE
 SELECTION rejets_2015
 . BASIC
 . period_2015
-TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+GTRIGDEC
 . single_el
-TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+GTRIGMATCH
 . resolved_common
 SAVE
 
 SELECTION rejets_2016
 . BASIC
 . period_2016
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+GTRIGDEC
 . single_el
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+GTRIGMATCH
 . resolved_common
 SAVE
 
 SELECTION rejets_2017
 . BASIC
 . period_2017
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+GTRIGDEC
 . single_el
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+GTRIGMATCH
 . resolved_common
 SAVE
 
 SELECTION rejets_2018
 . BASIC
 . period_2018
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+GTRIGDEC
 . single_el
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+GTRIGMATCH
 . resolved_common
 SAVE
 
@@ -292,36 +296,36 @@ SAVE
 SELECTION bmujets_2015
 . BASIC
 . period_2015
-TRIGDEC HLT_mu20_iloose_L1MU15 HLT_mu50 
+GTRIGDEC
 . single_mu
-TRIGMATCH HLT_mu20_iloose_L1MU15 HLT_mu50
+GTRIGMATCH
 . boosted_common
 SAVE
 
 SELECTION bmujets_2016
 . BASIC
 . period_2016
-TRIGDEC HLT_mu26_ivarmedium HLT_mu50 
+GTRIGDEC
 . single_mu
-TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+GTRIGMATCH
 . boosted_common
 SAVE
 
 SELECTION bmujets_2017
 . BASIC
 . period_2017
-TRIGDEC HLT_mu26_ivarmedium HLT_mu50 
+GTRIGDEC
 . single_mu
-TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+GTRIGMATCH
 . boosted_common
 SAVE
 
 SELECTION bmujets_2018
 . BASIC
 . period_2018
-TRIGDEC HLT_mu26_ivarmedium HLT_mu50 
+GTRIGDEC
 . single_mu
-TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+GTRIGMATCH
 . boosted_common
 SAVE
 
@@ -332,36 +336,36 @@ SAVE
 SELECTION rmujets_2015
 . BASIC
 . period_2015
-TRIGDEC HLT_mu20_iloose_L1MU15 HLT_mu50 
+GTRIGDEC
 . single_mu
-TRIGMATCH HLT_mu20_iloose_L1MU15 HLT_mu50
+GTRIGMATCH
 . resolved_common
 SAVE
 
 SELECTION rmujets_2016
 . BASIC
 . period_2016
-TRIGDEC HLT_mu26_ivarmedium HLT_mu50 
+GTRIGDEC
 . single_mu
-TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+GTRIGMATCH
 . resolved_common
 SAVE
 
 SELECTION rmujets_2017
 . BASIC
 . period_2017
-TRIGDEC HLT_mu26_ivarmedium HLT_mu50 
+GTRIGDEC
 . single_mu
-TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+GTRIGMATCH
 . resolved_common
 SAVE
 
 SELECTION rmujets_2018
 . BASIC
 . period_2018
-TRIGDEC HLT_mu26_ivarmedium HLT_mu50 
+GTRIGDEC
 . single_mu
-TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+GTRIGMATCH
 . resolved_common
 SAVE
 
@@ -374,36 +378,36 @@ SAVE
 #SELECTION presel_ejets_2015
 #. BASIC
 #. period_2015
-#TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+#GTRIGDEC
 #. single_el
-#TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+#GTRIGMATCH
 #. COMMON
 #SAVE
 #
 #SELECTION presel_ejets_2016
 #. BASIC
 #. period_2016
-#TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+#GTRIGDEC
 #. single_el
-#TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+#GTRIGMATCH
 #. COMMON
 #SAVE
 #
 #SELECTION presel_ejets_2017
 #. BASIC
 #. period_2017
-#TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+#GTRIGDEC
 #. single_el
-#TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+#GTRIGMATCH
 #. COMMON
 #SAVE
 #
 #SELECTION presel_ejets_2018
 #. BASIC
 #. period_2018
-#TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+#GTRIGDEC
 #. single_el
-#TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
+#GTRIGMATCH
 #. COMMON
 #SAVE
 #
@@ -414,36 +418,37 @@ SAVE
 #SELECTION presel_mujets_2015
 #. BASIC
 #. period_2015
-#TRIGDEC HLT_mu20_iloose_L1MU15 HLT_mu50 
+#GTRIGDEC
 #. single_mu
-#TRIGMATCH HLT_mu20_iloose_L1MU15 HLT_mu50
+#GTRIGMATCH
 #. COMMON
 #SAVE
 #
 #SELECTION presel_mujets_2016
 #. BASIC
 #. period_2016
-#TRIGDEC HLT_mu26_ivarmedium HLT_mu50 
+#GTRIGDEC 
 #. single_mu
-#TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+#GTRIGMATCH
 #. COMMON
 #SAVE
 #
 #SELECTION presel_mujets_2017
 #. BASIC
 #. period_2017
-#TRIGDEC HLT_mu26_ivarmedium HLT_mu50 
+#GTRIGDEC
 #. single_mu
-#TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+#GTRIGMATCH
 #. COMMON
 #SAVE
 #
 #SELECTION presel_mujets_2018
 #. BASIC
 #. period_2018
-#TRIGDEC HLT_mu26_ivarmedium HLT_mu50 
+#GTRIGDEC
 #. single_mu
-#TRIGMATCH HLT_mu26_ivarmedium HLT_mu50
+#GTRIGMATCH
 #. COMMON
 #SAVE
+
 
