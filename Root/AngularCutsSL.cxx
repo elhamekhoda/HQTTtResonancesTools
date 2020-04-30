@@ -15,10 +15,10 @@ StatusCode AngularCutsSL::initialize(){
 
 Root::TAccept& AngularCutsSL::tag(const xAOD::Jet& largeJet) const {
     m_accept.clear();
-    if ( std::fabs(top::deltaPhi(largeJet, *m_lep)) > 2.3 ) {
+    if ( std::fabs(top::deltaPhi(largeJet, *m_lep)) > 1.0 ) {   //changed to 1.0 from 2.3
         m_accept.setCutResult("deltaPhiHigh", true);
     }
-    if ( top::deltaR(largeJet, *m_selJet) > 1.5 ) {
+    if ( top::deltaR(largeJet, *m_selJet) > 1.0 ) { //Changed to 1.0 from 1.5
         m_accept.setCutResult("deltaRHigh", true);
     }
     if (m_accept) {

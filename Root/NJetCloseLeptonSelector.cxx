@@ -28,7 +28,7 @@ bool NJetCloseLeptonSelector::apply(const top::Event& event) const {
     double highestpt(0.);
     int nJets(0);
     for (const auto* const jet : event.m_jets) {
-        if (top::deltaR(*lep, *jet) < 2.5 && jet->pt() > highestpt) {  //changed the cut to 2.5 from 1.5
+        if (top::deltaR(*lep, *jet) < 2.0 && jet->pt() > highestpt) {  //changed the cut to 2.0 from 1.5 based on Souad's studies
             nJets++;
             selJet = jet;
             highestpt = jet->pt();
