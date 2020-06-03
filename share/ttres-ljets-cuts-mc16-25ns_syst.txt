@@ -73,10 +73,10 @@ TruthBlockInfo False
 PDFInfo False
 
 IsAFII False
-OutputFileNEventAutoFlush 10
-#NEvents 1000
-OutputFileBasketSizePrimitive 512
-OutputFileBasketSizeVector 1024
+OutputFileNEventAutoFlush -30000000
+#NEvents 2000
+#OutputFileBasketSizePrimitive 512
+#OutputFileBasketSizeVector 1024
 
 ObjectSelectionName top::ObjectLoaderTtres
 OutputFormat top::TtresEventSaverFlatNtuple
@@ -93,8 +93,8 @@ BTaggingWP DL1:FixedCutBEff_77 DL1r:FixedCutBEff_77
 
 #BTaggingWP DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 DL1r:FixedCutBEff_60 DL1r:FixedCutBEff_70 DL1r:FixedCutBEff_77 DL1r:FixedCutBEff_85
 
-JetUncertainties_NPModel CategoryReduction
-LargeRJetUncertainties_NPModel CategoryReduction # insitu calibration
+JetUncertainties_NPModel GlobalReduction
+LargeRJetUncertainties_NPModel GlobalReduction # insitu calibration
 JetUncertainties_BunchSpacing 25ns
 
 ElectronID TightLH
@@ -116,7 +116,7 @@ DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSher
 
 TtresRunHTT False
 TtresSavePartons False
-ExtraTopTaggingWP DNNTOPTAG_INCLUSIVE50 # DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_CONTAINED80 DNNTOPTAG_CONTAINED50 DNNTOPTAG_TTRES0L0B DNNTOPTAG_TTRES0L1B DNNTOPTAG_TTRES0L2B DNNTOPTAG_TTRES1L50EFF DNNTOPTAG_TTRES1L90EFF ### Activate more taggers as you'd like. Note that if the corresponding EventSelectors are not activated, the branches will be just filled with empty entries!
+ExtraTopTaggingWP #DNNTOPTAG_INCLUSIVE50 # DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_CONTAINED80 DNNTOPTAG_CONTAINED50 DNNTOPTAG_TTRES0L0B DNNTOPTAG_TTRES0L1B DNNTOPTAG_TTRES0L2B DNNTOPTAG_TTRES1L50EFF DNNTOPTAG_TTRES1L90EFF ### Activate more taggers as you'd like. Note that if the corresponding EventSelectors are not activated, the branches will be just filled with empty entries!
 # Note that turning `TtresrunEWK` on when running ttbar samples is necessary in order to apply EWKCorrection in the later stage.
 # However, it may increase the running time significantly when running non-ttbar samples. Therefore, it must be only turned OFF with caution.
 TtresrunEWK False
@@ -128,6 +128,7 @@ DumpToolConfigTo toolConfig.txt
 MCGeneratorWeights Nominal
 
 FilterBranches truthparticle_*,MA_*,chi2_*,MC_ttbar_lpj*,MC_tl_*,MC_th_*,MC_w*,MC_bl*,MC_bh*,MC_W*,MC_b*,MC_i*,MC_p*,MC_e_*,MC_m*,MC_Q*,MC_a*
+TopPartonLevel False
 
 ### Global lepton trigger scale factor example
 UseGlobalLeptonTriggerSF True
@@ -182,7 +183,7 @@ JETCLOSELEPTON_N >= 1
 LJET_N 300000 >= 1
 #LARGEJETTTRESST_N 300000 >= 1
 #LJET_DNNTOPTAG_CONTAINED50_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
-#LJET_DNNTOPTAG_CONTAINED80_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
+LJET_DNNTOPTAG_CONTAINED80_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_TTRES1L50EFF_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_TTRES1L90EFF_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_TTRES0L1B_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
@@ -190,7 +191,7 @@ LJET_N 300000 >= 1
 #LJET_DNNTOPTAG_TTRES0L0B_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_INCLUSIVE50_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
 #LJET_DNNTOPTAG_INCLUSIVE80_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
-ANGULARCUTSSL >= 0  #setting it to zero here. Apply angural_cut at TNA
+ANGULARCUTSSL >= 1  #setting it to zero here. Apply angural_cut at TNA
 NOBADMUON
 EXAMPLEPLOTS
 

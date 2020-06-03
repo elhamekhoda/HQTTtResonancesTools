@@ -112,7 +112,8 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     virtual void dumpToolConfig(std::string fname);
     const std::string& configValueDefault(const std::string& key, const std::string& default_value = "False") const;
     std::string m_dumpToolConfigTo;
-    std::vector<std::string> m_TopTaggingWP = {"DNNTOPTAG_CONTAINED80", "DNNTOPTAG_INCLUSIVE80", "DNNTOPTAG_CONTAINED50", "DNNTOPTAG_INCLUSIVE50"}; // We always store variables of DNNContained/DNNInclusive FC 80% and 50%;
+    //std::vector<std::string> m_TopTaggingWP = {"DNNTOPTAG_CONTAINED80", "DNNTOPTAG_INCLUSIVE80", "DNNTOPTAG_CONTAINED50", "DNNTOPTAG_INCLUSIVE50"}; // We always store variables of DNNContained/DNNInclusive FC 80% and 50%;
+    std::vector<std::string> m_TopTaggingWP = {"DNNTOPTAG_CONTAINED80", "DNNTOPTAG_INCLUSIVE80"};
     bool m_isMC;
 
     bool m_isTOPQ;
@@ -175,34 +176,34 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     std::vector<float> m_ljet_tau3_wta;
     std::vector<int>   m_jet_closeToLepton;
 
-    std::vector<int>   m_ljet_good_sub80;
-    std::vector<int>   m_ljet_good_sub50;
-    std::vector<int>   m_ljet_good_smooth_mt80;
-    std::vector<int>   m_ljet_good_smooth_mt50;
-    std::vector<int>   m_ljet_good_smooth_ts80;
-    std::vector<int>   m_ljet_good_smooth_ts50;
-    std::vector<int>   m_ljet_good_smooth_qt80;
-    std::vector<int>   m_ljet_good_smooth_qt50;
-    std::vector<int>   m_ljet_good_bdt80;
-    std::vector<int>   m_ljet_good_topo80;
-    std::vector<float> m_ljet_bdt_score;
-    std::vector<float> m_ljet_topo_score;
+    // std::vector<int>   m_ljet_good_sub80;
+    // std::vector<int>   m_ljet_good_sub50;
+    // std::vector<int>   m_ljet_good_smooth_mt80;
+    // std::vector<int>   m_ljet_good_smooth_mt50;
+    // std::vector<int>   m_ljet_good_smooth_ts80;
+    // std::vector<int>   m_ljet_good_smooth_ts50;
+    // std::vector<int>   m_ljet_good_smooth_qt80;
+    // std::vector<int>   m_ljet_good_smooth_qt50;
+    // std::vector<int>   m_ljet_good_bdt80;
+    // std::vector<int>   m_ljet_good_topo80;
+    // std::vector<float> m_ljet_bdt_score;
+    // std::vector<float> m_ljet_topo_score;
     std::vector<int>   m_ljet_angular_cuts;
 
-    SubstructureTopTagger *STL80;
-    SubstructureTopTagger *STL50;
-    std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerMT80;//mass+tau32
-    std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerMT50;//mass+tau32
-    std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerTS80;//tau32+Split23
-    std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerTS50;//tau32+Split23
-    std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerQT80;//Qw+tau32
-    std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerQT50;//Qw+tau32
-    std::unique_ptr<JSSWTopTaggerBDT> m_bdtTopTagger80;//BDT top tagger 80%
+    // SubstructureTopTagger *STL80;
+    // SubstructureTopTagger *STL50;
+    // std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerMT80;//mass+tau32
+    // std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerMT50;//mass+tau32
+    // std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerTS80;//tau32+Split23
+    // std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerTS50;//tau32+Split23
+    // std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerQT80;//Qw+tau32
+    // std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerQT50;//Qw+tau32
+    // std::unique_ptr<JSSWTopTaggerBDT> m_bdtTopTagger80;//BDT top tagger 80%
     std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerContained80;//DNN contained top tagger 80%
     std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerInclusive80;//DNN inclusive top tagger 80%
-    std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerContained50;//DNN contained top tagger 50%
-    std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerInclusive50;//DNN inclusive top tagger 50%
-    std::unique_ptr<TopoclusterTopTagger> m_topoTopTagger80;//Topo Cluster top tagger 80%
+    // std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerContained50;//DNN contained top tagger 50%
+    // std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerInclusive50;//DNN inclusive top tagger 50%
+    // std::unique_ptr<TopoclusterTopTagger> m_topoTopTagger80;//Topo Cluster top tagger 80%
 #ifdef ENABLE_ZPRIMERWGT
     ZprimeRWGTTool &m_zprimerwgt_tool = ZprimeRWGTTool::getInstance();
 #endif

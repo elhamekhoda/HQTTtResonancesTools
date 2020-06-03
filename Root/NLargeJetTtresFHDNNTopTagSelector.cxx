@@ -74,9 +74,11 @@ bool NLargeJetTtresFHDNNTopTagSelector::apply(const top::Event& event) const {
         // pt and eta should already have been applied in object definition
         // but re-apply just in case it has been lowered for CR studies
         int good = 0;
-        if (m_TopTaggerDNN->tag(*largeJet)) {
+        if (largeJet->pt() > 300000 && std::fabs(largeJet->eta()) < 2.0){
+            if (m_TopTaggerDNN->tag(*largeJet)) {
             ++nGoodJets;
             good = 1;
+            }
         }
 
         m_dec_isTagged(*largeJet) = good;
