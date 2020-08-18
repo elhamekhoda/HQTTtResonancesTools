@@ -1,41 +1,82 @@
 LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtResonancesTools libTtResonancesTools libBoostedJetTaggersLib
 
-# http://atlas.web.cern.ch/Atlas/GROUPS/DATABASE/GroupData/GoodRunsLists/data16_13TeV/
+# http://atlas.web.cern.ch/Atlas/GROUPS/DATABASE/GroupData/GoodRunsLists/
+# 2015 data: (Runs: 276262 - 284484) --> 3219.56 pb-1
+# 2016 data: (Runs: 297730 - 311481) --> 32988.1 pb-1 
+# 2017 data: (Runs: 325713 - 340453) --> 44307.4 pb-1 
+# 2018 data: (Runs: 348885 - 364292) --> 58450.1 pb-1 [Latest GRL]
+#=======================================================================
+#                       TOTAL = 138,965.16 pb-1
+#=======================================================================
+
 GRLDir  GoodRunsLists
-GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml  data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20171130/data17_13TeV.periodAllYear_DetStatus-v97-pro21-13_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml 
+GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.xml data18_13TeV/20190318/physics_25ns_Triggerno17e33prim.xml
 
-PRWConfigFiles HQTTtResonancesTools/PRW_Zp_mc16a.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root
-#for mc16c:
-#dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16c.FS.v2/prw.merged.root 
-#for mc16d:
-#dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
+TDPPath dev/AnalysisTop/TopDataPreparation/versions/XSection-MC16-13TeV.data/XSection-MC16-13TeV-20200305-375baf1a.data
+######################################## PRW Files ###################################################
 
-PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root  GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root  GoodRunsLists/data17_13TeV/20171130/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-001.root
+## Pile-up reweighting tool - Metadata determines which to use
+
+# MC16a configuration to compare with 2015-16
+PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root # HQTTtResonancesTools/PRW_mttSlicedTtbar_mc16a.root
+PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root
+PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root
+
+# MC16d configuration to compare with 2017-only
+#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
+#PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root
+#PRWActualMu_AF GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
+#PRWActualMu_FS GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
+#PRWLumiCalcFiles GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root
+
+# MC16a and MC16d configuration to compare (2015+2016+2017) data
+#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
+#PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root
+#PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root
+
+# MC16e configuration to comapre with 2018-only
+#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root
+#PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
+#PRWActualMu_AF GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
+#PRWActualMu_FS GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
+#PRWLumiCalcFiles GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
+
+######################################################################################################
 
 ElectronCollectionName Electrons
 MuonCollectionName Muons
 PhotonCollectionName None
-JetCollectionName AntiKt4EMTopoJets
-# original xAOD without trimmed jets
-LargeJetCollectionName AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets
-LargeRJetPt 100000.
-TruthLargeRJetPt 100000.
-LargeJetSubstructure None
-#LargeJetCollectionName AntiKt10LCTopoJets
-#LargeJetSubstructure Trimmer
 TauCollectionName None
-PhotonCollectionName None
-TrackJetCollectionName AntiKt2PV0TrackJets
+
+#Small-R jet configuration
+JetCollectionName AntiKt4EMPFlowJets_BTagging201903
+#JetCollectionName AntiKt4EMTopoJets_BTagging201810
+
+#Large-R jet configuration
+#original xAOD without trimmed jets
+LargeJetCollectionName AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets
+LargeRJetPt 200000.
+TruthLargeRJetPt 200000.
+TruthLargeRJetCollectionName AntiKt10TruthTrimmedPtFrac5SmallR20Jets
+LargeJetSubstructure None
+#LargeJetSubstructure Trimmer
+LargeRJESJMSConfig CombMass
+
+#Track jet (VR track jet) configuration
+TrackJetCollectionName AntiKtVR30Rmax4Rmin02TrackJets
+TrackJetPt 10000
 
 TruthCollectionName TruthParticles
-#TruthCollectionName None
 TruthJetCollectionName AntiKt4TruthJets
 TopPartonHistory ttbar
 TruthBlockInfo False
 PDFInfo False
-IsAFII False
 
-OutputFileSetAutoFlushZero True
+IsAFII False
+#OutputFileNEventAutoFlush 100
+#OutputFileBasketSizePrimitive 512
+#OutputFileBasketSizeVector 1024
+#NEvents 15000
 
 ObjectSelectionName top::ObjectLoaderTtres
 OutputFormat top::TtresEventSaverFlatNtuple
@@ -44,503 +85,209 @@ OutputFilename output.root
 PerfStats No
 
 CalculateSF True
-Systematics None
-#Systematics All
-BTaggingWP FixedCutBEff_70
+#Systematics AllJets
+Systematics Nominal
 
-#JetUncertainties_NPModel GlobalReduction
-#LargeRJESUncertaintyConfig TopTagging
+#Just of Btagging WP
+BTaggingWP DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 DL1r:FixedCutBEff_60 DL1r:FixedCutBEff_70 DL1r:FixedCutBEff_77 DL1r:FixedCutBEff_85
+
+JetUncertainties_NPModel CategoryReduction
+LargeRJetUncertainties_NPModel CategoryReduction # insitu calibration
+JetUncertainties_BunchSpacing 25ns
 
 ElectronID TightLH
 ElectronIDLoose MediumLH
 MuonQuality Medium
 MuonQualityLoose Medium
-ElectronIsolation FixedCutTightTrackOnly
-MuonIsolation FixedCutTightTrackOnly
+ElectronIsolation TightTrackOnly
+MuonIsolation TightTrackOnly_VarRad
 ElectronIsolationLoose None
-MuonIsolationLoose FixedCutTightTrackOnly
+MuonIsolationLoose TightTrackOnly_VarRad
 
 FakesControlRegionDoLooseMC True
 OverlapRemovalLeptonDef Loose
-ApplyElectronInJetSubtraction False
+ApplyElectronInJetSubtration True
+OverlapRemovalProcedure  BoostedSlidingDRMu
+DoLoose Both
 
-DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW
+DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord,DumpToolConfigTo,ExtraTopTaggingWP
 
-TtresrunEWK  True
 TtresRunHTT False
 TtresSavePartons True
+ExtraTopTaggingWP DNNTOPTAG_INCLUSIVE50 # DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_CONTAINED80 DNNTOPTAG_CONTAINED50 DNNTOPTAG_TTRES0L0B DNNTOPTAG_TTRES0L1B DNNTOPTAG_TTRES0L2B DNNTOPTAG_TTRES1L50EFF DNNTOPTAG_TTRES1L90EFF ### Activate more taggers as you'd like. Note that if the corresponding EventSelectors are not activated, the branches will be just filled with empty entries!
+# Note that turning `TtresrunEWK` on when running ttbar samples is necessary in order to apply EWKCorrection in the later stage.
+# However, it may increase the running time significantly when running non-ttbar samples. Therefore, it must be only turned OFF with caution.
+TtresrunEWK True 
 isTOPQ False
 fakeLeptonSel False
 isSherpaW True
+SaveFullTruthRecord True
+DumpToolConfigTo toolConfig.txt
 
-#NEvents 30000
+### Global lepton trigger scale factor example
+UseGlobalLeptonTriggerSF True
+GlobalTriggers 2015@e24_lhmedium_L1EM20VH_OR_e60_lhmedium_OR_e120_lhloose,mu20_iloose_L1MU15_OR_mu50 2016@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50 2017@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50 2018@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50
 
-SELECTION bejets_2015
+GlobalTriggersLoose 2015@e24_lhmedium_L1EM20VH_OR_e60_lhmedium_OR_e120_lhloose,mu20_iloose_L1MU15_OR_mu50 2016@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50 2017@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50 2018@e26_lhtight_nod0_ivarloose_OR_e60_lhmedium_nod0_OR_e140_lhloose_nod0,mu26_ivarmedium_OR_mu50
+
+
+
+########################
+### basic selection with mandatory cuts for reco level
+########################
+
+SUB BASIC
 INITIAL
 GRL
 GOODCALO
 PRIVTX
-TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
+# RECO_LEVEL
+
+########################
+### definition of the data periods
+########################
+
+SUB period_2015
 RUN_NUMBER >= 276262
 RUN_NUMBER <= 284484
+
+SUB period_2016
+RUN_NUMBER >= 297730
+RUN_NUMBER <= 311481
+
+SUB period_2017
+RUN_NUMBER >= 325713
+RUN_NUMBER <= 340453
+
+SUB period_2018
+RUN_NUMBER >= 348885
+
+########################
+### offline cuts for reco-level selections
+########################
+SUB COMMON
+JETCLEAN LooseBad
+#MET > 20000
+#MET+MWT > 60000
+JET_N 25000 >= 1
+
+SUB boosted_common
+. COMMON
+JETCLOSELEPTON_N >= 1
+LJET_N 300000 >= 1
+#LARGEJETTTRESST_N 300000 >= 1
+#LJET_DNNTOPTAG_CONTAINED50_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
+#LJET_DNNTOPTAG_CONTAINED80_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
+#LJET_DNNTOPTAG_TTRES1L50EFF_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
+#LJET_DNNTOPTAG_TTRES1L90EFF_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
+#LJET_DNNTOPTAG_TTRES0L1B_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
+#LJET_DNNTOPTAG_TTRES0L2B_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
+#LJET_DNNTOPTAG_TTRES0L0B_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
+#LJET_DNNTOPTAG_INCLUSIVE50_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
+#LJET_DNNTOPTAG_INCLUSIVE80_N 350000 >= 1 # Do not active more than 1 tagger in l+jets analysis unless you know what you're doing
+ANGULARCUTSSL >= 0  #setting it to zero here. Apply angural_cut at TNA
+NOBADMUON
+EXAMPLEPLOTS
+
+SUB resolved_common
+. COMMON
+JET_N 25000 >= 2
+JET_N 25000 >= 3
+JET_N 25000 >= 4
+#LOG10_CHI2 < 0.9
+NOBADMUON
+EXAMPLEPLOTS
+
+SUB single_el
 EL_N 30000 >= 1
 EL_N 25000 == 1
 MU_N 25000 == 0
-TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
-JETCLEAN LooseBad
-MET > 20000
-MET+MWT > 60000
-JET_N 25000 >= 1
-JETCLOSELEPTON_N >= 1
-LARGEJETTTRESST_N 300000 >= 1
-ANGULARCUTSSL >= 1
-TRACKMV2C10_N 0.66 >= 1
-NOBADMUON
+
+SUB single_mu
+MU_N 30000 >= 1
+MU_N 25000 == 1
+EL_N 25000 == 0
+
+
+########################
+### boosted e+jets selections
+########################
+
+SELECTION bejets_2015
+. BASIC
+. period_2015
+GTRIGDEC
+. single_el
+GTRIGMATCH
+. boosted_common
 SAVE
 
 SELECTION bejets_2016
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 297730
-RUN_NUMBER <= 311481
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-MET > 20000
-MET+MWT > 60000
-JET_N 25000 >= 1
-JETCLOSELEPTON_N >= 1
-LARGEJETTTRESST_N 300000 >= 1
-ANGULARCUTSSL >= 1
-TRACKMV2C10_N 0.66 >= 1
-NOBADMUON
+. BASIC
+. period_2016
+GTRIGDEC
+. single_el
+GTRIGMATCH
+. boosted_common
 SAVE
-
 
 SELECTION bejets_2017
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 325713
-RUN_NUMBER <= 340453
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-MET > 20000
-MET+MWT > 60000
-JET_N 25000 >= 1
-JETCLOSELEPTON_N >= 1
-LARGEJETTTRESST_N 300000 >= 1
-ANGULARCUTSSL >= 1
-TRACKMV2C10_N 0.66 >= 1
-NOBADMUON
+. BASIC
+. period_2017
+GTRIGDEC
+. single_el
+GTRIGMATCH
+. boosted_common
 SAVE
 
+SELECTION bejets_2018
+. BASIC
+. period_2018
+GTRIGDEC
+. single_el
+GTRIGMATCH
+. boosted_common
+SAVE
+
+########################
+### resolved e+jets selections
+########################
 
 SELECTION rejets_2015
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
-RUN_NUMBER >= 276262
-RUN_NUMBER <= 284484
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
-JETCLEAN LooseBad
-MET > 20000
-MET+MWT > 60000
-JET_N 25000 >= 1
-JET_N 25000 >= 2
-JET_N 25000 >= 3
-JET_N 25000 >= 4
-TRACKMV2C10_N 0.66 >= 1
-LOG10_CHI2 < 0.9
-NOBADMUON
+. BASIC
+. period_2015
+GTRIGDEC
+. single_el
+GTRIGMATCH
+. resolved_common
 SAVE
 
 SELECTION rejets_2016
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 297730
-RUN_NUMBER <= 311481
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-MET > 20000
-MET+MWT > 60000
-JET_N 25000 >= 1
-JET_N 25000 >= 2
-JET_N 25000 >= 3
-JET_N 25000 >= 4
-TRACKMV2C10_N 0.66 >= 1
-LOG10_CHI2 < 0.9
-NOBADMUON
+. BASIC
+. period_2016
+GTRIGDEC
+. single_el
+GTRIGMATCH
+. resolved_common
 SAVE
-
 
 SELECTION rejets_2017
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 325713
-RUN_NUMBER <= 340453
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-MET > 20000
-MET+MWT > 60000
-JET_N 25000 >= 1
-JET_N 25000 >= 2
-JET_N 25000 >= 3
-JET_N 25000 >= 4
-TRACKMV2C10_N 0.66 >= 1
-LOG10_CHI2 < 0.9
-NOBADMUON
+. BASIC
+. period_2017
+GTRIGDEC
+. single_el
+GTRIGMATCH
+. resolved_common
+SAVE
+
+SELECTION rejets_2018
+. BASIC
+. period_2018
+GTRIGDEC
+. single_el
+GTRIGMATCH
+. resolved_common
 SAVE
 
 
-SELECTION rejetsWCR_2015
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
-RUN_NUMBER >= 276262
-RUN_NUMBER <= 284484
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
-JETCLEAN LooseBad
-MET > 20000
-MET+MWT > 60000
-JET_N 25000 >= 1
-JET_N 25000 >= 2
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
 
-SELECTION rejetsWCR_2016
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 297730
-RUN_NUMBER <= 311481
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-MET > 20000
-MET+MWT > 60000
-JET_N 25000 >= 1
-JET_N 25000 >= 2
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
-
-SELECTION rejetsWCR_2017
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 325713
-RUN_NUMBER <= 340453
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-MET > 20000
-MET+MWT > 60000
-JET_N 25000 >= 1
-JET_N 25000 >= 2
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
-
-
-SELECTION bejetsQCDCR_2015
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
-RUN_NUMBER >= 276262
-RUN_NUMBER <= 284484
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
-JETCLEAN LooseBad
-MET < 20000
-MET+MWT < 60000
-JET_N 25000 >= 1
-JETCLOSELEPTON_N >= 1
-LARGEJETTTRESST_N 200000 >= 1
-ANGULARCUTSSL >= 1
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
-
-SELECTION bejetsQCDCR_2016
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 297730
-RUN_NUMBER <= 311481
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-MET < 20000
-MET+MWT < 60000
-JET_N 25000 >= 1
-JETCLOSELEPTON_N >= 1
-LARGEJETTTRESST_N 200000 >= 1
-ANGULARCUTSSL >= 1
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
-
-
-SELECTION bejetsQCDCR_2017
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 325713
-RUN_NUMBER <= 340453
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-MET < 20000
-MET+MWT < 60000
-JET_N 25000 >= 1
-JETCLOSELEPTON_N >= 1
-LARGEJETTTRESST_N 200000 >= 1
-ANGULARCUTSSL >= 1
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
-
-
-SELECTION rejetsQCDCR_2015
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
-RUN_NUMBER >= 276262
-RUN_NUMBER <= 284484
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
-JETCLEAN LooseBad
-MET < 20000
-MET+MWT < 60000
-JET_N 25000 >= 1
-JET_N 25000 >= 2
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
-
-SELECTION rejetsQCDCR_2016
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 297730
-RUN_NUMBER <= 311481
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-MET < 20000
-MET+MWT < 60000
-JET_N 25000 >= 1
-JET_N 25000 >= 2
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
-
-
-SELECTION rejetsQCDCR_2017
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 325713
-RUN_NUMBER <= 340453
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-MET < 20000
-MET+MWT < 60000
-JET_N 25000 >= 1
-JET_N 25000 >= 2
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
-
-
-SELECTION bejetsIncluR_2015
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
-RUN_NUMBER >= 276262
-RUN_NUMBER <= 284484
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
-JETCLEAN LooseBad
-
-JET_N 25000 >= 1
-JETCLOSELEPTON_N >= 1
-LARGEJETTTRESST_N 200000 >= 1
-ANGULARCUTSSL >= 1
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
-
-SELECTION bejetsIncluR_2016
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 297730
-RUN_NUMBER <= 311481
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-JET_N 25000 >= 1
-JETCLOSELEPTON_N >= 1
-LARGEJETTTRESST_N 200000 >= 1
-ANGULARCUTSSL >= 1
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
-
-
-SELECTION bejetsIncluR_2017
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 325713
-RUN_NUMBER <= 340453
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-JET_N 25000 >= 1
-JETCLOSELEPTON_N >= 1
-LARGEJETTTRESST_N 200000 >= 1
-ANGULARCUTSSL >= 1
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
-
-
-SELECTION rejetsIncluR_2015
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
-RUN_NUMBER >= 276262
-RUN_NUMBER <= 284484
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e24_lhmedium_L1EM20VH HLT_e60_lhmedium HLT_e120_lhloose
-JETCLEAN LooseBad
-JET_N 25000 >= 1
-JET_N 25000 >= 2
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
-
-SELECTION rejetsIncluR_2016
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 297730
-RUN_NUMBER <= 311481
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-JET_N 25000 >= 1
-JET_N 25000 >= 2
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-SAVE
-
-
-SELECTION rejetsIncluR_2017
-INITIAL
-GRL
-GOODCALO
-PRIVTX
-TRIGDEC HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-RUN_NUMBER >= 325713
-RUN_NUMBER <= 340453
-EL_N 30000 >= 1
-EL_N 25000 == 1
-MU_N 25000 == 0
-TRIGMATCH HLT_e26_lhtight_nod0_ivarloose HLT_e60_lhmedium_nod0 HLT_e140_lhloose_nod0
-JETCLEAN LooseBad
-JET_N 25000 >= 1
-JET_N 25000 >= 2
-TRACKMV2C10_N 0.66 >= 0
-NOBADMUON
-
-SAVE
