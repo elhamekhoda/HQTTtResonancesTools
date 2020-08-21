@@ -85,7 +85,8 @@ OutputFilename output.root
 PerfStats No
 
 CalculateSF True
-Systematics AllJets
+Systematics AllElectrons,AllMuons,AllMET
+#Systematics AllJets
 #Systematics Nominal
 
 #Just of Btagging WP
@@ -115,11 +116,11 @@ OverlapRemovalProcedure BoostedSlidingDRMu
 DynamicKeys TtresRunHTT,TtresSavePartons,isTOPQ,TtresrunEWK,fakeLeptonSel,isSherpaW,SaveFullTruthRecord,DumpToolConfigTo,ExtraTopTaggingWP
 
 TtresRunHTT False
-TtresSavePartons False
+TtresSavePartons True
 ExtraTopTaggingWP #DNNTOPTAG_INCLUSIVE50 # DNNTOPTAG_INCLUSIVE80 DNNTOPTAG_INCLUSIVE50 DNNTOPTAG_CONTAINED80 DNNTOPTAG_CONTAINED50 DNNTOPTAG_TTRES0L0B DNNTOPTAG_TTRES0L1B DNNTOPTAG_TTRES0L2B DNNTOPTAG_TTRES1L50EFF DNNTOPTAG_TTRES1L90EFF ### Activate more taggers as you'd like. Note that if the corresponding EventSelectors are not activated, the branches will be just filled with empty entries!
 # Note that turning `TtresrunEWK` on when running ttbar samples is necessary in order to apply EWKCorrection in the later stage.
 # However, it may increase the running time significantly when running non-ttbar samples. Therefore, it must be only turned OFF with caution.
-TtresrunEWK False
+TtresrunEWK True
 isTOPQ False
 fakeLeptonSel False
 isSherpaW True
@@ -127,7 +128,7 @@ SaveFullTruthRecord False
 DumpToolConfigTo toolConfig.txt
 MCGeneratorWeights Nominal
 
-FilterBranches truthparticle_*,MA_*,chi2_*,MC_ttbar_lpj*,MC_tl_*,MC_th_*,MC_w*,MC_bl*,MC_bh*,MC_W*,MC_b*,MC_i*,MC_p*,MC_e_*,MC_m*,MC_Q*,MC_a*
+#FilterBranches truthparticle_*,MA_*,chi2_*,MC_ttbar_lpj*,MC_tl_*,MC_th_*,MC_w*,MC_bl*,MC_bh*,MC_W*,MC_b*,MC_i*,MC_p*,MC_e_*,MC_m*,MC_Q*,MC_a*
 TopPartonLevel False
 
 ### Global lepton trigger scale factor example
