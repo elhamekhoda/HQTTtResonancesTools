@@ -21,7 +21,7 @@ public:
      * @param ptcut The minimum pT to accept good jets.
      * @param etamax The maximum eta cut.
      */
-    JetTtres(const double ptcut, const double etamax, const bool doJVTCut, const std::string fwdJetSel, const double ghostjetPtmin = 7000., const std::string &ghostCollectionName = "");
+    JetTtres(const double ptcut, const double etamax, const bool doJVTCut,  const double ghostjetPtmin = 7000., const std::string &ghostCollectionName = "");
 
     ///Does nothing.
     ~JetTtres();
