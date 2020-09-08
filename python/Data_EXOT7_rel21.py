@@ -47,3 +47,20 @@ TopExamples.grid.Add("Data18_13TeV_25ns_EXOT7").datasets = [
 'data18_13TeV.periodO.physics_Main.PhysCont.DAOD_EXOT7.grp18_v01_p3841',
 'data18_13TeV.periodQ.physics_Main.PhysCont.DAOD_EXOT7.grp18_v01_p3841',
 ]
+
+TopExamples.grid.Add("Data15_13TeV_25ns_debug_stream_EXOT7").datasets = [
+'data15_13TeV.periodAllYear.debugrec_hlt.PhysCont.DAOD_EXOT7.grp15_v01_p3741'
+]
+
+
+TopExamples.grid.Add("Data16_13TeV_25ns_debug_stream_EXOT7").datasets = [
+'data16_13TeV.periodAllYear.debugrec_hlt.PhysCont.DAOD_EXOT7.grp16_v01_p3741'
+]
+
+TopExamples.grid.Add("Data17_13TeV_25ns_debug_stream_EXOT7").datasets = [
+'data17_13TeV.periodAllYear.debugrec_hlt.PhysCont.DAOD_EXOT7.grp17_v01_p3741'
+]
+
+TopExamples.grid.Add("Data18_13TeV_25ns_debug_stream_EXOT7").datasets = [
+'data18_13TeV.periodAllYear.debugrec_hlt.PhysCont.DAOD_EXOT7.grp18_v01_p3741'
+]
