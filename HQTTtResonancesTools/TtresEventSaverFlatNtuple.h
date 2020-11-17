@@ -13,6 +13,9 @@
 #include "TtResonancesTools/Chi2Selector.h"
 #include "BoostedJetTaggers/SubstructureTopTaggerHelpers.h"
 #include "xAODBTaggingEfficiency/BTaggingEfficiencyTool.h"
+#include "xAODBTaggingEfficiency/BTaggingSelectionTool.h"
+#include "FTagAnalysisInterfaces/IBTaggingSelectionTool.h"
+#include "FTagAnalysisInterfaces/IBTaggingEfficiencyTool.h"
 #include <set>
 
 // HEPTopTagger headers
@@ -125,6 +128,8 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
 
     top::Chi2Selector* m_chi2Sel;
 
+
+    BTaggingSelectionTool* tempSelTool;
     std::string m_ghostjetcollection;
     std::string m_trackjetcollection;
     std::string m_akt4truthjetcollection;
