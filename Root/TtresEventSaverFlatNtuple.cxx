@@ -19,6 +19,10 @@
 #include "TtResonancesTools/TtresChi2.h"
 #include "ParticleJetTools/JetFlavourInfo.h"
 #include "BoostedJetTaggers/FatjetLabelEnum.h"
+#include "xAODBTaggingEfficiency/BTaggingEfficiencyTool.h"
+#include "xAODBTaggingEfficiency/BTaggingSelectionTool.h"
+
+
 // HEPTopTagger
 //#define USE_HTT 1
 #ifdef USE_HTT
@@ -36,6 +40,19 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
 
     top::ConfigurationSettings* configSettings = top::ConfigurationSettings::get();
     //weak = new WeakCorr::WeakCorrScaleFactorParam(PathResolverFindCalibFile("TtResonancesTools/EWcorr_param.root"));
+
+     tempSelTool = new BTaggingSelectionTool("BTaggingSelectionTool");
+     
+           top::check(tempSelTool->setProperty("MaxEta"                      , 2.5), "Failed to set Max eta property for ConfigFile");
+           top::check(tempSelTool->setProperty("MinPt"                       , 25000), "Failed to set Min pT property for ConfigFile");
+           top::check(tempSelTool->setProperty("MaxRangePt"                       , 7000000), "Failed to set Max Range Pt property for ConfigFile");
+           top::check(tempSelTool->setProperty("TaggerName"                  , "DL1r"), "Failed to set Tagger Name property for ConfigFile");
+           top::check(tempSelTool->setProperty("OperatingPoint"              , "FixedCutBEff_70"), "Failed to set OP property for ConfigFile");
+           top::check(tempSelTool->setProperty("JetAuthor"                   , "AntiKt4EMPFlowJets_BTagging201903"), "Failed to set Jet Author property for ConfigFile");
+           top::check(tempSelTool->setProperty("FlvTagCutDefinitionsFileName", "/cvmfs/atlas.cern.ch/repo/sw/database/GroupData/xAODBTaggingEfficiency/13TeV/2020-21-13TeV-MC16-CDI-2020-03-11_v3.root"), "Failed to set CDI  property for ConfigFile");
+            top::check(tempSelTool->initialize(), "Failed to initialize");
+
+
 
     m_isTOPQ                = (configValueDefault("isTOPQ") == "True") ? true : false ;
     m_isSherpaW             = (configValueDefault("isSherpaW") == "True") ? true : false;
@@ -1796,12 +1813,16 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
         for (const auto* const jetPtr : event.m_jets) {
             TLorentzVector *jet = new TLorentzVector();
-
             jet->SetPtEtaPhiM(jetPtr->pt(), jetPtr->eta(), jetPtr->phi(), jetPtr->m());
             jetVector.push_back(jet);
-            jetPtr->btagging()->MVx_discriminant("MV2c10", jmv2);
-            isJetBtagged.push_back(jmv2 > 0.66);
-        }
+            const xAOD::BTagging* btag_cal(nullptr);
+            btag_cal = jetPtr->btagging();
+            double pT_cal = jetPtr->pt();
+            double eta_cal = jetPtr->eta();
+            double pu_cal = -999, pb_cal = -999, pc_cal = -999;
+            btag_cal->pu("DL1r", pu_cal); btag_cal->pb("DL1r", pb_cal); btag_cal->pc("DL1r", pc_cal);
+            isJetBtagged.push_back(tempSelTool->accept( pT_cal, eta_cal, pb_cal, pc_cal, pu_cal));
+    }
         int i_q1_W, i_q2_W, i_b_had, i_b_lep, ign1;
         bool pass = resolved_tt.findMinChiSquare(&Plepton, &jetVector, &isJetBtagged, &met, i_q1_W, i_q2_W, i_b_had, i_b_lep, ign1, m_chi2all, m_chi2had, m_chi2lep);
         if (pass == true) {
@@ -1813,26 +1834,38 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
     }
 
-    m_NB_hadside = 0;
-    m_NB_lepside = 0;
-    for (unsigned int k = 0; k < trackjets->size(); ++k) {
-        const xAOD::Jet *trackjetPtr = trackjets->at(k);
-        trackjetPtr->btagging()->MVx_discriminant("MV2c10", jmv2);
-        if (jmv2 > 0.66) {
-            Pbjet.SetPtEtaPhiM(trackjetPtr->pt(), trackjetPtr->eta(), trackjetPtr->phi(), trackjetPtr->m());
+
+m_NB_hadside = 0;
+m_NB_lepside = 0;
+const xAOD::JetContainer* calojets = &(event.m_jets);
+
+    for (unsigned int k = 0; k < calojets->size(); ++k) {
+            const xAOD::Jet *calojetPtr = calojets->at(k);
+            const xAOD::BTagging* btag_calo(nullptr);
+            btag_calo = calojetPtr->btagging();
+            double pT_calo = calojetPtr->pt();   
+            double eta_calo = calojetPtr->eta();
+            double pu_calo = -999, pb_calo = -999, pc_calo = -999;
+            btag_calo->pu("DL1r", pu_calo); btag_calo->pb("DL1r", pb_calo); btag_calo->pc("DL1r", pc_calo);
+   
+
+      if (tempSelTool->accept( pT_calo, eta_calo, pb_calo, pc_calo, pu_calo)) {
+            Pbjet.SetPtEtaPhiM(calojetPtr->pt(), calojetPtr->eta(), calojetPtr->phi(), calojetPtr->m());
             if ((Pbjet.DeltaR(Phadtop)) < 1.0) {hadside = 1; m_NB_hadside += 1;}
             if ((Pbjet.DeltaR(Pleptop)) < 1.0) {lepside = 1; m_NB_lepside += 1;}
-        }
-    }
 
-
+ 
+       }
+  
+}
     if (hadside == 0 && lepside == 0) {m_Btagcat = 0;}
     if (hadside == 0 && lepside == 1) {m_Btagcat = 1;}
     if (hadside == 1 && lepside == 0) {m_Btagcat = 2;}
     if (hadside == 1 && lepside == 1) {m_Btagcat = 3;}
+  //std::cout << "BtagCategorie " << m_Btagcat << std::endl;
 
 
-
+ 
     m_tjet_numConstituents.resize(trackjets->size(), -1);
     m_tjet_label.resize(trackjets->size(), 0);
     m_tjet_ghostlabel.resize(trackjets->size(), 0);
