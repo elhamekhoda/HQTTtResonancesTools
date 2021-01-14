@@ -80,7 +80,10 @@ PerfStats No
 CalculateSF True
 #Systematics All
 # Systematics CombMass_strong_JET_Comb_Baseline_All__1down,CombMass_strong_JET_Comb_Baseline_All__1up,CombMass_strong_JET_Comb_Modelling_All__1down,CombMass_strong_JET_Comb_Modelling_All__1up,CombMass_strong_JET_Comb_TotalStat_All__1down,CombMass_strong_JET_Comb_TotalStat_All__1up,CombMass_strong_JET_MassRes_Top__1up
-Systematics Nominal
+
+Systematics CombMass_weak_JET_Rtrk_Baseline_pT__1up,CombMass_weak_JET_Rtrk_Baseline_pT__1down,CombMass_weak_JET_Rtrk_Modelling_pT__1up,CombMass_weak_JET_Rtrk_Modelling_pT__1down,CombMass_weak_JET_Rtrk_TotalStat_pT__1up,CombMass_weak_JET_Rtrk_TotalStat_pT__1down,CombMass_weak_JET_Rtrk_Tracking_pT__1up,CombMass_weak_JET_Rtrk_Tracking_pT__1down,CombMass_weak_JET_Comb_Baseline_mass__1up,CombMass_weak_JET_Comb_Baseline_mass__1down,CombMass_weak_JET_Comb_Modelling_mass__1up,CombMass_weak_JET_Comb_Modelling_mass__1down,CombMass_weak_JET_Comb_TotalStat_mass__1up,CombMass_weak_JET_Comb_TotalStat_mass__1down,CombMass_weak_JET_Comb_Tracking_mass__1up,CombMass_weak_JET_Comb_Tracking_mass__1down,CombMass_weak_JET_MassRes_Top__1up,CombMass_weak_JET_MassRes_Top__1down,
+
+#Systematics Nominal
 
 #B-tagging configuration
 #BTaggingWP MV2c10:FixedCutBEff_60 MV2c10:FixedCutBEff_70 MV2c10:FixedCutBEff_77 MV2c10:FixedCutBEff_85 DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 MV2c10:HybBEff_60 MV2c10:HybBEff_70 MV2c10:HybBEff_77 MV2c10:HybBEff_85 DL1:HybBEff_60 DL1:HybBEff_70 DL1:HybBEff_77 DL1:HybBEff_85 MV2c10:Continuous DL1:Continuous
@@ -93,7 +96,7 @@ BTaggingWP MV2c10:FixedCutBEff_70 MV2r:FixedCutBEff_70 DL1:FixedCutBEff_70 DL1r:
 
 JetUncertainties_NPModel GlobalReduction
 #LargeRJetUncertainties_NPModel CategoryReduction # insitu calibration
-LargeRJetUncertainties_NPModel CombMass_strong # Rtrk-based calibration
+LargeRJetUncertainties_NPModel CombMass_weak # Rtrk-based calibration
 JetUncertainties_BunchSpacing 25ns
 
 ElectronID TightLH
@@ -179,8 +182,8 @@ LJET_N 500000 >= 1
 LJET_N 350000 >= 2
 LJET_DNNTOPTAG_CONTAINED50_N 350000 >= 0
 LJET_DNNTOPTAG_CONTAINED80_N 350000 >= 0
-LJET_DNNTOPTAG_TTRES0L1B_N 350000 >= 0
-LJET_DNNTOPTAG_TTRES0L2B_N 350000 >= 0
+#LJET_DNNTOPTAG_TTRES0L1B_N 350000 >= 0
+#LJET_DNNTOPTAG_TTRES0L2B_N 350000 >= 0
 #LJET_DNNTOPTAG_INCLUSIVE50_N 350000 >= 0 # Activate more taggers as you'd like
 #LJET_DNNTOPTAG_INCLUSIVE80_N 350000 >= 0 # Activate more taggers as you'd like
 #LJET_DNNTOPTAG_TTRES0L0B_N 350000 >= 0 # Activate more taggers as you'd like
@@ -190,6 +193,7 @@ LJET_DNNTOPTAG_TTRES0L2B_N 350000 >= 0
 ########################
 
 SUB boosted_common
+TRUTH_TTBARMASS 410470,410471 <= 1.1e6
 EL_N 25000 == 0
 MU_N 25000 == 0
 JETCLEAN LooseBad
