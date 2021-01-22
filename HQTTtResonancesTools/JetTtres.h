@@ -40,8 +40,8 @@ public:
 private:
 
     ///The name of the ghost collection
-    std::string m_ghostCollectionName;
     double m_ghostjetPtmin;
+    std::string m_ghostCollectionName;
 
 };
 

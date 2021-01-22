@@ -24,12 +24,13 @@ atlas_depends_on_subdirs( PUBLIC
                           xAODRootAccess
                           # CP Tools
                           JetRec
-                          BoostedJetTaggers 
+                          Reconstruction/Jet/BoostedJetTaggers
                           Reconstruction/Jet/JetCalibTools
                           PhysicsAnalysis/AnalysisCommon/AssociationUtils
                           PhysicsAnalysis/AnalysisCommon/ParticleJetTools
                           PhysicsAnalysis/JetTagging/JetTagPerformanceCalibration/xAODBTaggingEfficiency
                           PhysicsAnalysis/MuonID/MuonSelectorTools/MuonSelectorTools/MuonSelectorTools
+                          PhysicsAnalysis/Interfaces/JetAnalysisInterfaces
                           # TtResonances
                           TtResonancesTools
                           ZprimeRWGT
@@ -52,9 +53,9 @@ option(ENABLE_LJETSUBSTRUCTURE_DEBUG "This enables jet substructures debug outpu
 option(ENABLE_BTAG_DEBUG "This enables b-tagging debug outputs" OFF)
 
 if( EXISTS ${CMAKE_SOURCE_DIR}/ZprimeRWGT/CMakeLists.txt )
-	set(ENABLE_ZPRIMERWGT_DEFAULT ON)
+  set(ENABLE_ZPRIMERWGT_DEFAULT ON)
 else()
-	set(ENABLE_ZPRIMERWGT_DEFAULT OFF)
+  set(ENABLE_ZPRIMERWGT_DEFAULT OFF)
 endif()
 option(ENABLE_ZPRIMERWGT "This enables SSM Z' to HVT Z' reweighting" ${ENABLE_ZPRIMERWGT_DEFAULT})
 
@@ -113,6 +114,7 @@ atlas_add_library( HQTTtResonancesTools Root/*.cxx Root/*.h Root/*.icc
                                   xAODBTaggingEfficiencyLib
                                   MuonSelectorToolsLib
                                   BoostedJetTaggersLib
+                                  JetAnalysisInterfacesLib
                                   JetRecLib
                                   JetCalibToolsLib
                                   ParticleJetToolsLib

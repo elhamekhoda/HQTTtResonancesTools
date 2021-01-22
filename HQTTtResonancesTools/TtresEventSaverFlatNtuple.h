@@ -11,7 +11,6 @@
 #include "TopEventReconstructionTools/TtresNeutrinoBuilder.h"
 #include "TopPartons/PartonHistory.h"
 #include "TtResonancesTools/Chi2Selector.h"
-#include "BoostedJetTaggers/SubstructureTopTaggerHelpers.h"
 #include "xAODBTaggingEfficiency/BTaggingEfficiencyTool.h"
 #include "xAODBTaggingEfficiency/BTaggingSelectionTool.h"
 #include "FTagAnalysisInterfaces/IBTaggingSelectionTool.h"
@@ -22,7 +21,6 @@
 #include "JetRec/JetRecTool.h"
 #include "BoostedJetTaggers/HEPTopTagger.h"
 
-#include "BoostedJetTaggers/SubstructureTopTaggerHelpers.h"
 #include "JetAnalysisInterfaces/IJetSelectorTool.h"
 #include "BoostedJetTaggers/SmoothedTopTagger.h"
 #include "BoostedJetTaggers/JSSWTopTaggerBDT.h"
