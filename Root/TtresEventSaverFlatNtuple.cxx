@@ -18,7 +18,7 @@
 #include "HQTTtResonancesTools/ObjectLoaderTtres.h"
 #include "TtResonancesTools/TtresChi2.h"
 #include "ParticleJetTools/JetFlavourInfo.h"
-#include "BoostedJetTaggers/FatjetLabelEnum.h"
+#include "ParticleJetTools/LargeRJetLabelEnum.h"
 #include "xAODBTaggingEfficiency/BTaggingEfficiencyTool.h"
 #include "xAODBTaggingEfficiency/BTaggingSelectionTool.h"
 
@@ -41,16 +41,15 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
     top::ConfigurationSettings* configSettings = top::ConfigurationSettings::get();
     //weak = new WeakCorr::WeakCorrScaleFactorParam(PathResolverFindCalibFile("TtResonancesTools/EWcorr_param.root"));
 
-     tempSelTool = new BTaggingSelectionTool("BTaggingSelectionTool");
-     
-           top::check(tempSelTool->setProperty("MaxEta"                      , 2.5), "Failed to set Max eta property for ConfigFile");
-           top::check(tempSelTool->setProperty("MinPt"                       , 25000), "Failed to set Min pT property for ConfigFile");
-           top::check(tempSelTool->setProperty("MaxRangePt"                       , 7000000), "Failed to set Max Range Pt property for ConfigFile");
-           top::check(tempSelTool->setProperty("TaggerName"                  , "DL1r"), "Failed to set Tagger Name property for ConfigFile");
-           top::check(tempSelTool->setProperty("OperatingPoint"              , "FixedCutBEff_70"), "Failed to set OP property for ConfigFile");
-           top::check(tempSelTool->setProperty("JetAuthor"                   , "AntiKt4EMPFlowJets_BTagging201903"), "Failed to set Jet Author property for ConfigFile");
-           top::check(tempSelTool->setProperty("FlvTagCutDefinitionsFileName", "/cvmfs/atlas.cern.ch/repo/sw/database/GroupData/xAODBTaggingEfficiency/13TeV/2020-21-13TeV-MC16-CDI-2020-03-11_v3.root"), "Failed to set CDI  property for ConfigFile");
-            top::check(tempSelTool->initialize(), "Failed to initialize");
+    tempSelTool = new BTaggingSelectionTool("BTaggingSelectionTool");
+    top::check(tempSelTool->setProperty("MaxEta"                      , 2.5), "Failed to set Max eta property for ConfigFile");
+    top::check(tempSelTool->setProperty("MinPt"                       , 25000), "Failed to set Min pT property for ConfigFile");
+    top::check(tempSelTool->setProperty("MaxRangePt"                  , 7000000), "Failed to set Max Range Pt property for ConfigFile");
+    top::check(tempSelTool->setProperty("TaggerName"                  , "DL1r"), "Failed to set Tagger Name property for ConfigFile");
+    top::check(tempSelTool->setProperty("OperatingPoint"              , "FixedCutBEff_77"), "Failed to set OP property for ConfigFile");
+    top::check(tempSelTool->setProperty("JetAuthor"                   , "AntiKt4EMPFlowJets_BTagging201903"), "Failed to set Jet Author property for ConfigFile");
+    top::check(tempSelTool->setProperty("FlvTagCutDefinitionsFileName", "/cvmfs/atlas.cern.ch/repo/sw/database/GroupData/xAODBTaggingEfficiency/13TeV/2020-21-13TeV-MC16-CDI-2020-03-11_v3.root"), "Failed to set CDI  property for ConfigFile");
+    top::check(tempSelTool->initialize(), "Failed to initialize");
 
 
 
@@ -107,9 +106,6 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     m_savePdfWeight = config->saveLHAPDFEvent();
     m_LHAPDFSets = config->LHAPDFSets();
 
-    // STL80 = STTHelpers::configSubstTagger("EventSaverLooseSmoothTopTag", "SmoothCut_80");
-    // STL50 = STTHelpers::configSubstTagger("EventSaverLooseSmoothTopTag", "SmoothCut_50");
-
     // m_smoothedTopTaggerMT80 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "EventSaverSmoothedTopTaggerMT80" ) );
     // m_smoothedTopTaggerMT50 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "EventSaverSmoothedTopTaggerMT50" ) );
     // m_smoothedTopTaggerTS80 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "EventSaverSmoothedTopTaggerTS80" ) );
@@ -117,8 +113,6 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     // m_smoothedTopTaggerQT80 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "EventSaverSmoothedTopTaggerQT80" ) );
     // m_smoothedTopTaggerQT50 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "EventSaverSmoothedTopTaggerQT50" ) );
     // m_bdtTopTagger80 = std::unique_ptr<JSSWTopTaggerBDT>( new JSSWTopTaggerBDT( "EventSaverJSSWTopTaggerBDT80" ) );
-    m_dnnTopTaggerContained80 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNContained80" ) );
-    m_dnnTopTaggerInclusive80 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNInclusive80" ) );
     // m_dnnTopTaggerContained50 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNContained50" ) );
     // m_dnnTopTaggerInclusive50 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNInclusive50" ) );
     // m_topoTopTagger80 = std::unique_ptr<TopoclusterTopTagger>( new TopoclusterTopTagger( "EventSaverTopoclusterTopTagger80" ) );
@@ -130,14 +124,6 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     // top::check(m_smoothedTopTaggerQT80->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_QwTau32FixedSignalEfficiency80_MC15c_20161209.dat"), "Failed to set property for ConfigFile");
     // top::check(m_smoothedTopTaggerQT50->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_QwTau32FixedSignalEfficiency50_MC15c_20161209.dat"), "Failed to set property for ConfigFile");
     // top::check(m_bdtTopTagger80->setProperty( "ConfigFile",   "JSSWTopTaggerBDT/JSSBDTTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup80Eff.dat"), "Failed to set property for ConfigFile");
-    top::check(m_dnnTopTaggerContained80->setProperty( "CalibArea", "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
-    top::check(m_dnnTopTaggerContained80->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC16d_20190827_80Eff.dat"), "Failed to set property for ConfigFile");
-    top::check(m_dnnTopTaggerContained80->setProperty( "DSID", (int)config->getDSID()), "Failed to set property for ConfigFile" );
-    top::check(m_dnnTopTaggerContained80->setProperty( "IsMC", config->isMC()), "Failed to set property for ConfigFile" );
-    top::check(m_dnnTopTaggerInclusive80->setProperty( "CalibArea", "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
-    top::check(m_dnnTopTaggerInclusive80->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkInclusive_MC16d_20190405_80Eff.dat"), "Failed to set property for ConfigFile");
-    top::check(m_dnnTopTaggerInclusive80->setProperty( "DSID", (int)config->getDSID()), "Failed to set property for ConfigFile" );
-    top::check(m_dnnTopTaggerInclusive80->setProperty( "IsMC", config->isMC()), "Failed to set property for ConfigFile" );
     // top::check(m_topoTopTagger80->setProperty( "ConfigFile",   "TopoclusterTopTagger/TopoclusterTopTagger_AntiKt10LCTopoTrimmed_TopQuark_MC15c_20170511_ptweighted80Eff.dat"), "Failed to set property for ConfigFile");
     // top::check(m_dnnTopTaggerContained50->setProperty( "CalibArea", "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
     // top::check(m_dnnTopTaggerContained50->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC16d_20190405_50Eff.dat"), "Failed to set property for ConfigFile");
@@ -155,11 +141,22 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     // top::check(m_smoothedTopTaggerQT80->initialize(), "Initializing failed");
     // top::check(m_smoothedTopTaggerQT50->initialize(), "Initializing failed");
     // top::check(m_bdtTopTagger80->initialize(), "Initializing failed");
-    top::check(m_dnnTopTaggerContained80->initialize(), "Initializing failed");
-    top::check(m_dnnTopTaggerInclusive80->initialize(), "Initializing failed");
     // top::check(m_dnnTopTaggerContained50->initialize(), "Initializing failed");
     // top::check(m_dnnTopTaggerInclusive50->initialize(), "Initializing failed");
     // top::check(m_topoTopTagger80->initialize(), "Initializing failed");
+
+    m_dnnTopTaggerContained80 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNContained80" ) );
+    m_dnnTopTaggerInclusive80 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNInclusive80" ) );
+    top::check(m_dnnTopTaggerContained80->setProperty( "CalibArea", "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
+    top::check(m_dnnTopTaggerContained80->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC16_20201216_80Eff.dat"), "Failed to set property for ConfigFile");
+    //top::check(m_dnnTopTaggerContained80->setProperty( "DSID", (int)config->getDSID()), "Failed to set property for ConfigFile" );
+    top::check(m_dnnTopTaggerContained80->setProperty( "IsMC", config->isMC()), "Failed to set property for ConfigFile" );
+    top::check(m_dnnTopTaggerInclusive80->setProperty( "CalibArea", "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
+    top::check(m_dnnTopTaggerInclusive80->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkInclusive_MC16_20201216_80Eff.dat"), "Failed to set property for ConfigFile");
+    //top::check(m_dnnTopTaggerInclusive80->setProperty( "DSID", (int)config->getDSID()), "Failed to set property for ConfigFile" );
+    top::check(m_dnnTopTaggerInclusive80->setProperty( "IsMC", config->isMC()), "Failed to set property for ConfigFile" );
+    top::check(m_dnnTopTaggerContained80->initialize(), "Initializing failed");
+    top::check(m_dnnTopTaggerInclusive80->initialize(), "Initializing failed");
 
     if (config->isMC()) {
         std::cout << "GENERATOR:" << config->getGenerators() << std::endl;
@@ -183,7 +180,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
 #ifdef USE_HTT
     if (m_runHtt) {
         for (auto treename : *config->systAllTTreeNames()) {
-            m_HTT[treename.second] = buildFullHTTagger(treename.second);     ;
+            m_HTT[treename.second] = buildFullHTTagger(treename.second);
         }
     }
 #endif
@@ -248,7 +245,8 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
             systematicTree->makeOutputVariable(m_tjet_BHadron_e, "tjet_BHadron_e");
         }
 
-
+#ifdef ENABLE_BTAG_DEBUG
+        //per-jet b-tag SF and their variations
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70, "tjet_" + btag_outputVar);
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_eigen_B_up, "tjet_bTagSF_70_eigen_B_up");
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_eigen_B_down, "tjet_bTagSF_70_eigen_B_down");
@@ -256,12 +254,11 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_eigen_C_down, "tjet_bTagSF_70_eigen_C_down");
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_eigen_Light_up, "tjet_bTagSF_70_eigen_Light_up");
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_eigen_Light_down, "tjet_bTagSF_70_eigen_Light_down");
-
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_syst_extrapolation_up, "tjet_bTagSF_70_syst_extrapolation_up");
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_syst_extrapolation_down, "tjet_bTagSF_70_syst_extrapolation_down");
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_syst_extrapolation_from_charm_up, "tjet_bTagSF_70_syst_extrapolation_from_charm_up");
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_syst_extrapolation_from_charm_down, "tjet_bTagSF_70_syst_extrapolation_from_charm_down");
-#ifdef ENABLE_BTAG_DEBUG
+
         // envelope systematics
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_syst_B_up, "tjet_bTagSF_70_syst_B_up");
         systematicTree->makeOutputVariable(m_tjet_bTagSF_70_syst_B_down, "tjet_bTagSF_70_syst_B_down");
@@ -337,17 +334,17 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_ljet_angular_cuts, "ljet_angular_cuts"); // large-R jet angular cuts
         systematicTree->makeOutputVariable(m_ljet_label, "ljet_label");
         //track jet b-tagging variables
-        systematicTree->makeOutputVariable(m_tjet_mv2rmu,  "tjet_MV2rmu");
-        systematicTree->makeOutputVariable(m_tjet_mv2r,  "tjet_MV2r");
-        systematicTree->makeOutputVariable(m_tjet_dl1_pu,  "tjet_DL1_pu");
-        systematicTree->makeOutputVariable(m_tjet_dl1_pb,  "tjet_DL1_pb");
-        systematicTree->makeOutputVariable(m_tjet_dl1_pc,  "tjet_DL1_pc");
-        systematicTree->makeOutputVariable(m_tjet_dl1rmu_pu,  "tjet_DL1rmu_pu");
-        systematicTree->makeOutputVariable(m_tjet_dl1rmu_pb,  "tjet_DL1rmu_pb");
-        systematicTree->makeOutputVariable(m_tjet_dl1rmu_pc,  "tjet_DL1rmu_pc");
-        systematicTree->makeOutputVariable(m_tjet_dl1r_pu,  "tjet_DL1r_pu");
-        systematicTree->makeOutputVariable(m_tjet_dl1r_pb,  "tjet_DL1r_pb");
-        systematicTree->makeOutputVariable(m_tjet_dl1r_pc,  "tjet_DL1r_pc");
+        // systematicTree->makeOutputVariable(m_tjet_mv2rmu,  "tjet_MV2rmu");
+        // systematicTree->makeOutputVariable(m_tjet_mv2r,  "tjet_MV2r");
+        // systematicTree->makeOutputVariable(m_tjet_dl1_pu,  "tjet_DL1_pu");
+        // systematicTree->makeOutputVariable(m_tjet_dl1_pb,  "tjet_DL1_pb");
+        // systematicTree->makeOutputVariable(m_tjet_dl1_pc,  "tjet_DL1_pc");
+        // systematicTree->makeOutputVariable(m_tjet_dl1rmu_pu,  "tjet_DL1rmu_pu");
+        // systematicTree->makeOutputVariable(m_tjet_dl1rmu_pb,  "tjet_DL1rmu_pb");
+        // systematicTree->makeOutputVariable(m_tjet_dl1rmu_pc,  "tjet_DL1rmu_pc");
+        // systematicTree->makeOutputVariable(m_tjet_dl1r_pu,  "tjet_DL1r_pu");
+        // systematicTree->makeOutputVariable(m_tjet_dl1r_pb,  "tjet_DL1r_pb");
+        // systematicTree->makeOutputVariable(m_tjet_dl1r_pc,  "tjet_DL1r_pc");
 
 
         // book large-R calo jet trackjet b-tagging information
@@ -457,11 +454,8 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
             systematicTree->makeOutputVariable(HTT_m, "HTT_m");
             systematicTree->makeOutputVariable(HTT_eta, "HTT_eta");
             systematicTree->makeOutputVariable(HTT_phi, "HTT_phi");
-
             systematicTree->makeOutputVariable(HTT_n, "HTT_n");
             systematicTree->makeOutputVariable(HTT_masswindow_n, "HTT_masswindow_n");
-
-
             systematicTree->makeOutputVariable(HTT_atan1312, "HTT_atan1312");
             systematicTree->makeOutputVariable(HTT_m23m123, "HTT_m23m123");
 
@@ -1223,9 +1217,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         // int good_smooth_ts80 = 0, good_smooth_ts50 = 0, good_smooth_qt80 = 0, good_smooth_qt50 = 0;
         // int good_bdt_80 = 0, good_topo_80 = 0;
 
-        if (jetPtr->pt() > 300000 && std::fabs(jetPtr->eta()) < 2.0) {
-            // if (STL80->isTagged(*jetPtr) == true ) good_sub_80 = 1;
-            // if (STL50->isTagged(*jetPtr) == true ) good_sub_50 = 1;
+        if (jetPtr->pt() > 350000 && std::fabs(jetPtr->eta()) < 2.0) {
             // if (m_smoothedTopTaggerMT80->tag(*jetPtr)) good_smooth_mt80 = 1;
             // if (m_smoothedTopTaggerMT50->tag(*jetPtr)) good_smooth_mt50 = 1;
             // if (m_smoothedTopTaggerTS80->tag(*jetPtr)) good_smooth_ts80 = 1;
@@ -1275,7 +1267,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                         if ( jetPtr->pt() > 350e3 && fabs(jetPtr->eta()) < 2.0 && tagger.second.TaggerAccept[i] ) {
                             bool validForUncTool = jetPtr->pt() < 4000e3;
                             validForUncTool &= (jetPtr->m() / jetPtr->pt() >= 0 && jetPtr->m() / jetPtr->pt() <= 1);
-                            // std::cout << "Nominal SF=" << tagger.second.TaggerSF[i] << " truthLabel=" << m_ljet_label[i] << " (1: t->qqb)" << std::endl;
+                            //std::cout << "Nominal SF=" << tagger.second.TaggerSF[i] << " truthLabel=" << m_ljet_label[i] << " (1: t->qqb)" << std::endl;
                             unsigned syst_i = 0;
                             if ( validForUncTool ) {
                                 for ( const CP::SystematicSet sysSet : tagger.second.SystematicSets1Up ) {
@@ -1324,7 +1316,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
         m_ljet_tau32_wta[i] = acc_ljet_Tau32_wta.isAvailable(*jetPtr) ? acc_ljet_Tau32_wta(*jetPtr) : acc_ljet_Tau3_wta(*jetPtr) / acc_ljet_Tau2_wta(*jetPtr);
         m_ljet_tau21_wta[i] = acc_ljet_Tau21_wta.isAvailable(*jetPtr) ? acc_ljet_Tau21_wta(*jetPtr) : acc_ljet_Tau2_wta(*jetPtr) / acc_ljet_Tau1_wta(*jetPtr);
-        m_ljet_label[i] = acc_ljet_FatjetTruthLabel.isAvailable(*jetPtr) ? (int) acc_ljet_FatjetTruthLabel(*jetPtr) : -999;
+        m_ljet_label[i] = jetPtr->auxdata<int>("R10TruthLabel_R21Consolidated");
 #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
         try { m_ljet_ECF1[i] = jetPtr->getAttribute<float>("ECF1"); } catch (...) { }
         try { m_ljet_ECF2[i] = jetPtr->getAttribute<float>("ECF2"); } catch (...) { }
@@ -1776,7 +1768,6 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     float met_et = event.m_met->met();
     float met_phi = event.m_met->phi();
     int hadside = 0, lepside = 0;
-    double jmv2;
     double m_chi2all = 10000000;
     double m_chi2lep = 10000000;
     double m_chi2had = 10000000;
@@ -2665,13 +2656,12 @@ void TtresEventSaverFlatNtuple::SetTopTaggingWPs(const std::vector<std::string> 
         std::string WP = "";
         if (taggingWP.compare("DNNTOPTAG_CONTAINED80") == 0) {
             WP = "DNNContained80";
-            jetUncToolSF = new JetUncertaintiesTool("JetUncertaintiesTool_DNNTaggerTopQuarkContained80");
+            // jetUncToolSF = new JetUncertaintiesTool("JetUncertaintiesTool_DNNTaggerTopQuarkContained80");
             m_toptagging[WP] = {"DNNTaggerTopQuarkContained80", "ljet_good_dnn_contained80", {},
                                 "DNNTaggerTopQuarkContained80_Score", "ljet_DNNContainedTopTag_score", {},
                                 "DNNTaggerTopQuarkContained80_SF", "ljet_topTagSF_dnn_contained80", {}
                                };
-
-            top::check(jetUncToolSF->setProperty("ConfigFile", "rel21/Summer2019/R10_SF_LC_DNNContained80_TopTag.config"), "Failed to set property for ConfigFile");
+            // top::check(jetUncToolSF->setProperty("ConfigFile", "rel21/Fall2020/R10_SF_LCTopo_TopTagContained_SigEff80.config"), "Failed to set property for ConfigFile");
         } else if (taggingWP.compare("DNNTOPTAG_CONTAINED50") == 0) {
             WP = "DNNContained50";
             // jetUncToolSF = new JetUncertaintiesTool("JetUncertaintiesTool_DNNTaggerTopQuarkContained50");
@@ -2733,7 +2723,9 @@ void TtresEventSaverFlatNtuple::SetTopTaggingWPs(const std::vector<std::string> 
             m_toptaggingUncTools[WP] = jetUncToolSF;
             CP::SystematicSet jetUnc_sysSet = jetUncToolSF->recommendedSystematics();
             const std::set<std::string> sysNames = jetUnc_sysSet.getBaseNames();
+            std::cout<< "Systematicss list \n" <<std::endl;
             for (const std::string sysName : sysNames) {
+                std::cout<< sysName <<std::endl;
                 m_toptagging[WP].SystematicSets1Up.push_back(CP::SystematicSet(sysName + "__1up"));
                 m_toptagging[WP].TaggerSFVars1Up.push_back({});
                 m_toptagging[WP].SystematicSets1Down.push_back(CP::SystematicSet(sysName + "__1down"));
@@ -4484,7 +4476,7 @@ void TtresEventSaverFlatNtuple::FillME(const xAOD::TruthParticleContainer * trut
 void TtresEventSaverFlatNtuple::finalize() {
     EventSaverFlatNtuple::finalize();
     if ( m_dumpToolConfigTo != "False") {
-        std::cout << ">>> dumping ToolConig to" << " \"" << m_dumpToolConfigTo << "\" "  "<<<" << std::endl;
+        std::cout << "====>>> dumping ToolConig to" << " \"" << m_dumpToolConfigTo << "\" "  "<<<====" << std::endl;
         dumpToolConfig(m_dumpToolConfigTo);
     }
 }

@@ -1,9 +1,6 @@
 #include "HQTTtResonancesTools/HQTTtResonancesToolsLoader.h"
-#include "HQTTtResonancesTools/NLargeJetTtresSTSelector.h"
 #include "HQTTtResonancesTools/NLargeJetTtresSmoothedTTMassTau32Selector.h"
 #include "HQTTtResonancesTools/NLargeJetTtresMassOnlySelector.h"
-#include "HQTTtResonancesTools/NLargeJetTtresSubstructureTopTag50Selector.h"
-#include "HQTTtResonancesTools/NLargeJetTtresSubstructureTopTag80Selector.h"
 #include "HQTTtResonancesTools/TrackMV2c20Selector.h"
 #include "HQTTtResonancesTools/TrackMV2c10Selector.h"
 #include "HQTTtResonancesTools/NLargeJetTtresLeptonicSelector.h"
@@ -42,16 +39,10 @@ top::EventSelectorBase* HQTTtResonancesToolsLoader::initTool(const std::string& 
         return new top::TrackMV2c20Selector(param);
     else if (toolname == "TRACKMV2C10_N")
         return new top::TrackMV2c10Selector(param);
-    else if (toolname == "LARGEJETTTRESST_N")
-        return new top::NLargeJetTtresSTSelector(param);
     else if (toolname == "LARGEJETTTRESMASSONLY_N")
         return new top::NLargeJetTtresMassOnlySelector(param);
     else if (toolname == "LARGEJETTTRESFAKES_N")
         return new top::NLargeJetTtresFakesSelector(param);
-    else if (toolname == "LARGEJETTTRESSUBTOPTAG50_N")
-        return new top::NLargeJetTtresSubstructureTopTag50Selector(param);
-    else if (toolname == "LARGEJETTTRESSUBTOPTAG80_N")
-        return new top::NLargeJetTtresSubstructureTopTag80Selector(param);
     else if (toolname == "ANGULARCUTSSL")
         return new top::AngularCutsSLSelector(param);
     else if (toolname == "LARGEJETTTRESSTTMT_N")
