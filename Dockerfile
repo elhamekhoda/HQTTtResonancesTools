@@ -9,7 +9,6 @@ RUN source /home/atlas/release_setup.sh && \
     cp /Ttres/acm/python/templates/new_project_CMakeLists.txt /Ttres/source/CMakeLists.txt && \
     rm -rf /Ttres/acm && \
     cd /Ttres/source && \
-    git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.cern.ch/elham/BoostedJetTaggers.git && \
     git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.cern.ch/atlas-phys/exot/hqt/R21-ttbar-1lep/TtResonancesTools.git && \
     cd /Ttres/build && \
     cmake /Ttres/source && \

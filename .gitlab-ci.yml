@@ -7,7 +7,7 @@ stages:
 
 variables:
   PACKAGE_NAME: HQTTtResonancesTools
-  AtlasVersion: 21.2.87
+  AtlasVersion: 21.2.155
   GIT_SSL_NO_VERIFY: "true"
 
 .global: &global
@@ -20,7 +20,7 @@ build_image:
   script:
     - ignore
   variables:
-    FROM: atlas/analysistop:${AtlasVersion}
+    FROM: atlas/analysisbase:${AtlasVersion}
     CONTEXT_DIR: /
     BUILD_ARG_1: CI_JOB_TOKEN=${CI_JOB_TOKEN}
   tags:
@@ -31,12 +31,12 @@ include:
   - project: 'ttreshad/hook'
     file: 'Hook.gitlab-ci.yml'
 
-deploy-ttresfullhad:
-  stage: deploy
-  extends: .deploy
-  variables: 
-    TO_PROJECT: ttResFullHad
-    TO_PROJECT_URL: https://:@gitlab.cern.ch:8443/atlas-phys/exot/hqt/tt_tb_Resonances_Run2/ttResFullHad.git
-    TO_BRANCH: canary
-  allow_failure: true
-  <<: *global
+# deploy-ttresfullhad:
+#   stage: deploy
+#   extends: .deploy
+#   variables: 
+#     TO_PROJECT: ttResFullHad
+#     TO_PROJECT_URL: https://:@gitlab.cern.ch:8443/atlas-phys/exot/hqt/tt_tb_Resonances_Run2/ttResFullHad.git
+#     TO_BRANCH: canary
+#   allow_failure: true
+#   <<: *global
