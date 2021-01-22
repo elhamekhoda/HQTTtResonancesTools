@@ -74,7 +74,7 @@ PDFInfo False
 
 IsAFII False
 OutputFileNEventAutoFlush -30000000
-NEvents 2000
+#NEvents 2000
 #OutputFileBasketSizePrimitive 512
 #OutputFileBasketSizeVector 1024
 
@@ -85,7 +85,6 @@ OutputFilename output.root
 PerfStats No
 
 CalculateSF True
-#Systematics AllJets,AllElectrons,AllMuons,AllMET
 Systematics Nominal
 
 #Just of Btagging WP
