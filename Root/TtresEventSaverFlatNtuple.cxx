@@ -1316,7 +1316,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
         m_ljet_tau32_wta[i] = acc_ljet_Tau32_wta.isAvailable(*jetPtr) ? acc_ljet_Tau32_wta(*jetPtr) : acc_ljet_Tau3_wta(*jetPtr) / acc_ljet_Tau2_wta(*jetPtr);
         m_ljet_tau21_wta[i] = acc_ljet_Tau21_wta.isAvailable(*jetPtr) ? acc_ljet_Tau21_wta(*jetPtr) : acc_ljet_Tau2_wta(*jetPtr) / acc_ljet_Tau1_wta(*jetPtr);
-        m_ljet_label[i] = jetPtr->auxdata<int>("R10TruthLabel_R21Consolidated");
+        if (m_isMC) try {m_ljet_label[i] = jetPtr->auxdata<int>("R10TruthLabel_R21Consolidated"); } catch (...) { }
 #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
         try { m_ljet_ECF1[i] = jetPtr->getAttribute<float>("ECF1"); } catch (...) { }
         try { m_ljet_ECF2[i] = jetPtr->getAttribute<float>("ECF2"); } catch (...) { }

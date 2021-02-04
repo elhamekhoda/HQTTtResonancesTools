@@ -89,7 +89,7 @@ Systematics Nominal
 
 #Just of Btagging WP
 BTaggingWP DL1:FixedCutBEff_77 DL1r:FixedCutBEff_77 DL1:FixedCutBEff_70 DL1r:FixedCutBEff_70
-BTagCDIPath xAODBTaggingEfficiency/13TeV/2020-21-13TeV-MC16-CDI-2020-03-11_v3.root
+#BTagCDIPath xAODBTaggingEfficiency/13TeV/2020-21-13TeV-MC16-CDI-2020-12-02_v2.root
 
 #BTaggingWP DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 DL1r:FixedCutBEff_60 DL1r:FixedCutBEff_70 DL1r:FixedCutBEff_77 DL1r:FixedCutBEff_85
 
