@@ -11,7 +11,6 @@
 /*
 
 This selector doesn't nothing but select event with at least one large-R jet is tagged by any top-tagger in order to skim the ntuple.
-**It must be put after all the other TopTagSelectors!**
 
 */
 
@@ -22,18 +21,21 @@ namespace top {
         checkValueIsInteger();
 }
 
-bool NLargeJetAnyTopTagSelector::apply(const top::Event& event) const {    
-    //do stuff with large Jets
+bool NLargeJetAnyTopTagSelector::apply(const top::Event& event) const {
+    //check the large-R jet top-tagging flags
     int nGoodJets = 0;
     for (const auto* const largeJet : event.m_largeJets) {
-
-        if (largeJet->isAvailable<int>("topTagged")){
-            if (largeJet->auxdecor<int>("topTagged")){
+        int good = 0;
+        if (largeJet->isAvailable<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkInclusive80") || largeJet->isAvailable<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkContained80") ){
+            if (largeJet->getAttribute<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkInclusive80") || largeJet->getAttribute<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkContained80") ){
+                good = 1;
                 ++nGoodJets;
             }
         }
+        largeJet->auxdecor<int>("topTagged") = good;
     }
-    
+
+
     return checkInt(nGoodJets, (int) multiplicity());
 }
 

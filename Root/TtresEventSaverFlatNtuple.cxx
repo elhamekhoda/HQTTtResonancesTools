@@ -40,7 +40,7 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
 
     top::ConfigurationSettings* configSettings = top::ConfigurationSettings::get();
     //weak = new WeakCorr::WeakCorrScaleFactorParam(PathResolverFindCalibFile("TtResonancesTools/EWcorr_param.root"));
-
+#ifdef ENABLE_BTAG_DEBUG
     tempSelTool = new BTaggingSelectionTool("BTaggingSelectionTool");
     top::check(tempSelTool->setProperty("MaxEta"                      , 2.5), "Failed to set Max eta property for ConfigFile");
     top::check(tempSelTool->setProperty("MinPt"                       , 25000), "Failed to set Min pT property for ConfigFile");
@@ -50,7 +50,7 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
     top::check(tempSelTool->setProperty("JetAuthor"                   , "AntiKt4EMPFlowJets_BTagging201903"), "Failed to set Jet Author property for ConfigFile");
     top::check(tempSelTool->setProperty("FlvTagCutDefinitionsFileName", "/cvmfs/atlas.cern.ch/repo/sw/database/GroupData/xAODBTaggingEfficiency/13TeV/2020-21-13TeV-MC16-CDI-2020-03-11_v3.root"), "Failed to set CDI  property for ConfigFile");
     top::check(tempSelTool->initialize(), "Failed to initialize");
-
+#endif
 
 
     m_isTOPQ                = (configValueDefault("isTOPQ") == "True") ? true : false ;
@@ -60,11 +60,14 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
     m_runHtt                = false;
 #endif
     m_savePartons           = (configValueDefault("TtresSavePartons", "False") == "True") ? true : false ;
+    m_saveTruthJets         = (configValueDefault("SaveTruthJets", "False") == "True") ? true : false ;
     m_saveFullTruthRecord   = (configValueDefault("SaveFullTruthRecord", "True") == "True") ? true : false ;
     m_runEWK                = (configValueDefault("TtresrunEWK", "False") == "True") ? true : false ;
     m_trackjetBtaggingExtra = (configValueDefault("TrackjetBtaggingExtraBranches", "False") == "True") ? true : false ;
     m_dumpToolConfigTo      = configValueDefault("DumpToolConfigTo", "False"); // A string!
+#ifdef ENABLE_TOPTAG_DEBUG
     tokenize(configValueDefault("ExtraTopTaggingWP", ""), m_TopTaggingWP, " ", true); // "ExtraTopTaggingWP" should be a space seperated list!
+#endif
     m_ZprimeRWGTParams      = configValueDefault("ZprimeRWGT", ""); // Leave it empty to deactivate this
     m_doZprimeRWGT          = (m_ZprimeRWGTParams.empty()) ? false : true;
 
@@ -87,7 +90,7 @@ TtresEventSaverFlatNtuple::TtresEventSaverFlatNtuple() {
     } else {
         m_akt10truthjetcollection = "";
     }
-    m_saveTruthJets = true;
+
     m_isMC = true;
     m_chi2Sel = new top::Chi2Selector(" < 6");
 }
@@ -102,49 +105,10 @@ TtresEventSaverFlatNtuple::~TtresEventSaverFlatNtuple() {
  */
 void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> config, TFile* file, const std::vector<std::string>& extraBranches) {
     EventSaverFlatNtuple::initialize(config, file, extraBranches);
-
     m_savePdfWeight = config->saveLHAPDFEvent();
     m_LHAPDFSets = config->LHAPDFSets();
 
-    // m_smoothedTopTaggerMT80 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "EventSaverSmoothedTopTaggerMT80" ) );
-    // m_smoothedTopTaggerMT50 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "EventSaverSmoothedTopTaggerMT50" ) );
-    // m_smoothedTopTaggerTS80 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "EventSaverSmoothedTopTaggerTS80" ) );
-    // m_smoothedTopTaggerTS50 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "EventSaverSmoothedTopTaggerTS50" ) );
-    // m_smoothedTopTaggerQT80 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "EventSaverSmoothedTopTaggerQT80" ) );
-    // m_smoothedTopTaggerQT50 = std::unique_ptr<SmoothedTopTagger>( new SmoothedTopTagger( "EventSaverSmoothedTopTaggerQT50" ) );
-    // m_bdtTopTagger80 = std::unique_ptr<JSSWTopTaggerBDT>( new JSSWTopTaggerBDT( "EventSaverJSSWTopTaggerBDT80" ) );
-    // m_dnnTopTaggerContained50 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNContained50" ) );
-    // m_dnnTopTaggerInclusive50 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNInclusive50" ) );
-    // m_topoTopTagger80 = std::unique_ptr<TopoclusterTopTagger>( new TopoclusterTopTagger( "EventSaverTopoclusterTopTagger80" ) );
-
-    // top::check(m_smoothedTopTaggerMT80->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_MassTau32FixedSignalEfficiency80_MC15c_20161209.dat"), "Failed to set property for ConfigFile");
-    // top::check(m_smoothedTopTaggerMT50->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_MassTau32FixedSignalEfficiency50_MC15c_20161209.dat"), "Failed to set property for ConfigFile");
-    // top::check(m_smoothedTopTaggerTS80->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_Tau32Split23FixedSignalEfficiency80_MC15c_20161209.dat"), "Failed to set property for ConfigFile");
-    // top::check(m_smoothedTopTaggerTS50->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_Tau32Split23FixedSignalEfficiency50_MC15c_20161209.dat"), "Failed to set property for ConfigFile");
-    // top::check(m_smoothedTopTaggerQT80->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_QwTau32FixedSignalEfficiency80_MC15c_20161209.dat"), "Failed to set property for ConfigFile");
-    // top::check(m_smoothedTopTaggerQT50->setProperty( "ConfigFile",   "SmoothedTopTaggers/SmoothedTopTagger_AntiKt10LCTopoTrimmed_QwTau32FixedSignalEfficiency50_MC15c_20161209.dat"), "Failed to set property for ConfigFile");
-    // top::check(m_bdtTopTagger80->setProperty( "ConfigFile",   "JSSWTopTaggerBDT/JSSBDTTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC15c_20170824_BOOSTSetup80Eff.dat"), "Failed to set property for ConfigFile");
-    // top::check(m_topoTopTagger80->setProperty( "ConfigFile",   "TopoclusterTopTagger/TopoclusterTopTagger_AntiKt10LCTopoTrimmed_TopQuark_MC15c_20170511_ptweighted80Eff.dat"), "Failed to set property for ConfigFile");
-    // top::check(m_dnnTopTaggerContained50->setProperty( "CalibArea", "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
-    // top::check(m_dnnTopTaggerContained50->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkContained_MC16d_20190405_50Eff.dat"), "Failed to set property for ConfigFile");
-    // top::check(m_dnnTopTaggerContained50->setProperty( "DSID", (int)config->getDSID()), "Failed to set property for ConfigFile" );
-    // top::check(m_dnnTopTaggerContained50->setProperty( "IsMC", config->isMC()), "Failed to set property for ConfigFile" );
-    // top::check(m_dnnTopTaggerInclusive50->setProperty( "CalibArea", "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
-    // top::check(m_dnnTopTaggerInclusive50->setProperty( "ConfigFile",   "JSSDNNTagger_AntiKt10LCTopoTrimmed_TopQuarkInclusive_MC16d_20190405_50Eff.dat"), "Failed to set property for ConfigFile");
-    // top::check(m_dnnTopTaggerInclusive50->setProperty( "DSID", (int)config->getDSID()), "Failed to set property for ConfigFile" );
-    // top::check(m_dnnTopTaggerInclusive50->setProperty( "IsMC", config->isMC()), "Failed to set property for ConfigFile" );
-
-    // top::check(m_smoothedTopTaggerMT80->initialize(), "Initializing failed");
-    // top::check(m_smoothedTopTaggerMT50->initialize(), "Initializing failed");
-    // top::check(m_smoothedTopTaggerTS80->initialize(), "Initializing failed");
-    // top::check(m_smoothedTopTaggerTS50->initialize(), "Initializing failed");
-    // top::check(m_smoothedTopTaggerQT80->initialize(), "Initializing failed");
-    // top::check(m_smoothedTopTaggerQT50->initialize(), "Initializing failed");
-    // top::check(m_bdtTopTagger80->initialize(), "Initializing failed");
-    // top::check(m_dnnTopTaggerContained50->initialize(), "Initializing failed");
-    // top::check(m_dnnTopTaggerInclusive50->initialize(), "Initializing failed");
-    // top::check(m_topoTopTagger80->initialize(), "Initializing failed");
-
+#ifdef ENABLE_TOPTAG_DEBUG
     m_dnnTopTaggerContained80 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNContained80" ) );
     m_dnnTopTaggerInclusive80 = std::unique_ptr<JSSWTopTaggerDNN>( new JSSWTopTaggerDNN( "EventSaverJSSWTopTaggerDNNInclusive80" ) );
     top::check(m_dnnTopTaggerContained80->setProperty( "CalibArea", "JSSWTopTaggerDNN/Rel21/"), "Failed to set property for CalibArea" );
@@ -157,6 +121,10 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
     top::check(m_dnnTopTaggerInclusive80->setProperty( "IsMC", config->isMC()), "Failed to set property for ConfigFile" );
     top::check(m_dnnTopTaggerContained80->initialize(), "Initializing failed");
     top::check(m_dnnTopTaggerInclusive80->initialize(), "Initializing failed");
+
+    //set the top-taggign WPs
+    SetTopTaggingWPs(m_TopTaggingWP);
+#endif
 
     if (config->isMC()) {
         std::cout << "GENERATOR:" << config->getGenerators() << std::endl;
@@ -184,7 +152,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         }
     }
 #endif
-    SetTopTaggingWPs(m_TopTaggingWP);
+
     if (m_config->doTopParticleLevel() && particleLevelTreeManager()) {
         auto partTree = particleLevelTreeManager();
         partTree->makeOutputVariable(m_part_ljet_tau32_wta, "ljet_tau32_wta");
@@ -194,6 +162,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         //Default algorithms is mv2c10
         std::string m_tagger = TaggerBtagWP.first;
         std::string btagWP = TaggerBtagWP.second;
+        cout << m_tagger << btagWP << endl;
         btaggingAlgWP = "btag_SF_" + m_tagger + "_" + btagWP + "_nom"; //variable to acceess the nominal b-tagging SF
         btag_outputVar = "btag_SF_" + m_tagger + "_" + btagWP.substr( btagWP.length() - 2); //The b_tag SF gets saved with this name
     }
@@ -214,11 +183,11 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_npv, "npv");
         systematicTree->makeOutputVariable(m_vtxz, "vtxz");
 
-        // ####################
-        // #
-        // NEW
-        // W+jets filter variable for Sherpa samples
-        // => std filter: Hadron-filter, c-truth jet matching
+//----------------------------------------------------------------------------------------
+//                                W+jets filter variable for Sherpa samples
+//                              => std filter: Hadron-filter, c-truth jet matching
+//----------------------------------------------------------------------------------------
+#ifdef ENABLE_WJETS_FILTER
         systematicTree->makeOutputVariable(m_Wfilter, "Wfilter_Sherpa");
         // => (2) filter: Hadron-filter, no truth jet matching
         systematicTree->makeOutputVariable(m_Wfilter_2, "Wfilter_Sherpa_nT");
@@ -233,7 +202,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
 
         // Sherpa 2.2 reweighting
         systematicTree->makeOutputVariable(m_Sherpa22_weight, "weight_Sherpa22_corr");
-
+#endif
         systematicTree->makeOutputVariable(m_tjet_label, "tjet_label");
         systematicTree->makeOutputVariable(m_tjet_ghostlabel, "tjet_ghostlabel");
         systematicTree->makeOutputVariable(m_tjet_numConstituents, "tjet_numConstituents");
@@ -282,9 +251,13 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
 #endif
 
         // variable indicating Btagging category
-        systematicTree->makeOutputVariable(m_Btagcat, "Btagcat");
-        systematicTree->makeOutputVariable(m_NB_hadside, "NB_hadside");
-        systematicTree->makeOutputVariable(m_NB_lepside, "NB_lepside");
+        systematicTree->makeOutputVariable(m_Btagcat_calojet, "Btagcat_calojet");
+        systematicTree->makeOutputVariable(m_NB_hadside_calojet, "NB_hadside_calojet");
+        systematicTree->makeOutputVariable(m_NB_lepside_calojet, "NB_lepside_calojet");
+
+        //systematicTree->makeOutputVariable(m_Btagcat_tjet, "Btagcat_tjet");
+        //systematicTree->makeOutputVariable(m_NB_hadside_tjet, "NB_hadside_tjet");
+        //systematicTree->makeOutputVariable(m_NB_lepside_tjet, "NB_lepside_tjet");
 
 
         // save an int that is 0/1 if the large-R jet satisfies all basic cuts
@@ -292,9 +265,11 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         // so that we can save all other large-R jets as well just passing pt and eta cuts
         systematicTree->makeOutputVariable(m_ljet_good, "ljet_good");
         systematicTree->makeOutputVariable(m_ljet_notgood, "ljet_notgood");
-
         systematicTree->makeOutputVariable(m_ljet_tau32_wta, "ljet_tau32_wta");
         systematicTree->makeOutputVariable(m_ljet_tau21_wta, "ljet_tau21_wta");
+        systematicTree->makeOutputVariable(m_ljet_angular_cuts, "ljet_angular_cuts"); // large-R jet angular cuts
+        systematicTree->makeOutputVariable(m_ljet_label, "ljet_label");
+
 #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
         systematicTree->makeOutputVariable(m_ljet_ECF1, "ljet_ECF1");
         systematicTree->makeOutputVariable(m_ljet_ECF2, "ljet_ECF2");
@@ -304,15 +279,8 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_ljet_MClike, "ljet_MClike");
 #endif
 
-        // systematicTree->makeOutputVariable(m_ljet_good_sub80, "ljet_good_sub80");
-        // systematicTree->makeOutputVariable(m_ljet_good_sub50, "ljet_good_sub50");
-        // systematicTree->makeOutputVariable(m_ljet_good_smooth_mt80, "ljet_good_smooth_mt80");
-        // systematicTree->makeOutputVariable(m_ljet_good_smooth_mt50, "ljet_good_smooth_mt50");
-        // systematicTree->makeOutputVariable(m_ljet_good_smooth_ts80, "ljet_good_smooth_ts80");
-        // systematicTree->makeOutputVariable(m_ljet_good_smooth_ts50, "ljet_good_smooth_ts50");
-        // systematicTree->makeOutputVariable(m_ljet_good_smooth_qt80, "ljet_good_smooth_qt80");
-        // systematicTree->makeOutputVariable(m_ljet_good_smooth_qt50, "ljet_good_smooth_qt50");
-        // systematicTree->makeOutputVariable(m_ljet_good_bdt80, "ljet_good_bdt80");
+
+#ifdef ENABLE_TOPTAG_DEBUG
         for (auto &tagger : m_toptagging) {
             systematicTree->makeOutputVariable(tagger.second.TaggerAccept, tagger.second.TaggerBranchName);
             if (!tagger.second.TaggerScoreBranchName.empty()) {
@@ -328,25 +296,9 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
                 systematicTree->makeOutputVariable(tagger.second.TaggerSFVars1Down, tagger.second.TaggerSFVarsBranchName1Down);
             }
         }
-        // systematicTree->makeOutputVariable(m_ljet_good_topo80, "ljet_good_topo80");
-        // systematicTree->makeOutputVariable(m_ljet_bdt_score,   "ljet_BDTTopTag_score");
-        // systematicTree->makeOutputVariable(m_ljet_topo_score,   "ljet_topoDNNTopTag_score");
-        systematicTree->makeOutputVariable(m_ljet_angular_cuts, "ljet_angular_cuts"); // large-R jet angular cuts
-        systematicTree->makeOutputVariable(m_ljet_label, "ljet_label");
-        //track jet b-tagging variables
-        // systematicTree->makeOutputVariable(m_tjet_mv2rmu,  "tjet_MV2rmu");
-        // systematicTree->makeOutputVariable(m_tjet_mv2r,  "tjet_MV2r");
-        // systematicTree->makeOutputVariable(m_tjet_dl1_pu,  "tjet_DL1_pu");
-        // systematicTree->makeOutputVariable(m_tjet_dl1_pb,  "tjet_DL1_pb");
-        // systematicTree->makeOutputVariable(m_tjet_dl1_pc,  "tjet_DL1_pc");
-        // systematicTree->makeOutputVariable(m_tjet_dl1rmu_pu,  "tjet_DL1rmu_pu");
-        // systematicTree->makeOutputVariable(m_tjet_dl1rmu_pb,  "tjet_DL1rmu_pb");
-        // systematicTree->makeOutputVariable(m_tjet_dl1rmu_pc,  "tjet_DL1rmu_pc");
-        // systematicTree->makeOutputVariable(m_tjet_dl1r_pu,  "tjet_DL1r_pu");
-        // systematicTree->makeOutputVariable(m_tjet_dl1r_pb,  "tjet_DL1r_pb");
-        // systematicTree->makeOutputVariable(m_tjet_dl1r_pc,  "tjet_DL1r_pc");
+#endif
 
-
+#ifdef GHOST_MATCH_LJET
         // book large-R calo jet trackjet b-tagging information
         systematicTree->makeOutputVariable(m_ljet_ghosttrackjet_idx, "ljet_ghosttrackjet_idx");
         systematicTree->makeOutputVariable(m_ljet_nghosttrackjet, "ljet_nghosttrackjet");
@@ -355,9 +307,8 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_ljet_nghosttrackjetc, "ljet_nghosttrackjetc");
         systematicTree->makeOutputVariable(m_ljet_nghosttrackjetcc, "ljet_nghosttrackjetcc");
         systematicTree->makeOutputVariable(m_ljet_nghosttrackjetl, "ljet_nghosttrackjetl");
-
+#endif
         systematicTree->makeOutputVariable(m_ljtmatch, "ljtmatch");
-
         systematicTree->makeOutputVariable(m_initial_type, "initial_type"); // add information about initial state  1-GG,2-UU,3-DD
         //systematicTree->makeOutputVariable(m_weight_EW,"weight_EW");
 
@@ -365,6 +316,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         // and it is the highest p_T one
         systematicTree->makeOutputVariable(m_jet_closeToLepton, "jet_closeToLepton");
 
+#ifdef GHOST_MATCH_JET
         // book small-R calo jet trackjet b-tagging information
         systematicTree->makeOutputVariable(m_jet_bTagSF_70, "jet_" + btag_outputVar);
         systematicTree->makeOutputVariable(m_jet_ghosttrackjet_idx, "jet_ghosttrackjet_idx");
@@ -374,6 +326,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_jet_nghosttrackjetc, "jet_nghosttrackjetc");
         systematicTree->makeOutputVariable(m_jet_nghosttrackjetcc, "jet_nghosttrackjetcc");
         systematicTree->makeOutputVariable(m_jet_nghosttrackjetl, "jet_nghosttrackjetl");
+#endif
 
         systematicTree->makeOutputVariable(m_jet_trueflav, "jet_trueflav");
         systematicTree->makeOutputVariable(m_jet_NumTrkPt500, "jet_NumTrkPt500");
@@ -385,26 +338,19 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
             systematicTree->makeOutputVariable(m_mu_isTight, "mu_isTight");
         }
 
-        systematicTree->makeOutputVariable(m_el_d0,      "el_d0");
-        systematicTree->makeOutputVariable(m_el_z0,      "el_z0");
-        //systematicTree->makeOutputVariable(m_el_d0sig,   "el_d0sig");
-        systematicTree->makeOutputVariable(m_el_z0sig,   "el_z0sig");
-        systematicTree->makeOutputVariable(m_el_ptvarcone20_TightTTVA_pt1000, "el_ptvarcone20_TightTTVA_pt1000");
-        systematicTree->makeOutputVariable(m_el_ptvarcone30_TightTTVA_pt1000, "el_ptvarcone30_TightTTVA_pt1000");
-        systematicTree->makeOutputVariable(m_el_ptvarcone30_TightTTVALooseCone_pt1000, "el_ptvarcone30_TightTTVALooseCone_pt1000");
-        systematicTree->makeOutputVariable(m_el_ptcone20_TightTTVALooseCone_pt1000, "el_ptcone20_TightTTVALooseCone_pt1000");
-        systematicTree->makeOutputVariable(m_el_ptcone20_TightTTVA_pt1000, "el_ptcone20_TightTTVA_pt1000");
-        systematicTree->makeOutputVariable(m_el_ptcone20_ttres, "el_ptcone20_ttres");
-        systematicTree->makeOutputVariable(m_el_ptvarcone20_ttres, "el_ptvarcone20_ttres");
 
-        systematicTree->makeOutputVariable(m_mu_d0,      "mu_d0");
-        systematicTree->makeOutputVariable(m_mu_z0,      "mu_z0");
-        //systematicTree->makeOutputVariable(m_mu_d0sig,   "mu_d0sig");
-        systematicTree->makeOutputVariable(m_mu_z0sig,   "mu_z0sig");
-        systematicTree->makeOutputVariable(m_mu_ptvarcone30_TightTTVA_pt1000, "mu_ptvarcone30_TightTTVA_pt1000");
-        systematicTree->makeOutputVariable(m_mu_ptcone20_TightTTVA_pt1000, "mu_ptcone20_TightTTVA_pt1000");
-        systematicTree->makeOutputVariable(m_mu_ptcone20_ttres, "mu_ptcone20_ttres");
-        systematicTree->makeOutputVariable(m_mu_ptvarcone30_ttres, "mu_ptvarcone30_ttres");
+        // systematicTree->makeOutputVariable(m_el_ptvarcone20_TightTTVA_pt1000, "el_ptvarcone20_TightTTVA_pt1000");
+        // systematicTree->makeOutputVariable(m_el_ptvarcone30_TightTTVA_pt1000, "el_ptvarcone30_TightTTVA_pt1000");
+        // systematicTree->makeOutputVariable(m_el_ptvarcone30_TightTTVALooseCone_pt1000, "el_ptvarcone30_TightTTVALooseCone_pt1000");
+        // systematicTree->makeOutputVariable(m_el_ptcone20_TightTTVALooseCone_pt1000, "el_ptcone20_TightTTVALooseCone_pt1000");
+        // systematicTree->makeOutputVariable(m_el_ptcone20_TightTTVA_pt1000, "el_ptcone20_TightTTVA_pt1000");
+        // systematicTree->makeOutputVariable(m_el_ptcone20_ttres, "el_ptcone20_ttres");
+        // systematicTree->makeOutputVariable(m_el_ptvarcone20_ttres, "el_ptvarcone20_ttres");
+
+        // systematicTree->makeOutputVariable(m_mu_ptvarcone30_TightTTVA_pt1000, "mu_ptvarcone30_TightTTVA_pt1000");
+        // systematicTree->makeOutputVariable(m_mu_ptcone20_TightTTVA_pt1000, "mu_ptcone20_TightTTVA_pt1000");
+        // systematicTree->makeOutputVariable(m_mu_ptcone20_ttres, "mu_ptcone20_ttres");
+        // systematicTree->makeOutputVariable(m_mu_ptvarcone30_ttres, "mu_ptvarcone30_ttres");
 
         systematicTree->makeOutputVariable(m_truthparticle_type,      "truthparticle_type");
         systematicTree->makeOutputVariable(m_truthparticle_origin,      "truthparticle_origin");
@@ -441,6 +387,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_weight_bTagSF_70_env_extrapolation_from_charm_down, "weight_bTagSF_70_env_extrapolation_from_charm_down");
 #endif
 
+#ifdef USE_HTT
         if (m_runHtt) {
             // HEPTopTagger branches
             systematicTree->makeOutputVariable(CA15_n, "CA15_n");
@@ -462,8 +409,8 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
             // Di-top variables
             systematicTree->makeOutputVariable(HTT_tt_m, "HTT_tt_m");
             systematicTree->makeOutputVariable(HTT_tt_pt, "HTT_tt_pt");
-
         }
+#endif
 
         // saving truth jet
         if (m_saveTruthJets) {
@@ -477,6 +424,38 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
             systematicTree->makeOutputVariable(m_akt10truthjet_phi, "akt10truthjet_phi");
             systematicTree->makeOutputVariable(m_akt10truthjet_m,   "akt10truthjet_m");
             systematicTree->makeOutputVariable(m_akt10truthjet_tau32_wta, "akt10truthjet_tau32_wta");
+        }
+        systematicTree->makeOutputVariable(m_chi2_all,      "chi2");
+
+        systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_pt,   "MC_ttbar_beforeFSR_pt");
+        systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_eta,  "MC_ttbar_beforeFSR_eta");
+        systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_phi,  "MC_ttbar_beforeFSR_phi");
+        systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_m,    "MC_ttbar_beforeFSR_m");
+
+        systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_pt,   "MC_ttbar_afterFSR_pt");
+        systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_eta,  "MC_ttbar_afterFSR_eta");
+        systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_phi,  "MC_ttbar_afterFSR_phi");
+        systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_m,    "MC_ttbar_afterFSR_m");
+
+        // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
+        systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_beforeDecay_m, "MC_ttbar_afterFSR_beforeDecay_m");
+
+        if (m_runEWK){
+            // post-FSR top or anti-top found using statusCodes
+            systematicTree->makeOutputVariable(m_MC_t_afterFSR_SC_pt, "MC_t_afterFSR_SC_pt");
+            systematicTree->makeOutputVariable(m_MC_t_afterFSR_SC_eta, "MC_t_afterFSR_SC_eta");
+            systematicTree->makeOutputVariable(m_MC_t_afterFSR_SC_phi, "MC_t_afterFSR_SC_phi");
+            systematicTree->makeOutputVariable(m_MC_t_afterFSR_SC_m, "MC_t_afterFSR_SC_m");
+
+            systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_SC_pt, "MC_tbar_afterFSR_SC_pt");
+            systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_SC_eta, "MC_tbar_afterFSR_SC_eta");
+            systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_SC_phi, "MC_tbar_afterFSR_SC_phi");
+            systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_SC_m, "MC_tbar_afterFSR_SC_m");
+
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_SC_pt, "MC_ttbar_afterFSR_SC_pt");
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_SC_eta, "MC_ttbar_afterFSR_SC_eta");
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_SC_phi, "MC_ttbar_afterFSR_SC_phi");
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_SC_m, "MC_ttbar_afterFSR_SC_m");
         }
 
         if (m_savePartons) {
@@ -570,35 +549,8 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
             systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_phi,    "MC_tbar_afterFSR_phi");
             systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_m,   "MC_tbar_afterFSR_m");
             //
-            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_pt,   "MC_ttbar_beforeFSR_pt");
-            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_eta,  "MC_ttbar_beforeFSR_eta");
-            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_phi,  "MC_ttbar_beforeFSR_phi");
-            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_m,    "MC_ttbar_beforeFSR_m");
 
-            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_pt,   "MC_ttbar_afterFSR_pt");
-            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_eta,  "MC_ttbar_afterFSR_eta");
-            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_phi,  "MC_ttbar_afterFSR_phi");
-            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_m,    "MC_ttbar_afterFSR_m");
             systematicTree->makeOutputVariable(m_MC_ttbar_type, "MC_ttbar_type");
-
-            // post-FSR top or anti-top found using statusCodes
-            systematicTree->makeOutputVariable(m_MC_t_afterFSR_SC_pt, "MC_t_afterFSR_SC_pt");
-            systematicTree->makeOutputVariable(m_MC_t_afterFSR_SC_eta, "MC_t_afterFSR_SC_eta");
-            systematicTree->makeOutputVariable(m_MC_t_afterFSR_SC_phi, "MC_t_afterFSR_SC_phi");
-            systematicTree->makeOutputVariable(m_MC_t_afterFSR_SC_m, "MC_t_afterFSR_SC_m");
-
-            systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_SC_pt, "MC_tbar_afterFSR_SC_pt");
-            systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_SC_eta, "MC_tbar_afterFSR_SC_eta");
-            systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_SC_phi, "MC_tbar_afterFSR_SC_phi");
-            systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_SC_m, "MC_tbar_afterFSR_SC_m");
-
-            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_SC_pt, "MC_ttbar_afterFSR_SC_pt");
-            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_SC_eta, "MC_ttbar_afterFSR_SC_eta");
-            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_SC_phi, "MC_ttbar_afterFSR_SC_phi");
-            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_SC_m, "MC_ttbar_afterFSR_SC_m");
-
-            // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
-            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_beforeDecay_m, "MC_ttbar_afterFSR_beforeDecay_m");
 
             //Matched jets
             systematicTree->makeOutputVariable(m_MA_b_from_t_pt,      "MA_b_from_t_pt");
@@ -850,12 +802,12 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
                 systematicTree->makeOutputVariable(m_chi2_bh_pt,      "chi2_bh_pt");
                 systematicTree->makeOutputVariable(m_chi2_bh_eta,     "chi2_bh_eta");
                 systematicTree->makeOutputVariable(m_chi2_bh_phi,     "chi2_bh_phi");
-                systematicTree->makeOutputVariable(m_chi2_bh_m, "chi2_bh_m");
+                systematicTree->makeOutputVariable(m_chi2_bh_m,       "chi2_bh_m");
 
                 systematicTree->makeOutputVariable(m_chi2_bl_pt,      "chi2_bl_pt");
                 systematicTree->makeOutputVariable(m_chi2_bl_eta,     "chi2_bl_eta");
                 systematicTree->makeOutputVariable(m_chi2_bl_phi,     "chi2_bl_phi");
-                systematicTree->makeOutputVariable(m_chi2_bl_m, "chi2_bl_m");
+                systematicTree->makeOutputVariable(m_chi2_bl_m,       "chi2_bl_m");
 
 //              systematicTree->makeOutputVariable(m_chi2_w1h_pt,      "chi2_w1h_pt");
 //              systematicTree->makeOutputVariable(m_chi2_w1h_eta,     "chi2_w1h_eta");
@@ -914,9 +866,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
 
 void TtresEventSaverFlatNtuple::saveParticleLevelEvent(const top::ParticleLevelEvent& event) {
     if ( m_config->useTruthLargeRJets() ) {
-
         m_part_ljet_tau32_wta.resize(event.m_largeRJets->size());
-
         int i = 0;
         for (const auto & jetPtr : * event.m_largeRJets) {
             static const SG::AuxElement::ConstAccessor<float> acc_ljet_Tau3_wta("Tau3_wta");
@@ -954,21 +904,19 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         }
     }//for
 
+//--------------------------------------------------------------------------------------------
+//               Extra lepton variables: d0/z0 significances, isolation variables
+//--------------------------------------------------------------------------------------------
+
+#ifdef ENABLE_EXTRA_LEP_VARS
     //electrons
     m_el_d0.resize(event.m_electrons.size());
     m_el_z0.resize(event.m_electrons.size());
     m_el_d0sig.resize(event.m_electrons.size());
     m_el_z0sig.resize(event.m_electrons.size());
-
     // electron Isolation variables:
-    m_el_ptvarcone20_TightTTVA_pt1000.resize(event.m_electrons.size());
-    m_el_ptvarcone30_TightTTVA_pt1000.resize(event.m_electrons.size());
     m_el_ptvarcone30_TightTTVALooseCone_pt1000.resize(event.m_electrons.size());
     m_el_ptcone20_TightTTVALooseCone_pt1000.resize(event.m_electrons.size());
-    m_el_ptcone20_TightTTVA_pt1000.resize(event.m_electrons.size());
-    m_el_ptcone20_ttres.resize(event.m_electrons.size());
-    m_el_ptvarcone20_ttres.resize(event.m_electrons.size());
-
 
     unsigned int k(0);
     for (const auto* const elPtr : event.m_electrons) {//loop on electrons
@@ -983,29 +931,12 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         m_el_d0sig[k] = m_el_d0[k] / sqrt(elcov(0, 0));
         m_el_z0sig[k] = m_el_z0[k] / sqrt(elcov(1, 1));
 
-        // commenting for now, since some of the samples do not have the new isolation vars : Elham///Nov14, 2018
-        if (elPtr->isAvailable<float>("ptvarcone20_TightTTVA_pt1000")) {
-            //ATH_MSG_INFO("\e[1;34m(ptvarcone20_TightTTVA_pt1000)" << elPtr->auxdata<float>("ptvarcone20_TightTTVA_pt1000")<< "   pT   " << elPtr->pt() << "\e[0m");
-            //ATH_MSG_INFO("\e[1;33m(ptvarcone30_TightTTVA_pt1000)" << elPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000")<< "   pT   " << elPtr->pt() << "\e[0m");
-            m_el_ptvarcone20_TightTTVA_pt1000[k] = elPtr->auxdata<float>("ptvarcone20_TightTTVA_pt1000");
-        }
-        if (elPtr->isAvailable<float>("ptcone20_TightTTVA_pt1000")) {
-            m_el_ptcone20_TightTTVA_pt1000[k] = elPtr->auxdata<float>("ptcone20_TightTTVA_pt1000");
-        } //if loop
-        if (elPtr->isAvailable<float>("ptvarcone30_TightTTVA_pt1000")) {
-            m_el_ptvarcone30_TightTTVA_pt1000[k] = elPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000");
-            //ATH_MSG_INFO("\e[1;31m(ptvarcone30_TightTTVA_pt1000)" << muPtr->auxdata<float>("ptvarcone30_TightTTVA_pt1000") << "   pT   " << muPtr->pt() << "\e[0m");
-        }
         if (elPtr->isAvailable<float>("ptvarcone30_TightTTVALooseCone_pt1000")) {
             m_el_ptvarcone30_TightTTVALooseCone_pt1000[k] = elPtr->auxdata<float>("ptvarcone30_TightTTVALooseCone_pt1000");
         }
         if (elPtr->isAvailable<float>("ptcone20_TightTTVALooseCone_pt1000")) {
             m_el_ptcone20_TightTTVALooseCone_pt1000[k] = elPtr->auxdata<float>("ptcone20_TightTTVALooseCone_pt1000");
         }
-        if (elPtr->isAvailable<float>("ptvarcone20")) {
-            m_el_ptvarcone20_ttres[k] =  elPtr->auxdata<float>("ptvarcone20");
-        }
-        elPtr->isolationValue( m_el_ptcone20_ttres[k] , xAOD::Iso::ptcone20);
     }//for
 
     //muons
@@ -1016,9 +947,6 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     // Isolation variables
     m_mu_ptvarcone30_TightTTVA_pt1000.resize(event.m_muons.size());
     m_mu_ptcone20_TightTTVA_pt1000.resize(event.m_muons.size());
-    m_mu_ptcone20_ttres.resize(event.m_muons.size());
-    m_mu_ptvarcone30_ttres.resize(event.m_muons.size());
-
 
     k = 0;
     for (const auto* const muPtr : event.m_muons) {//loop on muons
@@ -1043,14 +971,13 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         if (muPtr->auxdata<float>("ptcone20_TightTTVA_pt1000")) {
             m_mu_ptcone20_TightTTVA_pt1000[k] = muPtr->auxdata<float>("ptcone20_TightTTVA_pt1000");
         }
-        muPtr->isolation( m_mu_ptcone20_ttres[k] , xAOD::Iso::ptcone20 );
-        if (muPtr->auxdata<float>("ptvarcone30")) {
-            m_mu_ptvarcone30_ttres[k] =  muPtr->auxdata<float>("ptvarcone30");
-        }
-
     }//for
+#endif
 
-    // --------- truth particle info  ------- //
+//--------------------------------------------------------------------------------------------
+//               Truth particle info
+//--------------------------------------------------------------------------------------------
+
     m_truthparticle_type.clear();
     m_truthparticle_origin.clear();
     m_truthparticle_pt.clear();
@@ -1092,33 +1019,38 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             m_truthparticle_m.push_back(trParticle.M());
 
             //std::cout<<"Type = "<<tr_type<<", Origin = "<<tr_origin<<", px = "<<tr_px<<std::endl;
-
         } // for loop over truth particles
     }
 
-    // ---------  ################## -------- //
+//--------------------------------------------------------------------------------------------
+//               Event index "i"  : used for leptons and large-R jets
+//--------------------------------------------------------------------------------------------
     int i = 0;
-    //flag for the tight leptons in the nominal ttree
+
+//--------------------------------------------------------------------------------------------
+//               Flag for the tight leptons in the nominal ttree
+//--------------------------------------------------------------------------------------------
 
     m_el_isTight.resize(event.m_electrons.size());
     for (const auto* const elPtr : event.m_electrons) {
-
         if (!event.m_isLoose)
             if (elPtr->isAvailable<char>("passPreORSelection"))
                 m_el_isTight[i] = elPtr->auxdataConst<char>("passPreORSelection");
-
     }
-
     m_mu_isTight.resize(event.m_muons.size());
     for (const auto* const muPtr : event.m_muons) {
-
         if (!event.m_isLoose)
             if (muPtr->isAvailable<char>("passPreORSelection"))
                 m_mu_isTight[i] = muPtr->auxdataConst<char>("passPreORSelection");
-
     }
 
+//--------------------------------------------------------------------------------------------
+//               Calculate extra W+jets variables
+//--------------------------------------------------------------------------------------------
+#ifdef ENABLE_WJETS_FILTER
     calculateWjets(event);
+#endif
+
 
     //large-R jets
     static const SG::AuxElement::ConstAccessor<int> acc_ljet_FatjetTruthLabel("FatjetTruthLabel");
@@ -1129,6 +1061,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     static const SG::AuxElement::ConstAccessor<float> acc_ljet_Tau21_wta("Tau21_wta");
 
     const size_t largeJets_size = event.m_largeJets.size();
+#ifdef GHOST_MATCH_LJET
     m_ljet_ghosttrackjet_idx.resize(largeJets_size, std::vector<int>());
     m_ljet_nghosttrackjet.resize(largeJets_size, 0);
     m_ljet_nghosttrackjetb.resize(largeJets_size, 0);
@@ -1136,17 +1069,14 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     m_ljet_nghosttrackjetc.resize(largeJets_size, 0);
     m_ljet_nghosttrackjetcc.resize(largeJets_size, 0);
     m_ljet_nghosttrackjetl.resize(largeJets_size, 0);
+#endif
 
+//--------------------------------------------------------------------------------------------
+//               Extra large-R jet variables: top-taging and jetsubstructure
+//--------------------------------------------------------------------------------------------
 
-    // m_ljet_good_sub80.resize(largeJets_size);
-    // m_ljet_good_sub50.resize(largeJets_size);
-    // m_ljet_good_smooth_mt80.resize(largeJets_size);
-    // m_ljet_good_smooth_mt50.resize(largeJets_size);
-    // m_ljet_good_smooth_ts80.resize(largeJets_size);
-    // m_ljet_good_smooth_ts50.resize(largeJets_size);
-    // m_ljet_good_smooth_qt80.resize(largeJets_size);
-    // m_ljet_good_smooth_qt50.resize(largeJets_size);
-    // m_ljet_good_bdt80.resize(largeJets_size);
+#ifdef ENABLE_TOPTAG_DEBUG
+
     for (auto & tagger : m_toptagging) {
         tagger.second.TaggerAccept.assign(largeJets_size, 0);
         if (!tagger.second.TaggerScoreBranchName.empty()) {
@@ -1166,15 +1096,8 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             }
         }
     }
-    // m_ljet_good_topo80.resize(largeJets_size);
-    // m_ljet_bdt_score.resize(largeJets_size);
-    // m_ljet_topo_score.resize(largeJets_size);
+#endif
 
-    m_ljet_good.resize(largeJets_size);
-    m_ljet_notgood.resize(largeJets_size);
-    m_ljet_tau32_wta.resize(largeJets_size);
-    m_ljet_tau21_wta.resize(largeJets_size);
-    m_ljet_label.resize(largeJets_size);
 #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
     m_ljet_D2.resize(largeJets_size);
     m_ljet_C2.resize(largeJets_size);
@@ -1183,26 +1106,20 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     m_ljet_ECF3.resize(largeJets_size);
     m_ljet_MClike.resize(largeJets_size);
 #endif
-    m_ljtmatch = 0;
+
+    m_ljet_good.resize(largeJets_size);
+    m_ljet_notgood.resize(largeJets_size);
+    m_ljet_tau32_wta.resize(largeJets_size);
+    m_ljet_tau21_wta.resize(largeJets_size);
+    m_ljet_label.resize(largeJets_size);
     m_ljet_angular_cuts.resize(largeJets_size);
+    m_ljtmatch = 0;
 
     for ( const auto* const jetPtr : event.m_largeJets ) {
-        m_ljet_good[i] = 0;
-        m_ljet_notgood[i] = 0;
+        m_ljet_good[i] = 999;
+        m_ljet_notgood[i] = 999;
         m_ljet_tau32_wta[i] = 0;
         m_ljet_tau21_wta[i] = 0;
-        m_ljet_ghosttrackjet_idx[i].clear();
-//===================== By Elham ===============================================
-        // m_ljet_good_sub80[i] = 0;
-        // m_ljet_good_sub50[i] = 0;
-        // m_ljet_good_smooth_mt80[i] = 0;
-        // m_ljet_good_smooth_mt50[i] = 0;
-        // m_ljet_good_smooth_ts80[i] = 0;
-        // m_ljet_good_smooth_ts50[i] = 0;
-        // m_ljet_good_smooth_qt80[i] = 0;
-        // m_ljet_good_smooth_qt50[i] = 0;
-        // m_ljet_good_bdt80[i] = 0;
-        // m_ljet_good_topo80[i] = 0;
         m_ljet_angular_cuts[i] = 0;
 
 #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
@@ -1213,18 +1130,9 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         m_ljet_ECF3[i] = 0;
         m_ljet_MClike[i] = -1;
 #endif
-        // int good_sub_80 = 0, good_sub_50 = 0, good_smooth_mt80 = 0, good_smooth_mt50 = 0;
-        // int good_smooth_ts80 = 0, good_smooth_ts50 = 0, good_smooth_qt80 = 0, good_smooth_qt50 = 0;
-        // int good_bdt_80 = 0, good_topo_80 = 0;
 
-        if (jetPtr->pt() > 350000 && std::fabs(jetPtr->eta()) < 2.0) {
-            // if (m_smoothedTopTaggerMT80->tag(*jetPtr)) good_smooth_mt80 = 1;
-            // if (m_smoothedTopTaggerMT50->tag(*jetPtr)) good_smooth_mt50 = 1;
-            // if (m_smoothedTopTaggerTS80->tag(*jetPtr)) good_smooth_ts80 = 1;
-            // if (m_smoothedTopTaggerTS50->tag(*jetPtr)) good_smooth_ts50 = 1;
-            // if (m_smoothedTopTaggerQT80->tag(*jetPtr)) good_smooth_qt80 = 1;
-            // if (m_smoothedTopTaggerQT50->tag(*jetPtr)) good_smooth_qt50 = 1;
-            // if (m_bdtTopTagger80->tag(*jetPtr)) good_bdt_80 = 1; 
+#ifdef ENABLE_TOPTAG_DEBUG
+        if (jetPtr->pt() > 350000 && std::fabs(jetPtr->eta()) < 2.0 && jetPtr->m() > 40000) {
             // // Commenting out the decrator check if condition: --> were having issues with top-tagging for the sublead jets. Only the lead jet was getting top-tagged
             //if (!jetPtr->isAvailable<int>(m_toptagging["DNNContained80"].TaggerDecorationName)) {
             jetPtr->auxdecor<int>(m_toptagging["DNNContained80"].TaggerDecorationName) = m_dnnTopTaggerContained80->tag(*jetPtr);
@@ -1234,20 +1142,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             jetPtr->auxdecor<int>(m_toptagging["DNNInclusive80"].TaggerDecorationName) = m_dnnTopTaggerInclusive80->tag(*jetPtr);
             //}
             // jetPtr->auxdecor<int>(m_toptagging["DNNInclusive50"].TaggerDecorationName) = m_dnnTopTaggerInclusive50->tag(*jetPtr);
-            // if (m_topoTopTagger80->tag(*jetPtr)) good_topo_80 = 1;
         }
-        // if (good_sub_80) m_ljet_good_sub80[i] = good_sub_80;
-        // if (good_sub_50) m_ljet_good_sub50[i] = good_sub_50;
-        // if (good_smooth_mt80) m_ljet_good_smooth_mt80[i] = good_smooth_mt80;
-        // if (good_smooth_mt50) m_ljet_good_smooth_mt50[i] = good_smooth_mt50;
-        // if (good_smooth_ts80) m_ljet_good_smooth_ts80[i] = good_smooth_ts80;
-        // if (good_smooth_ts50) m_ljet_good_smooth_ts50[i] = good_smooth_ts50;
-        // if (good_smooth_qt80) m_ljet_good_smooth_qt80[i] = good_smooth_qt80;
-        // if (good_smooth_qt50) m_ljet_good_smooth_qt50[i] = good_smooth_qt50;
-        // if (good_bdt_80) m_ljet_good_bdt80[i] = good_bdt_80;
-        // if (good_topo_80) m_ljet_good_topo80[i] = good_topo_80;
-        // if (jetPtr->isAvailable<float>("BDTTaggerTopQuark80_Score")) m_ljet_bdt_score[i] = jetPtr->auxdata<float>("BDTTaggerTopQuark80_Score");
-
         //cout << "Inclusive score: " << m_ljet_incldnn_score[i] << "  pt "<< jetPtr->pt() << " eta: " << std::fabs(jetPtr->eta()) <<endl;
         //cout << "Contained score: " << m_ljet_contdnn_score[i] << "  pt "<< jetPtr->pt() << " eta: " << std::fabs(jetPtr->eta()) <<endl;
 
@@ -1292,21 +1187,15 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                     }
                 }
             }
-        }
-
+        } //for loop over the taggers
         delete jetCopyPtr;
-        // if (jetPtr->isAvailable<float>("TopotaggerTopQuark80_Score")) m_ljet_topo_score[i] = jetPtr->auxdata<float>("TopotaggerTopQuark80_Score");
+#endif
+
         if (jetPtr->isAvailable<int> ("angular_cuts")) m_ljet_angular_cuts[i] = jetPtr->auxdecor<int>("angular_cuts");
-
-
-//==================================== End Elham ================================================
-
-
-        //if (jetPtr->isAvailable<int>("topTagged")) m_ljet_good[i] = jetPtr->auxdata<int>("topTagged");
+        if (jetPtr->isAvailable<int>("topTagged")) m_ljet_good[i] = jetPtr->auxdata<int>("topTagged");
         if (m_ljet_good[i] == 1) {
             if (jetPtr->pt() > max_pt) {max_pt = jetPtr->pt(); hadtop_index = i;}
         }
-
         try { // defined only by NLargeJetTtresSTWjetsSelector.cxx, for W CR, in which there is a veto against good top jet --> no conflict
             m_ljet_notgood[i] = jetPtr->auxdata<int>("notTopTagged");
             if (m_ljet_notgood[i] == 1) {
@@ -1317,6 +1206,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         m_ljet_tau32_wta[i] = acc_ljet_Tau32_wta.isAvailable(*jetPtr) ? acc_ljet_Tau32_wta(*jetPtr) : acc_ljet_Tau3_wta(*jetPtr) / acc_ljet_Tau2_wta(*jetPtr);
         m_ljet_tau21_wta[i] = acc_ljet_Tau21_wta.isAvailable(*jetPtr) ? acc_ljet_Tau21_wta(*jetPtr) : acc_ljet_Tau2_wta(*jetPtr) / acc_ljet_Tau1_wta(*jetPtr);
         if (m_isMC) try {m_ljet_label[i] = jetPtr->auxdata<int>("R10TruthLabel_R21Consolidated"); } catch (...) { }
+
 #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
         try { m_ljet_ECF1[i] = jetPtr->getAttribute<float>("ECF1"); } catch (...) { }
         try { m_ljet_ECF2[i] = jetPtr->getAttribute<float>("ECF2"); } catch (...) { }
@@ -1334,6 +1224,8 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         m_ljet_D2[i] = d2;
 #endif
 
+#ifdef GHOST_MATCH_LJET
+        m_ljet_ghosttrackjet_idx[i].clear();
         // I want this to crash if they're not available!
         // Danilo: I want this to work when they are not available due to bug ATLJETMET-381
         try { m_ljet_nghosttrackjet[i] = jetPtr->getAttribute<int>("nGhostJets"); } catch (...) { }
@@ -1352,8 +1244,7 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                 for (const auto& link : ghostJets)
                     m_ljet_ghosttrackjet_idx[i].push_back(link.index());
             }
-        } catch (...) {
-        }
+        } catch (...) { }
 
         if (m_ljet_good[i]) {
             if (m_trackjetcollection != "") {
@@ -1363,75 +1254,25 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                     int ti = m_ljet_ghosttrackjet_idx[i][k];
                     const xAOD::Jet *trackjetPtr = trackjetsOrig->at(ti);
 
-                    double mvx = -999;
-                    trackjetPtr->btagging()->MVx_discriminant("MV2c10", mvx);
-                    if (trackjetPtr->pt() > 10e3 && std::fabs(trackjetPtr->eta()) < 2.5 &&
-                            mvx > m_trackjetMv2c10Cut && trackjetPtr->numConstituents() >= 2) {
-                        m_ljtmatch = 1;
+                    if (trackjetPtr->isAvailable<char>("isbtagged_DL1r_FixedCutBEff_77")){
+                        if (trackjetPtr->auxdataConst<char>("isbtagged_DL1r_FixedCutBEff_77")){
+                            m_ljtmatch = 1;
+                        }
                     }
-
+                    else
+                        throw std::runtime_error("TtresEventSaverFlatNtuple :: track jet doesn't have decoration isbtagged_DL1r_FixedCutBEff_77");
                 }
             }
         }
+#endif
+    ++i;
+    }  // loop over the large-R jets
 
-        ++i;
-    }
-    
-    m_tjet_mv2rmu.resize(event.m_trackJets.size());
-    m_tjet_mv2r.resize(event.m_trackJets.size());
-    m_tjet_dl1_pu.resize(event.m_trackJets.size());
-    m_tjet_dl1_pb.resize(event.m_trackJets.size());
-    m_tjet_dl1_pc.resize(event.m_trackJets.size());
-    m_tjet_dl1rmu_pu.resize(event.m_trackJets.size());
-    m_tjet_dl1rmu_pb.resize(event.m_trackJets.size());
-    m_tjet_dl1rmu_pc.resize(event.m_trackJets.size());
-    m_tjet_dl1r_pu.resize(event.m_trackJets.size());
-    m_tjet_dl1r_pb.resize(event.m_trackJets.size());
-    m_tjet_dl1r_pc.resize(event.m_trackJets.size());
+//--------------------------------------------------------------------------------------------
+//               If HEP TopTagger is enabled
+//--------------------------------------------------------------------------------------------
 
-
-    i = 0;
-
-    for (const auto* const jetPtr : event.m_trackJets) {
-
-        if (jetPtr->pt() > 10e3 && std::fabs(jetPtr->eta()) < 2.5 && jetPtr->numConstituents() >= 2) {
-            const xAOD::BTagging* btag(nullptr);
-            btag = jetPtr->btagging();
-
-            m_tjet_mv2r[i] = -999;
-            m_tjet_mv2rmu[i] = -999;
-
-            double mvx = -999;
-            if (btag) btag->MVx_discriminant("MV2rmu", mvx);
-            m_tjet_mv2rmu[i] = mvx;
-            mvx = -999;
-            if (btag) btag->MVx_discriminant("MV2r", mvx);
-            m_tjet_mv2r[i] = mvx;
-
-            m_tjet_dl1_pu[i] = -999;
-            m_tjet_dl1_pc[i] = -999;
-            m_tjet_dl1_pb[i] = -999;
-            m_tjet_dl1r_pu[i] = -999;
-            m_tjet_dl1r_pc[i] = -999;
-            m_tjet_dl1r_pb[i] = -999;
-            m_tjet_dl1rmu_pu[i] = -999;
-            m_tjet_dl1rmu_pc[i] = -999;
-            m_tjet_dl1rmu_pb[i] = -999;
-
-            if (btag) {
-                double pu = -999, pb = -999, pc = -999;
-                btag->pu("DL1", pu); btag->pb("DL1", pb); btag->pc("DL1", pc);
-                m_tjet_dl1_pu[i] = pu; m_tjet_dl1_pb[i] = pb; m_tjet_dl1_pc[i] = pc;
-                btag->pu("DL1rmu", pu); btag->pb("DL1rmu", pb); btag->pc("DL1rmu", pc);
-                m_tjet_dl1rmu_pu[i] = pu; m_tjet_dl1rmu_pb[i] = pb; m_tjet_dl1rmu_pc[i] = pc;
-                btag->pu("DL1r", pu); btag->pb("DL1r", pb); btag->pc("DL1r", pc);
-                m_tjet_dl1r_pu[i] = pu; m_tjet_dl1r_pb[i] = pb; m_tjet_dl1r_pc[i] = pc;
-                //std::cout << "dl1=" << m_tjet_dl1_pu[i] << std::endl;
-            }
-            ++i;
-        }
-    }
-
+#ifdef USE_HTT
     if (m_runHtt) {
         // Execute HTT
         //httTool->execute();
@@ -1568,10 +1409,19 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             HTT_tt_pt[0] = add_V.Pt();
         }
     }
+#endif
 
+//--------------------------------------------------------------------------------------------
+//               Ghost-matching variables
+//--------------------------------------------------------------------------------------------
+// redefine i to resue it
     i = 0;
+
     int lepjet_index = -1;
     m_jet_closeToLepton.resize(event.m_jets.size());
+    m_jet_trueflav.resize(event.m_jets.size(), -1);
+
+#ifdef GHOST_MATCH_JET
     m_jet_ghosttrackjet_idx.resize(event.m_jets.size(), std::vector<int>());
     m_jet_nghosttrackjet.resize(event.m_jets.size(), 0);
     m_jet_nghosttrackjetb.resize(event.m_jets.size(), 0);
@@ -1579,17 +1429,19 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     m_jet_nghosttrackjetc.resize(event.m_jets.size(), 0);
     m_jet_nghosttrackjetcc.resize(event.m_jets.size(), 0);
     m_jet_nghosttrackjetl.resize(event.m_jets.size(), 0);
-    m_jet_trueflav.resize(event.m_jets.size(), -1);
     m_jet_NumTrkPt500.resize(event.m_jets.size(), -1);
+#endif
 
     for (const auto* const jetPtr : event.m_jets) {
         m_jet_closeToLepton[i] = 0;
-        m_jet_ghosttrackjet_idx[i].clear();
 
         if (jetPtr->isAvailable<char>("closeToLepton")) {
             m_jet_closeToLepton[i] = jetPtr->auxdata<char>("closeToLepton");
             if (jetPtr->auxdata<char>("closeToLepton") == 1) {lepjet_index = i;}
         }
+
+#ifdef GHOST_MATCH_JET
+        m_jet_ghosttrackjet_idx[i].clear();
         static const SG::AuxElement::ConstAccessor< std::vector<int> > acc("NumTrkPt500");
         size_t vtxIdx = 0;
         for (auto vtx : *m_primvtx) {
@@ -1609,7 +1461,6 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         try { m_jet_nghosttrackjetc[i] = jetPtr->getAttribute<int>("nTrueCGhostJets"); } catch (...) { }
         try { m_jet_nghosttrackjetcc[i] = jetPtr->getAttribute<int>("nTrueCCGhostJets"); } catch (...) { }
         try { m_jet_nghosttrackjetl[i] = jetPtr->getAttribute<int>("nTrueLGhostJets"); } catch (...) { }
-        if (m_isMC)try { m_jet_trueflav[i] = jetPtr->getAttribute<int>("HadronConeExclTruthLabelID"); } catch (...) { }
 
         // store the ghost-associated trackjet indices
         try {
@@ -1622,10 +1473,17 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             }
         } catch (...) {
         }
+#endif
+        if (m_isMC)try { m_jet_trueflav[i] = jetPtr->getAttribute<int>("HadronConeExclTruthLabelID"); } catch (...) { }
 
         ++i;
     }
 
+//--------------------------------------------------------------------------------------------
+//               Initial and Final state parton types
+//--------------------------------------------------------------------------------------------
+
+#ifdef ENABLE_ZPRIMERWGT
 
     m_MC_i1_px = -9999;
     m_MC_i1_py = -9999;
@@ -1764,10 +1622,16 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             }
         }
     }
+#endif
+
+//--------------------------------------------------------------------------------------------
+//               Leptonic and Hadronic top-candidates
+//--------------------------------------------------------------------------------------------
 
     float met_et = event.m_met->met();
     float met_phi = event.m_met->phi();
-    int hadside = 0, lepside = 0;
+    int hadside_calojet = 0, lepside_calojet = 0;
+    //int hadside_tjet = 0, lepside_tjet = 0;
     double m_chi2all = 10000000;
     double m_chi2lep = 10000000;
     double m_chi2had = 10000000;
@@ -1785,8 +1649,6 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     std::vector<TLorentzVector*> Nus;
     Nus = builder.candidatesFromWMass_Rotation(&Plepton, met_et, met_phi, true);
     Pneut = *Nus.at(0);
-
-
 
     if (hadtop_index > -1 && lepjet_index > -1) {
         const xAOD::Jet * hadtop = event.m_largeJets.at(hadtop_index);
@@ -1806,57 +1668,86 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
             TLorentzVector *jet = new TLorentzVector();
             jet->SetPtEtaPhiM(jetPtr->pt(), jetPtr->eta(), jetPtr->phi(), jetPtr->m());
             jetVector.push_back(jet);
-            const xAOD::BTagging* btag_cal(nullptr);
-            btag_cal = jetPtr->btagging();
-            double pT_cal = jetPtr->pt();
-            double eta_cal = jetPtr->eta();
-            double pu_cal = -999, pb_cal = -999, pc_cal = -999;
-            btag_cal->pu("DL1r", pu_cal); btag_cal->pb("DL1r", pb_cal); btag_cal->pc("DL1r", pc_cal);
-            isJetBtagged.push_back(tempSelTool->accept( pT_cal, eta_cal, pb_cal, pc_cal, pu_cal));
-    }
+            if (jetPtr->isAvailable<char>("isbtagged_DL1r_FixedCutBEff_77")){
+                isJetBtagged.push_back(jetPtr->auxdataConst<char>("isbtagged_DL1r_FixedCutBEff_77"));
+            }
+        }
         int i_q1_W, i_q2_W, i_b_had, i_b_lep, ign1;
         bool pass = resolved_tt.findMinChiSquare(&Plepton, &jetVector, &isJetBtagged, &met, i_q1_W, i_q2_W, i_b_had, i_b_lep, ign1, m_chi2all, m_chi2had, m_chi2lep);
-        if (pass == true) {
 
+        if (pass == true) {
             Phadtop = (*jetVector.at(i_q1_W)) + (*jetVector.at(i_q2_W)) + (*jetVector.at(i_b_had));
             Pleptop = (*jetVector.at(i_b_lep)) + Pneut + Plepton;
-
         }
-
     }
 
+    // loop through the calo-jet and identify the b-tagged calorimeter jets
+    // b-tagging is done on the calo-jets
 
-m_NB_hadside = 0;
-m_NB_lepside = 0;
-const xAOD::JetContainer* calojets = &(event.m_jets);
+    m_NB_hadside_calojet = 0;
+    m_NB_lepside_calojet = 0;
 
-    for (unsigned int k = 0; k < calojets->size(); ++k) {
-            const xAOD::Jet *calojetPtr = calojets->at(k);
-            const xAOD::BTagging* btag_calo(nullptr);
-            btag_calo = calojetPtr->btagging();
-            double pT_calo = calojetPtr->pt();   
-            double eta_calo = calojetPtr->eta();
-            double pu_calo = -999, pb_calo = -999, pc_calo = -999;
-            btag_calo->pu("DL1r", pu_calo); btag_calo->pb("DL1r", pb_calo); btag_calo->pc("DL1r", pc_calo);
-   
-
-      if (tempSelTool->accept( pT_calo, eta_calo, pb_calo, pc_calo, pu_calo)) {
+    for (const auto* const calojetPtr : event.m_jets) {
+        int isbtag_calojet = 0;
+        if (calojetPtr->isAvailable<char>("isbtagged_DL1r_FixedCutBEff_77")){
+                isbtag_calojet = calojetPtr->auxdataConst<char>("isbtagged_DL1r_FixedCutBEff_77");
+            }
+        else
+            throw std::runtime_error("TtresEventSaverFlatNtuple :: Jet doesn't have decoration isbtagged_DL1r_FixedCutBEff_77");
+        if (isbtag_calojet){
             Pbjet.SetPtEtaPhiM(calojetPtr->pt(), calojetPtr->eta(), calojetPtr->phi(), calojetPtr->m());
-            if ((Pbjet.DeltaR(Phadtop)) < 1.0) {hadside = 1; m_NB_hadside += 1;}
-            if ((Pbjet.DeltaR(Pleptop)) < 1.0) {lepside = 1; m_NB_lepside += 1;}
+            if ((Pbjet.DeltaR(Phadtop)) < 1.0) {hadside_calojet = 1; m_NB_hadside_calojet += 1;}
+            if ((Pbjet.DeltaR(Pleptop)) < 1.0) {lepside_calojet = 1; m_NB_lepside_calojet += 1;}
+        }
+    }
 
- 
-       }
-  
-}
-    if (hadside == 0 && lepside == 0) {m_Btagcat = 0;}
-    if (hadside == 0 && lepside == 1) {m_Btagcat = 1;}
-    if (hadside == 1 && lepside == 0) {m_Btagcat = 2;}
-    if (hadside == 1 && lepside == 1) {m_Btagcat = 3;}
-  //std::cout << "BtagCategorie " << m_Btagcat << std::endl;
+    if (hadside_calojet == 0 && lepside_calojet == 0) {m_Btagcat_calojet = 0;}
+    if (hadside_calojet == 0 && lepside_calojet == 1) {m_Btagcat_calojet = 1;}
+    if (hadside_calojet == 1 && lepside_calojet == 0) {m_Btagcat_calojet = 2;}
+    if (hadside_calojet == 1 && lepside_calojet == 1) {m_Btagcat_calojet = 3;}
 
 
- 
+    // b-tagging is done on the track-jets
+    // loop through the calo-jet
+    // loop through all the track-jets and identify the b-tagged track-jets
+    // b-matching condition: dR(calo-jet, track-jet) < 0.4
+
+    //m_NB_hadside_tjet = 0;
+    //m_NB_lepside_tjet = 0;
+
+    // for (const auto* const calojetPtr : event.m_jets) {
+    //     TLorentzVector tmp_calojet;
+    //     tmp_calojet.SetPtEtaPhiM(calojetPtr->pt(), calojetPtr->eta(), calojetPtr->phi(), calojetPtr->m());
+    //     for (const auto* const trkjetPtr : event.m_trackJets) {
+    //         TLorentzVector tmp_tjet;
+    //         tmp_tjet.SetPtEtaPhiM(trkjetPtr->pt(), trkjetPtr->eta(), trkjetPtr->phi(), trkjetPtr->m());
+    //         int isbtag_trkjet = 0;
+    //         if (trkjetPtr->isAvailable<char>("isbtagged_DL1r_FixedCutBEff_77")){
+    //                 isbtag_trkjet = trkjetPtr->auxdataConst<char>("isbtagged_DL1r_FixedCutBEff_77");
+    //             }
+    //         else
+    //             throw std::runtime_error("TtresEventSaverFlatNtuple :: Track jet doesn't have decoration isbtagged_DL1r_FixedCutBEff_77");
+    //         if (isbtag_trkjet == 1 && tmp_tjet.DeltaR(tmp_calojet) <= 0.4){
+    //             Pbjet.SetPtEtaPhiM(trkjetPtr->pt(), trkjetPtr->eta(), trkjetPtr->phi(), trkjetPtr->m());
+    //             if ((Pbjet.DeltaR(Phadtop)) < 1.0) {hadside_tjet = 1; m_NB_hadside_tjet += 1;}
+    //             if ((Pbjet.DeltaR(Pleptop)) < 1.0) {lepside_tjet = 1; m_NB_lepside_tjet += 1;}
+    //             break;
+    //         }
+    //     }
+    // }
+
+    // if (hadside_tjet == 0 && lepside_tjet == 0) {m_Btagcat_tjet = 0;}
+    // if (hadside_tjet == 0 && lepside_tjet == 1) {m_Btagcat_tjet = 1;}
+    // if (hadside_tjet == 1 && lepside_tjet == 0) {m_Btagcat_tjet = 2;}
+    // if (hadside_tjet == 1 && lepside_tjet == 1) {m_Btagcat_tjet = 3;}
+
+
+    // Getting the minimum chi-square values
+    if (m_chi2Sel->apply(event) && (!m_runHtt)) {
+        TtresChi2* chi2Tool = m_chi2Sel->getChi2Tool();
+        m_chi2_all = chi2Tool->getResult_Chi2All();
+    }
+
     m_tjet_numConstituents.resize(trackjets->size(), -1);
     m_tjet_label.resize(trackjets->size(), 0);
     m_tjet_ghostlabel.resize(trackjets->size(), 0);
@@ -2126,10 +2017,64 @@ const xAOD::JetContainer* calojets = &(event.m_jets);
     }
 
 
-    if (m_savePartons) {
+//--------------------------------------------------------------------------------------------
+//               Truth parton information
+//--------------------------------------------------------------------------------------------
+
+//  Always store the mtt truth information
+
+    const xAOD::PartonHistoryContainer* topPartonCont = nullptr;
+    //top::check(evtStore()->event()->retrieve(topPartonCont, m_config->sgKeyTopPartonHistory()), "FAILURE"); //m_config is private ...
+    top::check(evtStore()->event()->retrieve(topPartonCont, "TopPartonHistory"), "FAILURE");
+    const xAOD::PartonHistory *topParton = topPartonCont->at(0);
+
+    // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
+    if (topParton->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m") > 0) {
+        m_MC_ttbar_afterFSR_beforeDecay_m = topParton->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m");
+    }
+
+    if (topParton->auxdata<float>("MC_ttbar_beforeFSR_pt") > 0) {
+        m_MC_ttbar_beforeFSR_pt  = topParton->auxdata<float>("MC_ttbar_beforeFSR_pt");
+        m_MC_ttbar_beforeFSR_eta = topParton->auxdata<float>("MC_ttbar_beforeFSR_eta");
+        m_MC_ttbar_beforeFSR_phi = topParton->auxdata<float>("MC_ttbar_beforeFSR_phi");
+        m_MC_ttbar_beforeFSR_m   = topParton->auxdata<float>("MC_ttbar_beforeFSR_m");
+    }
+
+    if (topParton->auxdata<float>("MC_ttbar_afterFSR_pt") > 0) {
+        m_MC_ttbar_afterFSR_pt  = topParton->auxdata<float>("MC_ttbar_afterFSR_pt");
+        m_MC_ttbar_afterFSR_eta = topParton->auxdata<float>("MC_ttbar_afterFSR_eta");
+        m_MC_ttbar_afterFSR_phi = topParton->auxdata<float>("MC_ttbar_afterFSR_phi");
+        m_MC_ttbar_afterFSR_m   = topParton->auxdata<float>("MC_ttbar_afterFSR_m");
+    }
+
+    if (m_savePartons || m_runEWK) {
 
         // Initialize variables with a default value
         IniVariables();
+
+        if (m_runEWK){
+            // post-FSR top or anti-top found using statusCodes
+            TLorentzVector t_after_SC, tbar_after_SC, ttbar_after_SC;
+            if (topParton->auxdata<float>("MC_t_afterFSR_SC_pt") > 0) {
+                m_MC_t_afterFSR_SC_pt  = topParton->auxdata<float>("MC_t_afterFSR_SC_pt");
+                m_MC_t_afterFSR_SC_eta = topParton->auxdata<float>("MC_t_afterFSR_SC_eta");
+                m_MC_t_afterFSR_SC_phi = topParton->auxdata<float>("MC_t_afterFSR_SC_phi");
+                m_MC_t_afterFSR_SC_m   = topParton->auxdata<float>("MC_t_afterFSR_SC_m");
+                t_after_SC.SetPtEtaPhiM(m_MC_t_afterFSR_pt, m_MC_t_afterFSR_SC_eta, m_MC_t_afterFSR_SC_phi, m_MC_t_afterFSR_SC_m);
+ 
+                m_MC_tbar_afterFSR_SC_pt  = topParton->auxdata<float>("MC_tbar_afterFSR_SC_pt");
+                m_MC_tbar_afterFSR_SC_eta = topParton->auxdata<float>("MC_tbar_afterFSR_SC_eta");
+                m_MC_tbar_afterFSR_SC_phi = topParton->auxdata<float>("MC_tbar_afterFSR_SC_phi");
+                m_MC_tbar_afterFSR_SC_m   = topParton->auxdata<float>("MC_tbar_afterFSR_SC_m");
+                tbar_after_SC.SetPtEtaPhiM(m_MC_tbar_afterFSR_pt, m_MC_tbar_afterFSR_SC_eta, m_MC_tbar_afterFSR_SC_phi, m_MC_tbar_afterFSR_SC_m);
+
+                ttbar_after_SC = t_after_SC + tbar_after_SC;
+                m_MC_ttbar_afterFSR_SC_pt  = ttbar_after_SC.Pt();
+                m_MC_ttbar_afterFSR_SC_eta = ttbar_after_SC.Eta();
+                m_MC_ttbar_afterFSR_SC_phi = ttbar_after_SC.Phi();
+                m_MC_ttbar_afterFSR_SC_m   = ttbar_after_SC.M();
+            }
+        }
 
         // Fill the ME variables
         const xAOD::TruthEventContainer* truthEvents = nullptr;
@@ -2144,11 +2089,6 @@ const xAOD::JetContainer* calojets = &(event.m_jets);
         if (m_akt10truthjetcollection != "") {
             top::check(evtStore()->event()->retrieve(akt10truthjets, m_akt10truthjetcollection), "FAILURE");
         }
-
-        const xAOD::PartonHistoryContainer* topPartonCont = nullptr;
-        //top::check(evtStore()->event()->retrieve(topPartonCont, m_config->sgKeyTopPartonHistory()), "FAILURE"); //m_config is private ...
-        top::check(evtStore()->event()->retrieve(topPartonCont, "TopPartonHistory"), "FAILURE");
-        const xAOD::PartonHistory *topParton = topPartonCont->at(0);
 
         // get partons
         TLorentzVector parton_t_p4;
@@ -2218,47 +2158,6 @@ const xAOD::JetContainer* calojets = &(event.m_jets);
             m_MC_tbar_phi = topParton->auxdata<float>("MC_tbar_beforeFSR_phi");
             m_MC_tbar_m   = topParton->auxdata<float>("MC_tbar_beforeFSR_m");
             parton_tbar_p4.SetPtEtaPhiM(m_MC_tbar_pt, m_MC_tbar_eta, m_MC_tbar_phi, m_MC_tbar_m);
-        }
-
-        if (topParton->auxdata<float>("MC_ttbar_beforeFSR_pt") > 0) {
-            m_MC_ttbar_beforeFSR_pt  = topParton->auxdata<float>("MC_ttbar_beforeFSR_pt");
-            m_MC_ttbar_beforeFSR_eta = topParton->auxdata<float>("MC_ttbar_beforeFSR_eta");
-            m_MC_ttbar_beforeFSR_phi = topParton->auxdata<float>("MC_ttbar_beforeFSR_phi");
-            m_MC_ttbar_beforeFSR_m   = topParton->auxdata<float>("MC_ttbar_beforeFSR_m");
-        }
-
-        if (topParton->auxdata<float>("MC_ttbar_afterFSR_pt") > 0) {
-            m_MC_ttbar_afterFSR_pt  = topParton->auxdata<float>("MC_ttbar_afterFSR_pt");
-            m_MC_ttbar_afterFSR_eta = topParton->auxdata<float>("MC_ttbar_afterFSR_eta");
-            m_MC_ttbar_afterFSR_phi = topParton->auxdata<float>("MC_ttbar_afterFSR_phi");
-            m_MC_ttbar_afterFSR_m   = topParton->auxdata<float>("MC_ttbar_afterFSR_m");
-        }
-
-        // post-FSR top or anti-top found using statusCodes
-        TLorentzVector t_after_SC, tbar_after_SC, ttbar_after_SC;
-        if (topParton->auxdata<float>("MC_t_afterFSR_SC_pt") > 0) {
-            m_MC_t_afterFSR_SC_pt  = topParton->auxdata<float>("MC_t_afterFSR_SC_pt");
-            m_MC_t_afterFSR_SC_eta = topParton->auxdata<float>("MC_t_afterFSR_SC_eta");
-            m_MC_t_afterFSR_SC_phi = topParton->auxdata<float>("MC_t_afterFSR_SC_phi");
-            m_MC_t_afterFSR_SC_m   = topParton->auxdata<float>("MC_t_afterFSR_SC_m");
-            t_after_SC.SetPtEtaPhiM(m_MC_t_afterFSR_pt, m_MC_t_afterFSR_SC_eta, m_MC_t_afterFSR_SC_phi, m_MC_t_afterFSR_SC_m);
-
-            m_MC_tbar_afterFSR_SC_pt  = topParton->auxdata<float>("MC_tbar_afterFSR_SC_pt");
-            m_MC_tbar_afterFSR_SC_eta = topParton->auxdata<float>("MC_tbar_afterFSR_SC_eta");
-            m_MC_tbar_afterFSR_SC_phi = topParton->auxdata<float>("MC_tbar_afterFSR_SC_phi");
-            m_MC_tbar_afterFSR_SC_m   = topParton->auxdata<float>("MC_tbar_afterFSR_SC_m");
-            tbar_after_SC.SetPtEtaPhiM(m_MC_tbar_afterFSR_pt, m_MC_tbar_afterFSR_SC_eta, m_MC_tbar_afterFSR_SC_phi, m_MC_tbar_afterFSR_SC_m);
-
-            ttbar_after_SC = t_after_SC + tbar_after_SC;
-            m_MC_ttbar_afterFSR_SC_pt  = ttbar_after_SC.Pt();
-            m_MC_ttbar_afterFSR_SC_eta = ttbar_after_SC.Eta();
-            m_MC_ttbar_afterFSR_SC_phi = ttbar_after_SC.Phi();
-            m_MC_ttbar_afterFSR_SC_m   = ttbar_after_SC.M();
-        }
-
-        // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
-        if (topParton->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m") > 0) {
-            m_MC_ttbar_afterFSR_beforeDecay_m = topParton->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m");
         }
 
 
@@ -2627,9 +2526,7 @@ const xAOD::JetContainer* calojets = &(event.m_jets);
             TLorentzFill(chi2Tool->getResult_Th(), m_chi2_th_m, m_chi2_th_pt, m_chi2_th_eta, m_chi2_th_phi);
             TLorentzFill(chi2Tool->getResult_TT(), m_chi2_ttbar_m, m_chi2_ttbar_pt, m_chi2_ttbar_eta, m_chi2_ttbar_phi);
         }
-
-
-    }//if (m_savePartons)
+    }//if (m_savePartons || m_runEWK)
 
     if (m_savePdfWeight) {
         const xAOD::TruthEventContainer* truthEvent(nullptr);
@@ -2649,6 +2546,7 @@ const xAOD::JetContainer* calojets = &(event.m_jets);
 #endif
 }
 
+#ifdef ENABLE_TOPTAG_DEBUG
 void TtresEventSaverFlatNtuple::SetTopTaggingWPs(const std::vector<std::string> WPs) {
     for (auto taggingWP : WPs) {
         std::cout << "INFO: " << taggingWP << std::endl;
@@ -2743,6 +2641,7 @@ void TtresEventSaverFlatNtuple::SetTopTaggingWPs(const std::vector<std::string> 
     }
 
 }
+#endif
 
 void TtresEventSaverFlatNtuple::DeltaR_min(TLorentzVector p1, TLorentzVector p2, int i, float & tmp_dr, int & truth_idx) {
 
@@ -3816,6 +3715,8 @@ void TtresEventSaverFlatNtuple::IniVariables() {
 
 }//IniVariables
 
+#ifdef ENABLE_WJETS_FILTER
+
 void TtresEventSaverFlatNtuple::calculateWjets(const top::Event & event) {
 
     ////////////////////////////////////////////////////// W+jets
@@ -4365,6 +4266,7 @@ void TtresEventSaverFlatNtuple::calculateWjets(const top::Event & event) {
         // END Comparison
     } //if isSherpaW
 }
+#endif
 
 template <typename T>
 int TtresEventSaverFlatNtuple::FindInVector(vector<T>& v, T x) {

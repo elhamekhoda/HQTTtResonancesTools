@@ -6,8 +6,8 @@
 
 namespace top {
 
-JetTtres::JetTtres(const double ptcut, const double etamax, const bool doJVTCut, const double ghostjetPtmin, const std::string &ghostCollectionName)
-  : JetMC15(ptcut, etamax, doJVTCut),
+JetTtres::JetTtres(const double ptcut, const double etamax, const double minmass, const bool doJVTCut, const double ghostjetPtmin, const std::string &ghostCollectionName)
+  : JetMC15(ptcut, etamax, minmass, doJVTCut),
     m_ghostjetPtmin(ghostjetPtmin),
     m_ghostCollectionName(ghostCollectionName) {
 }
