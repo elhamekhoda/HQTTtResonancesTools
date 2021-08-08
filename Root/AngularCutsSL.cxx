@@ -8,8 +8,8 @@ JSSTaggerBase(name){
 
 StatusCode AngularCutsSL::initialize(){
     ATH_MSG_INFO( "Initializing AngularCutsSL tool" );
-    m_accept.addCut( "deltaPhiHigh"    , "True if deltaPhi(largeJet,lep) > 2.3."  );
-    m_accept.addCut( "deltaRHigh"    , "True if the deltaR(largeJet,leading jet-close-to-lep) > 1.5."  );
+    m_accept.addCut( "deltaPhiHigh"    , "True if deltaPhi(largeJet,lep) > 1.0."  );
+    m_accept.addCut( "deltaRHigh"    , "True if the deltaR(largeJet,leading jet-close-to-lep) > 1.0."  );
     return StatusCode::SUCCESS;
 }
 

@@ -113,10 +113,8 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     virtual void dumpToolConfig(std::string fname);
     const std::string& configValueDefault(const std::string& key, const std::string& default_value = "False") const;
     std::string m_dumpToolConfigTo;
-    //std::vector<std::string> m_TopTaggingWP = {"DNNTOPTAG_CONTAINED80", "DNNTOPTAG_INCLUSIVE80", "DNNTOPTAG_CONTAINED50", "DNNTOPTAG_INCLUSIVE50"}; // We always store variables of DNNContained/DNNInclusive FC 80% and 50%;
-    std::vector<std::string> m_TopTaggingWP = {"DNNTOPTAG_CONTAINED80", "DNNTOPTAG_INCLUSIVE80"};
-    bool m_isMC;
 
+    bool m_isMC;
     bool m_isTOPQ;
     bool m_isSherpaW;
 
@@ -144,7 +142,7 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     WeakCorr::WeakCorrScaleFactorParam* weak;
 
     bool m_savePdfWeight;
-
+#ifdef ENABLE_WJETS_FILTER
     int m_Wfilter;
     int m_Wfilter_2;
     int m_Wfilter_3;
@@ -152,15 +150,20 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     int m_Wfilter_5;
     int m_Wfilter_6;
     float m_Sherpa22_weight;
-
+#endif
     std::vector<std::string> m_LHAPDFSets;
 
     //Store output PDF weights from LHAPDF
     std::unordered_map<std::string, std::vector<float> > m_PDF_eventWeights;
 
+#ifdef ENABLE_TOPTAG_DEBUG
+    //std::vector<std::string> m_TopTaggingWP = {"DNNTOPTAG_CONTAINED80", "DNNTOPTAG_INCLUSIVE80", "DNNTOPTAG_CONTAINED50", "DNNTOPTAG_INCLUSIVE50"}; // We always store variables of DNNContained/DNNInclusive FC 80% and 50%;
+    std::vector<std::string> m_TopTaggingWP = {"DNNTOPTAG_CONTAINED80", "DNNTOPTAG_INCLUSIVE80"};
     std::unordered_map<std::string, Tagger> m_toptagging;
     std::unordered_map<std::string, ToolHandle<ICPJetUncertaintiesTool>> m_toptaggingUncTools;
-
+    std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerContained80;//DNN contained top tagger 80%
+    std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerInclusive80;//DNN inclusive top tagger 80%
+#endif
     std::vector<int>   m_ljet_good;
     std::vector<int>   m_ljet_notgood;// for WCR
     std::vector<float> m_ljet_tau32_wta;
@@ -178,35 +181,8 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     std::vector<float> m_ljet_tau2_wta;
     std::vector<float> m_ljet_tau3_wta;
     std::vector<int>   m_jet_closeToLepton;
-
-    // std::vector<int>   m_ljet_good_sub80;
-    // std::vector<int>   m_ljet_good_sub50;
-    // std::vector<int>   m_ljet_good_smooth_mt80;
-    // std::vector<int>   m_ljet_good_smooth_mt50;
-    // std::vector<int>   m_ljet_good_smooth_ts80;
-    // std::vector<int>   m_ljet_good_smooth_ts50;
-    // std::vector<int>   m_ljet_good_smooth_qt80;
-    // std::vector<int>   m_ljet_good_smooth_qt50;
-    // std::vector<int>   m_ljet_good_bdt80;
-    // std::vector<int>   m_ljet_good_topo80;
-    // std::vector<float> m_ljet_bdt_score;
-    // std::vector<float> m_ljet_topo_score;
     std::vector<int>   m_ljet_angular_cuts;
 
-    // SubstructureTopTagger *STL80;
-    // SubstructureTopTagger *STL50;
-    // std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerMT80;//mass+tau32
-    // std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerMT50;//mass+tau32
-    // std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerTS80;//tau32+Split23
-    // std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerTS50;//tau32+Split23
-    // std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerQT80;//Qw+tau32
-    // std::unique_ptr<SmoothedTopTagger> m_smoothedTopTaggerQT50;//Qw+tau32
-    // std::unique_ptr<JSSWTopTaggerBDT> m_bdtTopTagger80;//BDT top tagger 80%
-    std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerContained80;//DNN contained top tagger 80%
-    std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerInclusive80;//DNN inclusive top tagger 80%
-    // std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerContained50;//DNN contained top tagger 50%
-    // std::unique_ptr<JSSWTopTaggerDNN> m_dnnTopTaggerInclusive50;//DNN inclusive top tagger 50%
-    // std::unique_ptr<TopoclusterTopTagger> m_topoTopTagger80;//Topo Cluster top tagger 80%
 #ifdef ENABLE_ZPRIMERWGT
     ZprimeRWGTTool &m_zprimerwgt_tool = ZprimeRWGTTool::getInstance();
 #endif
@@ -215,10 +191,13 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     double m_weight_rwgt = -999;
     std::vector<float> m_part_ljet_tau32_wta;
 
-    int m_NB_hadside;
-    int m_NB_lepside;
+    int m_NB_hadside_calojet;
+    int m_NB_lepside_calojet;
+    //int m_NB_hadside_tjet;
+    //int m_NB_lepside_tjet;
     int m_ljtmatch;
-    int m_Btagcat;
+    int m_Btagcat_calojet;
+    int m_Btagcat_tjet;
     unsigned int m_lumiblock;
     unsigned int m_npv;
     float m_vtxz;
@@ -226,28 +205,22 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     std::vector<char>  m_el_isTight;
     std::vector<char>  m_mu_isTight;
 
+#ifdef ENABLE_EXTRA_LEP_VARS
+    // extra electron variables
     std::vector<float>  m_el_d0;
     std::vector<float>  m_el_z0;
     std::vector<float>  m_el_d0sig;
     std::vector<float>  m_el_z0sig;
-
-    std::vector<float> m_el_ptvarcone20_TightTTVA_pt1000;
-    std::vector<float> m_el_ptvarcone30_TightTTVA_pt1000;
     std::vector<float> m_el_ptvarcone30_TightTTVALooseCone_pt1000;
     std::vector<float> m_el_ptcone20_TightTTVALooseCone_pt1000;
-    std::vector<float> m_el_ptcone20_TightTTVA_pt1000;
-    std::vector<float> m_el_ptcone20_ttres;
-    std::vector<float> m_el_ptvarcone20_ttres;
-
+    // extra muon variables
     std::vector<float>  m_mu_d0;
     std::vector<float>  m_mu_z0;
     std::vector<float>  m_mu_d0sig;
     std::vector<float> m_mu_z0sig;
     std::vector<float> m_mu_ptvarcone30_TightTTVA_pt1000;
     std::vector<float> m_mu_ptcone20_TightTTVA_pt1000;
-    std::vector<float> m_mu_ptcone20_ttres;
-
-    std::vector<float> m_mu_ptvarcone30_ttres;
+#endif
 
     std::vector<int>  m_truthparticle_type;
     std::vector<int>  m_truthparticle_origin;
@@ -260,21 +233,18 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
 
     std::shared_ptr<top::TopConfig> m_config;
 
+#ifdef USE_HTT
     JetRecTool* httTool;
     std::map<std::string, JetRecTool*> m_HTT;
-
     int HTT_masswindow_n;
     int HTT_n;
     std::vector<TLorentzVector> TLorentzHTT;
-
     std::vector<float> HTT_pt;
     std::vector<float> HTT_m;
     std::vector<float> HTT_eta;
     std::vector<float> HTT_phi;
-
     std::vector<float> HTT_m23m123;
     std::vector<float> HTT_atan1312;
-
     std::vector<float> HTT_tt_m;
     std::vector<float> HTT_tt_pt;
 
@@ -285,6 +255,7 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     std::vector<float> CA15_m;
     std::vector<TLorentzVector> TLorentzCA15;
     std::vector<int> CA15_trk_bjets_n;
+#endif
 
     // initial state inofrmation for EWK corr
 
@@ -325,18 +296,6 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     std::vector<std::vector<float> > m_tjet_BHadron_pt;
     std::vector<std::vector<float> > m_tjet_BHadron_e;
 
-
-    std::vector<float> m_tjet_mv2rmu;
-    std::vector<float> m_tjet_mv2r;
-    std::vector<float> m_tjet_dl1_pu;
-    std::vector<float> m_tjet_dl1_pb;
-    std::vector<float> m_tjet_dl1_pc;
-    std::vector<float> m_tjet_dl1rmu_pu;
-    std::vector<float> m_tjet_dl1rmu_pb;
-    std::vector<float> m_tjet_dl1rmu_pc;
-    std::vector<float> m_tjet_dl1r_pu;
-    std::vector<float> m_tjet_dl1r_pb;
-    std::vector<float> m_tjet_dl1r_pc;
 
 
     std::vector<float> m_tjet_bTagSF_70;
@@ -783,6 +742,7 @@ class TtresEventSaverFlatNtuple : public top::EventSaverFlatNtuple {
     float m_MC_ttbar_lpj_afterFSR_phi;
     float m_MC_ttbar_lpj_afterFSR_m;
 
+    float m_chi2_all = -5000;
 
     float m_chi2_bh_pt;
     float m_chi2_bh_eta;

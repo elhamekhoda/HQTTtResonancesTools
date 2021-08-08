@@ -4,7 +4,8 @@ This Tool is developed to fulfill the purpose of the exotics ttbar resonances se
 
 ## Current Version:
 
-**AanalysisTop, 21.2.155** 
+**AanalysisTop, 21.2.180**    
+
 Make sure you setup AnalysisBase instead of AnalysisTop for release >=21.2.99
 
 ## How to setup:
@@ -27,12 +28,12 @@ Make sure you setup AnalysisBase instead of AnalysisTop for release >=21.2.99
     cd MyProject
     mkdir build source run
     cd build
-    acmSetup --sourcedir=../source AnalysisBase,21.2.155
+    acmSetup --sourcedir=../source AnalysisBase,21.2.180
     ```
     **NOTE:** Next time when you come back, simply do `cd ./build/; acmSetup;`. If you've made some change, do `acm find_packages; acm compile;` as well.
 
 
-4.  add __Pre-recommended top tagging tools__ and some other necessary packages and compile
+4.  add some other necessary packages and compile
     ```bash
     acm clone_project atlas-phys/exot/hqt/R21-ttbar-1lep/TtResonancesTools
     acm clone_project atlas-phys/exot/hqt/R21-ttbar-1lep/HQTTtResonancesTools

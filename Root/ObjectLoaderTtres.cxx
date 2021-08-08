@@ -99,8 +99,8 @@ top::TopObjectSelection* ObjectLoaderTtres::init(std::shared_ptr<top::TopConfig>
 
     std::cout << "Going to use " << topConfig->muonQuality() << " / " << topConfig->muonQualityLoose() << " for (tight/loose) muons" << std::endl;
 
-    objectSelection->jetSelection(new top::JetTtres(topConfig->jetPtcut(), topConfig->jetEtacut(), true, topConfig->trackJetPtcut()));
-    objectSelection->largeJetSelection(new top::JetTtres(topConfig->largeRJetPtcut(), topConfig->largeRJetEtacut(), false, topConfig->trackJetPtcut()));
+    objectSelection->jetSelection(new top::JetTtres(topConfig->jetPtcut(), topConfig->jetEtacut(), -1, true, topConfig->trackJetPtcut()));
+    objectSelection->largeJetSelection(new top::JetTtres(topConfig->largeRJetPtcut(), topConfig->largeRJetEtacut(), topConfig->largeRJetMasscut(), false, topConfig->trackJetPtcut()));
     objectSelection->trackJetSelection(new top::TrackJetMC15(topConfig->trackJetPtcut(), topConfig->trackJetEtacut()));
 
 //  objectSelection->overlapRemovalPostSelection(new top::OverlapRemovalASG());
