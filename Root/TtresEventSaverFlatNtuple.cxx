@@ -427,18 +427,21 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         }
         systematicTree->makeOutputVariable(m_chi2_all,      "chi2");
 
-        systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_pt,   "MC_ttbar_beforeFSR_pt");
-        systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_eta,  "MC_ttbar_beforeFSR_eta");
-        systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_phi,  "MC_ttbar_beforeFSR_phi");
-        systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_m,    "MC_ttbar_beforeFSR_m");
+        if (m_isMC){
+            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_pt,   "MC_ttbar_beforeFSR_pt");
+            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_eta,  "MC_ttbar_beforeFSR_eta");
+            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_phi,  "MC_ttbar_beforeFSR_phi");
+            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_m,    "MC_ttbar_beforeFSR_m");
 
-        systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_pt,   "MC_ttbar_afterFSR_pt");
-        systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_eta,  "MC_ttbar_afterFSR_eta");
-        systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_phi,  "MC_ttbar_afterFSR_phi");
-        systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_m,    "MC_ttbar_afterFSR_m");
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_pt,   "MC_ttbar_afterFSR_pt");
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_eta,  "MC_ttbar_afterFSR_eta");
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_phi,  "MC_ttbar_afterFSR_phi");
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_m,    "MC_ttbar_afterFSR_m");
 
-        // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
-        systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_beforeDecay_m, "MC_ttbar_afterFSR_beforeDecay_m");
+            // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_beforeDecay_m, "MC_ttbar_afterFSR_beforeDecay_m");
+
+        }
 
         if (m_runEWK){
             // post-FSR top or anti-top found using statusCodes
@@ -2023,510 +2026,513 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 
 //  Always store the mtt truth information
 
-    const xAOD::PartonHistoryContainer* topPartonCont = nullptr;
-    //top::check(evtStore()->event()->retrieve(topPartonCont, m_config->sgKeyTopPartonHistory()), "FAILURE"); //m_config is private ...
-    top::check(evtStore()->event()->retrieve(topPartonCont, "TopPartonHistory"), "FAILURE");
-    const xAOD::PartonHistory *topParton = topPartonCont->at(0);
+    if (m_isMC){
+        const xAOD::PartonHistoryContainer* topPartonCont = nullptr;
+        //top::check(evtStore()->event()->retrieve(topPartonCont, m_config->sgKeyTopPartonHistory()), "FAILURE"); //m_config is private ...
+        top::check(evtStore()->event()->retrieve(topPartonCont, "TopPartonHistory"), "FAILURE");
+        const xAOD::PartonHistory *topParton = topPartonCont->at(0);
 
-    // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
-    if (topParton->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m") > 0) {
-        m_MC_ttbar_afterFSR_beforeDecay_m = topParton->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m");
-    }
+        // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
+        if (topParton->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m") > 0) {
+            m_MC_ttbar_afterFSR_beforeDecay_m = topParton->auxdata<float>("MC_ttbar_afterFSR_beforeDecay_m");
+        }
 
-    if (topParton->auxdata<float>("MC_ttbar_beforeFSR_pt") > 0) {
-        m_MC_ttbar_beforeFSR_pt  = topParton->auxdata<float>("MC_ttbar_beforeFSR_pt");
-        m_MC_ttbar_beforeFSR_eta = topParton->auxdata<float>("MC_ttbar_beforeFSR_eta");
-        m_MC_ttbar_beforeFSR_phi = topParton->auxdata<float>("MC_ttbar_beforeFSR_phi");
-        m_MC_ttbar_beforeFSR_m   = topParton->auxdata<float>("MC_ttbar_beforeFSR_m");
-    }
+        if (topParton->auxdata<float>("MC_ttbar_beforeFSR_pt") > 0) {
+            m_MC_ttbar_beforeFSR_pt  = topParton->auxdata<float>("MC_ttbar_beforeFSR_pt");
+            m_MC_ttbar_beforeFSR_eta = topParton->auxdata<float>("MC_ttbar_beforeFSR_eta");
+            m_MC_ttbar_beforeFSR_phi = topParton->auxdata<float>("MC_ttbar_beforeFSR_phi");
+            m_MC_ttbar_beforeFSR_m   = topParton->auxdata<float>("MC_ttbar_beforeFSR_m");
+        }
 
-    if (topParton->auxdata<float>("MC_ttbar_afterFSR_pt") > 0) {
-        m_MC_ttbar_afterFSR_pt  = topParton->auxdata<float>("MC_ttbar_afterFSR_pt");
-        m_MC_ttbar_afterFSR_eta = topParton->auxdata<float>("MC_ttbar_afterFSR_eta");
-        m_MC_ttbar_afterFSR_phi = topParton->auxdata<float>("MC_ttbar_afterFSR_phi");
-        m_MC_ttbar_afterFSR_m   = topParton->auxdata<float>("MC_ttbar_afterFSR_m");
-    }
+        if (topParton->auxdata<float>("MC_ttbar_afterFSR_pt") > 0) {
+            m_MC_ttbar_afterFSR_pt  = topParton->auxdata<float>("MC_ttbar_afterFSR_pt");
+            m_MC_ttbar_afterFSR_eta = topParton->auxdata<float>("MC_ttbar_afterFSR_eta");
+            m_MC_ttbar_afterFSR_phi = topParton->auxdata<float>("MC_ttbar_afterFSR_phi");
+            m_MC_ttbar_afterFSR_m   = topParton->auxdata<float>("MC_ttbar_afterFSR_m");
+        }
 
-    if (m_savePartons || m_runEWK) {
 
-        // Initialize variables with a default value
-        IniVariables();
+        if (m_savePartons || m_runEWK) {
 
-        if (m_runEWK){
-            // post-FSR top or anti-top found using statusCodes
-            TLorentzVector t_after_SC, tbar_after_SC, ttbar_after_SC;
-            if (topParton->auxdata<float>("MC_t_afterFSR_SC_pt") > 0) {
-                m_MC_t_afterFSR_SC_pt  = topParton->auxdata<float>("MC_t_afterFSR_SC_pt");
-                m_MC_t_afterFSR_SC_eta = topParton->auxdata<float>("MC_t_afterFSR_SC_eta");
-                m_MC_t_afterFSR_SC_phi = topParton->auxdata<float>("MC_t_afterFSR_SC_phi");
-                m_MC_t_afterFSR_SC_m   = topParton->auxdata<float>("MC_t_afterFSR_SC_m");
-                t_after_SC.SetPtEtaPhiM(m_MC_t_afterFSR_pt, m_MC_t_afterFSR_SC_eta, m_MC_t_afterFSR_SC_phi, m_MC_t_afterFSR_SC_m);
- 
-                m_MC_tbar_afterFSR_SC_pt  = topParton->auxdata<float>("MC_tbar_afterFSR_SC_pt");
-                m_MC_tbar_afterFSR_SC_eta = topParton->auxdata<float>("MC_tbar_afterFSR_SC_eta");
-                m_MC_tbar_afterFSR_SC_phi = topParton->auxdata<float>("MC_tbar_afterFSR_SC_phi");
-                m_MC_tbar_afterFSR_SC_m   = topParton->auxdata<float>("MC_tbar_afterFSR_SC_m");
-                tbar_after_SC.SetPtEtaPhiM(m_MC_tbar_afterFSR_pt, m_MC_tbar_afterFSR_SC_eta, m_MC_tbar_afterFSR_SC_phi, m_MC_tbar_afterFSR_SC_m);
+            // Initialize variables with a default value
+            IniVariables();
 
-                ttbar_after_SC = t_after_SC + tbar_after_SC;
-                m_MC_ttbar_afterFSR_SC_pt  = ttbar_after_SC.Pt();
-                m_MC_ttbar_afterFSR_SC_eta = ttbar_after_SC.Eta();
-                m_MC_ttbar_afterFSR_SC_phi = ttbar_after_SC.Phi();
-                m_MC_ttbar_afterFSR_SC_m   = ttbar_after_SC.M();
+            if (m_runEWK){
+                // post-FSR top or anti-top found using statusCodes
+                TLorentzVector t_after_SC, tbar_after_SC, ttbar_after_SC;
+                if (topParton->auxdata<float>("MC_t_afterFSR_SC_pt") > 0) {
+                    m_MC_t_afterFSR_SC_pt  = topParton->auxdata<float>("MC_t_afterFSR_SC_pt");
+                    m_MC_t_afterFSR_SC_eta = topParton->auxdata<float>("MC_t_afterFSR_SC_eta");
+                    m_MC_t_afterFSR_SC_phi = topParton->auxdata<float>("MC_t_afterFSR_SC_phi");
+                    m_MC_t_afterFSR_SC_m   = topParton->auxdata<float>("MC_t_afterFSR_SC_m");
+                    t_after_SC.SetPtEtaPhiM(m_MC_t_afterFSR_pt, m_MC_t_afterFSR_SC_eta, m_MC_t_afterFSR_SC_phi, m_MC_t_afterFSR_SC_m);
+     
+                    m_MC_tbar_afterFSR_SC_pt  = topParton->auxdata<float>("MC_tbar_afterFSR_SC_pt");
+                    m_MC_tbar_afterFSR_SC_eta = topParton->auxdata<float>("MC_tbar_afterFSR_SC_eta");
+                    m_MC_tbar_afterFSR_SC_phi = topParton->auxdata<float>("MC_tbar_afterFSR_SC_phi");
+                    m_MC_tbar_afterFSR_SC_m   = topParton->auxdata<float>("MC_tbar_afterFSR_SC_m");
+                    tbar_after_SC.SetPtEtaPhiM(m_MC_tbar_afterFSR_pt, m_MC_tbar_afterFSR_SC_eta, m_MC_tbar_afterFSR_SC_phi, m_MC_tbar_afterFSR_SC_m);
+
+                    ttbar_after_SC = t_after_SC + tbar_after_SC;
+                    m_MC_ttbar_afterFSR_SC_pt  = ttbar_after_SC.Pt();
+                    m_MC_ttbar_afterFSR_SC_eta = ttbar_after_SC.Eta();
+                    m_MC_ttbar_afterFSR_SC_phi = ttbar_after_SC.Phi();
+                    m_MC_ttbar_afterFSR_SC_m   = ttbar_after_SC.M();
+                }
             }
-        }
 
-        // Fill the ME variables
-        const xAOD::TruthEventContainer* truthEvents = nullptr;
-        top::check( evtStore()->retrieve(truthEvents, m_config->sgKeyTruthEvent()) , "Failed to retrieve truth PDF info" );
-        top::check( ( truthEvents->size() == 1 ), "More than one truth event, not sure how to cope with PDF info" );
-        FillME(event.m_truth, truthEvents);
+            // Fill the ME variables
+            const xAOD::TruthEventContainer* truthEvents = nullptr;
+            top::check( evtStore()->retrieve(truthEvents, m_config->sgKeyTruthEvent()) , "Failed to retrieve truth PDF info" );
+            top::check( ( truthEvents->size() == 1 ), "More than one truth event, not sure how to cope with PDF info" );
+            FillME(event.m_truth, truthEvents);
 
-        const xAOD::JetContainer *akt4truthjets = nullptr;
-        top::check(evtStore()->event()->retrieve(akt4truthjets, "AntiKt4TruthJets"), "FAILURE");
+            const xAOD::JetContainer *akt4truthjets = nullptr;
+            top::check(evtStore()->event()->retrieve(akt4truthjets, "AntiKt4TruthJets"), "FAILURE");
 
-        const xAOD::JetContainer *akt10truthjets = nullptr;
-        if (m_akt10truthjetcollection != "") {
-            top::check(evtStore()->event()->retrieve(akt10truthjets, m_akt10truthjetcollection), "FAILURE");
-        }
+            const xAOD::JetContainer *akt10truthjets = nullptr;
+            if (m_akt10truthjetcollection != "") {
+                top::check(evtStore()->event()->retrieve(akt10truthjets, m_akt10truthjetcollection), "FAILURE");
+            }
 
-        // get partons
-        TLorentzVector parton_t_p4;
-        TLorentzVector parton_tbar_p4;
-        TLorentzVector parton_b_from_t_p4;
-        TLorentzVector parton_b_from_tbar_p4;
-        TLorentzVector parton_Wdecay1_from_t_p4;
-        TLorentzVector parton_Wdecay2_from_t_p4;
-        TLorentzVector parton_Wdecay1_from_tbar_p4;
-        TLorentzVector parton_Wdecay2_from_tbar_p4;
+            // get partons
+            TLorentzVector parton_t_p4;
+            TLorentzVector parton_tbar_p4;
+            TLorentzVector parton_b_from_t_p4;
+            TLorentzVector parton_b_from_tbar_p4;
+            TLorentzVector parton_Wdecay1_from_t_p4;
+            TLorentzVector parton_Wdecay2_from_t_p4;
+            TLorentzVector parton_Wdecay1_from_tbar_p4;
+            TLorentzVector parton_Wdecay2_from_tbar_p4;
 
-        TLorentzVector sum_of_nu_parton;
-        TLorentzVector sum_of_lep_reco;
+            TLorentzVector sum_of_nu_parton;
+            TLorentzVector sum_of_lep_reco;
 
-        TLorentzVector * met = new TLorentzVector();
-        met->SetPxPyPzE(event.m_met->mpx(), event.m_met->mpy(), 0, event.m_met->met());
-        TLorentzVector * nu_from_met(NULL);
-        //TLorentzVector * nu_from_met = new TLorentzVector();
+            TLorentzVector * met = new TLorentzVector();
+            met->SetPxPyPzE(event.m_met->mpx(), event.m_met->mpy(), 0, event.m_met->met());
+            TLorentzVector * nu_from_met(NULL);
+            //TLorentzVector * nu_from_met = new TLorentzVector();
 
-        if (topParton->auxdata<float>("MC_b_from_t_pt") > 0)  parton_b_from_t_p4.SetPtEtaPhiM(topParton->auxdata<float>("MC_b_from_t_pt"), topParton->auxdata<float>("MC_b_from_t_eta"), topParton->auxdata<float>("MC_b_from_t_phi"), topParton->auxdata<float>("MC_b_from_t_m"));
-        TLorentzFill(parton_b_from_t_p4, m_MC_b_from_t_m, m_MC_b_from_t_pt, m_MC_b_from_t_eta, m_MC_b_from_t_phi);
+            if (topParton->auxdata<float>("MC_b_from_t_pt") > 0)  parton_b_from_t_p4.SetPtEtaPhiM(topParton->auxdata<float>("MC_b_from_t_pt"), topParton->auxdata<float>("MC_b_from_t_eta"), topParton->auxdata<float>("MC_b_from_t_phi"), topParton->auxdata<float>("MC_b_from_t_m"));
+            TLorentzFill(parton_b_from_t_p4, m_MC_b_from_t_m, m_MC_b_from_t_pt, m_MC_b_from_t_eta, m_MC_b_from_t_phi);
 
-        if (topParton->auxdata<float>("MC_b_from_tbar_pt") > 0) parton_b_from_tbar_p4.SetPtEtaPhiM(topParton->auxdata<float>("MC_b_from_tbar_pt"), topParton->auxdata<float>("MC_b_from_tbar_eta"), topParton->auxdata<float>("MC_b_from_tbar_phi"), topParton->auxdata<float>("MC_b_from_tbar_m"));
-        TLorentzFill(parton_b_from_tbar_p4, m_MC_b_from_tbar_m, m_MC_b_from_tbar_pt, m_MC_b_from_tbar_eta, m_MC_b_from_tbar_phi);
+            if (topParton->auxdata<float>("MC_b_from_tbar_pt") > 0) parton_b_from_tbar_p4.SetPtEtaPhiM(topParton->auxdata<float>("MC_b_from_tbar_pt"), topParton->auxdata<float>("MC_b_from_tbar_eta"), topParton->auxdata<float>("MC_b_from_tbar_phi"), topParton->auxdata<float>("MC_b_from_tbar_m"));
+            TLorentzFill(parton_b_from_tbar_p4, m_MC_b_from_tbar_m, m_MC_b_from_tbar_pt, m_MC_b_from_tbar_eta, m_MC_b_from_tbar_phi);
 
-        if (topParton->auxdata<float>("MC_Wdecay1_from_t_pt") > 0) parton_Wdecay1_from_t_p4.SetPtEtaPhiM(topParton->auxdata<float>("MC_Wdecay1_from_t_pt"), topParton->auxdata<float>("MC_Wdecay1_from_t_eta"), topParton->auxdata<float>("MC_Wdecay1_from_t_phi"), topParton->auxdata<float>("MC_Wdecay1_from_t_m"));
-        TLorentzFill(parton_Wdecay1_from_t_p4, m_MC_Wdecay1_from_t_m, m_MC_Wdecay1_from_t_pt, m_MC_Wdecay1_from_t_eta, m_MC_Wdecay1_from_t_phi);
-        m_MC_Wdecay1_from_t_pdgId = topParton->auxdata<int>("MC_Wdecay1_from_t_pdgId");
+            if (topParton->auxdata<float>("MC_Wdecay1_from_t_pt") > 0) parton_Wdecay1_from_t_p4.SetPtEtaPhiM(topParton->auxdata<float>("MC_Wdecay1_from_t_pt"), topParton->auxdata<float>("MC_Wdecay1_from_t_eta"), topParton->auxdata<float>("MC_Wdecay1_from_t_phi"), topParton->auxdata<float>("MC_Wdecay1_from_t_m"));
+            TLorentzFill(parton_Wdecay1_from_t_p4, m_MC_Wdecay1_from_t_m, m_MC_Wdecay1_from_t_pt, m_MC_Wdecay1_from_t_eta, m_MC_Wdecay1_from_t_phi);
+            m_MC_Wdecay1_from_t_pdgId = topParton->auxdata<int>("MC_Wdecay1_from_t_pdgId");
 
-        if (topParton->auxdata<float>("MC_Wdecay2_from_t_pt") > 0) parton_Wdecay2_from_t_p4.SetPtEtaPhiM(topParton->auxdata<float>("MC_Wdecay2_from_t_pt"), topParton->auxdata<float>("MC_Wdecay2_from_t_eta"), topParton->auxdata<float>("MC_Wdecay2_from_t_phi"), topParton->auxdata<float>("MC_Wdecay2_from_t_m"));
-        TLorentzFill(parton_Wdecay2_from_t_p4, m_MC_Wdecay2_from_t_m, m_MC_Wdecay2_from_t_pt, m_MC_Wdecay2_from_t_eta, m_MC_Wdecay2_from_t_phi);
-        m_MC_Wdecay2_from_t_pdgId = topParton->auxdata<int>("MC_Wdecay2_from_t_pdgId");
+            if (topParton->auxdata<float>("MC_Wdecay2_from_t_pt") > 0) parton_Wdecay2_from_t_p4.SetPtEtaPhiM(topParton->auxdata<float>("MC_Wdecay2_from_t_pt"), topParton->auxdata<float>("MC_Wdecay2_from_t_eta"), topParton->auxdata<float>("MC_Wdecay2_from_t_phi"), topParton->auxdata<float>("MC_Wdecay2_from_t_m"));
+            TLorentzFill(parton_Wdecay2_from_t_p4, m_MC_Wdecay2_from_t_m, m_MC_Wdecay2_from_t_pt, m_MC_Wdecay2_from_t_eta, m_MC_Wdecay2_from_t_phi);
+            m_MC_Wdecay2_from_t_pdgId = topParton->auxdata<int>("MC_Wdecay2_from_t_pdgId");
 
-        if (topParton->auxdata<float>("MC_Wdecay1_from_tbar_pt") > 0) parton_Wdecay1_from_tbar_p4.SetPtEtaPhiM(topParton->auxdata<float>("MC_Wdecay1_from_tbar_pt"), topParton->auxdata<float>("MC_Wdecay1_from_tbar_eta"), topParton->auxdata<float>("MC_Wdecay1_from_tbar_phi"), topParton->auxdata<float>("MC_Wdecay1_from_tbar_m"));
-        TLorentzFill(parton_Wdecay1_from_tbar_p4, m_MC_Wdecay1_from_tbar_m, m_MC_Wdecay1_from_tbar_pt, m_MC_Wdecay1_from_tbar_eta, m_MC_Wdecay1_from_tbar_phi);
-        m_MC_Wdecay1_from_tbar_pdgId = topParton->auxdata<int>("MC_Wdecay1_from_tbar_pdgId");
+            if (topParton->auxdata<float>("MC_Wdecay1_from_tbar_pt") > 0) parton_Wdecay1_from_tbar_p4.SetPtEtaPhiM(topParton->auxdata<float>("MC_Wdecay1_from_tbar_pt"), topParton->auxdata<float>("MC_Wdecay1_from_tbar_eta"), topParton->auxdata<float>("MC_Wdecay1_from_tbar_phi"), topParton->auxdata<float>("MC_Wdecay1_from_tbar_m"));
+            TLorentzFill(parton_Wdecay1_from_tbar_p4, m_MC_Wdecay1_from_tbar_m, m_MC_Wdecay1_from_tbar_pt, m_MC_Wdecay1_from_tbar_eta, m_MC_Wdecay1_from_tbar_phi);
+            m_MC_Wdecay1_from_tbar_pdgId = topParton->auxdata<int>("MC_Wdecay1_from_tbar_pdgId");
 
-        if (topParton->auxdata<float>("MC_Wdecay2_from_tbar_pt") > 0) parton_Wdecay2_from_tbar_p4.SetPtEtaPhiM(topParton->auxdata<float>("MC_Wdecay2_from_tbar_pt"), topParton->auxdata<float>("MC_Wdecay2_from_tbar_eta"), topParton->auxdata<float>("MC_Wdecay2_from_tbar_phi"), topParton->auxdata<float>("MC_Wdecay2_from_tbar_m"));
-        TLorentzFill(parton_Wdecay2_from_tbar_p4, m_MC_Wdecay2_from_tbar_m, m_MC_Wdecay2_from_tbar_pt, m_MC_Wdecay2_from_tbar_eta, m_MC_Wdecay2_from_tbar_phi);
-        m_MC_Wdecay2_from_tbar_pdgId = topParton->auxdata<int>("MC_Wdecay2_from_tbar_pdgId");
+            if (topParton->auxdata<float>("MC_Wdecay2_from_tbar_pt") > 0) parton_Wdecay2_from_tbar_p4.SetPtEtaPhiM(topParton->auxdata<float>("MC_Wdecay2_from_tbar_pt"), topParton->auxdata<float>("MC_Wdecay2_from_tbar_eta"), topParton->auxdata<float>("MC_Wdecay2_from_tbar_phi"), topParton->auxdata<float>("MC_Wdecay2_from_tbar_m"));
+            TLorentzFill(parton_Wdecay2_from_tbar_p4, m_MC_Wdecay2_from_tbar_m, m_MC_Wdecay2_from_tbar_pt, m_MC_Wdecay2_from_tbar_eta, m_MC_Wdecay2_from_tbar_phi);
+            m_MC_Wdecay2_from_tbar_pdgId = topParton->auxdata<int>("MC_Wdecay2_from_tbar_pdgId");
 
-        if (topParton->auxdata<float>("MC_W_from_t_pt") > 0) {
-            m_MC_W_from_t_pt  = topParton->auxdata<float>("MC_W_from_t_pt");
-            m_MC_W_from_t_eta = topParton->auxdata<float>("MC_W_from_t_eta");
-            m_MC_W_from_t_phi = topParton->auxdata<float>("MC_W_from_t_phi");
-            m_MC_W_from_t_m   = topParton->auxdata<float>("MC_W_from_t_m");
-        }
+            if (topParton->auxdata<float>("MC_W_from_t_pt") > 0) {
+                m_MC_W_from_t_pt  = topParton->auxdata<float>("MC_W_from_t_pt");
+                m_MC_W_from_t_eta = topParton->auxdata<float>("MC_W_from_t_eta");
+                m_MC_W_from_t_phi = topParton->auxdata<float>("MC_W_from_t_phi");
+                m_MC_W_from_t_m   = topParton->auxdata<float>("MC_W_from_t_m");
+            }
 
-        if (topParton->auxdata<float>("MC_W_from_tbar_pt") > 0) {
-            m_MC_W_from_tbar_pt  = topParton->auxdata<float>("MC_W_from_tbar_pt");
-            m_MC_W_from_tbar_eta = topParton->auxdata<float>("MC_W_from_tbar_eta");
-            m_MC_W_from_tbar_phi = topParton->auxdata<float>("MC_W_from_tbar_phi");
-            m_MC_W_from_tbar_m   = topParton->auxdata<float>("MC_W_from_tbar_m");
-        }
+            if (topParton->auxdata<float>("MC_W_from_tbar_pt") > 0) {
+                m_MC_W_from_tbar_pt  = topParton->auxdata<float>("MC_W_from_tbar_pt");
+                m_MC_W_from_tbar_eta = topParton->auxdata<float>("MC_W_from_tbar_eta");
+                m_MC_W_from_tbar_phi = topParton->auxdata<float>("MC_W_from_tbar_phi");
+                m_MC_W_from_tbar_m   = topParton->auxdata<float>("MC_W_from_tbar_m");
+            }
 
-        if (topParton->auxdata<float>("MC_t_beforeFSR_pt") > 0) {
-            m_MC_t_pt  = topParton->auxdata<float>("MC_t_beforeFSR_pt");
-            m_MC_t_eta = topParton->auxdata<float>("MC_t_beforeFSR_eta");
-            m_MC_t_phi = topParton->auxdata<float>("MC_t_beforeFSR_phi");
-            m_MC_t_m   = topParton->auxdata<float>("MC_t_beforeFSR_m");
-            parton_t_p4.SetPtEtaPhiM(m_MC_t_pt, m_MC_t_eta, m_MC_t_phi, m_MC_t_m);
-        }
+            if (topParton->auxdata<float>("MC_t_beforeFSR_pt") > 0) {
+                m_MC_t_pt  = topParton->auxdata<float>("MC_t_beforeFSR_pt");
+                m_MC_t_eta = topParton->auxdata<float>("MC_t_beforeFSR_eta");
+                m_MC_t_phi = topParton->auxdata<float>("MC_t_beforeFSR_phi");
+                m_MC_t_m   = topParton->auxdata<float>("MC_t_beforeFSR_m");
+                parton_t_p4.SetPtEtaPhiM(m_MC_t_pt, m_MC_t_eta, m_MC_t_phi, m_MC_t_m);
+            }
 
-        if (topParton->auxdata<float>("MC_tbar_beforeFSR_pt") > 0) {
-            m_MC_tbar_pt  = topParton->auxdata<float>("MC_tbar_beforeFSR_pt");
-            m_MC_tbar_eta = topParton->auxdata<float>("MC_tbar_beforeFSR_eta");
-            m_MC_tbar_phi = topParton->auxdata<float>("MC_tbar_beforeFSR_phi");
-            m_MC_tbar_m   = topParton->auxdata<float>("MC_tbar_beforeFSR_m");
-            parton_tbar_p4.SetPtEtaPhiM(m_MC_tbar_pt, m_MC_tbar_eta, m_MC_tbar_phi, m_MC_tbar_m);
-        }
+            if (topParton->auxdata<float>("MC_tbar_beforeFSR_pt") > 0) {
+                m_MC_tbar_pt  = topParton->auxdata<float>("MC_tbar_beforeFSR_pt");
+                m_MC_tbar_eta = topParton->auxdata<float>("MC_tbar_beforeFSR_eta");
+                m_MC_tbar_phi = topParton->auxdata<float>("MC_tbar_beforeFSR_phi");
+                m_MC_tbar_m   = topParton->auxdata<float>("MC_tbar_beforeFSR_m");
+                parton_tbar_p4.SetPtEtaPhiM(m_MC_tbar_pt, m_MC_tbar_eta, m_MC_tbar_phi, m_MC_tbar_m);
+            }
 
 
 #ifdef ENABLE_ZPRIMERWGT
-        TLorentzVector i1_p4, i2_p4;
-        i1_p4.SetXYZM(m_MC_i1_px, m_MC_i1_py, m_MC_i1_pz, m_MC_i1_m);
-        i2_p4.SetXYZM(m_MC_i2_px, m_MC_i2_py, m_MC_i2_pz, m_MC_i2_m);
-        m_weight_rwgt = m_zprimerwgt_tool.get_weight(m_MC_i1_pid, m_MC_i2_pid, &i1_p4, &i2_p4, &parton_t_p4, &parton_tbar_p4);
+            TLorentzVector i1_p4, i2_p4;
+            i1_p4.SetXYZM(m_MC_i1_px, m_MC_i1_py, m_MC_i1_pz, m_MC_i1_m);
+            i2_p4.SetXYZM(m_MC_i2_px, m_MC_i2_py, m_MC_i2_pz, m_MC_i2_m);
+            m_weight_rwgt = m_zprimerwgt_tool.get_weight(m_MC_i1_pid, m_MC_i2_pid, &i1_p4, &i2_p4, &parton_t_p4, &parton_tbar_p4);
 #endif
-        TLorentzVector b_from_t_lv;
-        TLorentzVector b_from_tbar_lv;
+            TLorentzVector b_from_t_lv;
+            TLorentzVector b_from_tbar_lv;
 
-        TLorentzVector W1decay_from_t_lv;
-        TLorentzVector W2decay_from_t_lv;
+            TLorentzVector W1decay_from_t_lv;
+            TLorentzVector W2decay_from_t_lv;
 
-        TLorentzVector W1decay_from_tbar_lv;
-        TLorentzVector W2decay_from_tbar_lv;
+            TLorentzVector W1decay_from_tbar_lv;
+            TLorentzVector W2decay_from_tbar_lv;
 
-        b_from_t_lv.SetPtEtaPhiM(m_MC_b_from_t_pt, m_MC_b_from_t_eta, m_MC_b_from_t_phi, m_MC_b_from_t_m);
-        W1decay_from_t_lv.SetPtEtaPhiM(m_MC_Wdecay1_from_t_pt, m_MC_Wdecay1_from_t_eta, m_MC_Wdecay1_from_t_phi, m_MC_Wdecay1_from_t_m);
-        W2decay_from_t_lv.SetPtEtaPhiM(m_MC_Wdecay2_from_t_pt, m_MC_Wdecay2_from_t_eta, m_MC_Wdecay2_from_t_phi, m_MC_Wdecay2_from_t_m);
+            b_from_t_lv.SetPtEtaPhiM(m_MC_b_from_t_pt, m_MC_b_from_t_eta, m_MC_b_from_t_phi, m_MC_b_from_t_m);
+            W1decay_from_t_lv.SetPtEtaPhiM(m_MC_Wdecay1_from_t_pt, m_MC_Wdecay1_from_t_eta, m_MC_Wdecay1_from_t_phi, m_MC_Wdecay1_from_t_m);
+            W2decay_from_t_lv.SetPtEtaPhiM(m_MC_Wdecay2_from_t_pt, m_MC_Wdecay2_from_t_eta, m_MC_Wdecay2_from_t_phi, m_MC_Wdecay2_from_t_m);
 
-        b_from_tbar_lv.SetPtEtaPhiM(m_MC_b_from_tbar_pt,  m_MC_b_from_tbar_eta, m_MC_b_from_tbar_phi, m_MC_b_from_tbar_m);
-        W1decay_from_tbar_lv.SetPtEtaPhiM(m_MC_Wdecay1_from_tbar_pt, m_MC_Wdecay1_from_tbar_eta, m_MC_Wdecay1_from_tbar_phi, m_MC_Wdecay1_from_tbar_m);
-        W2decay_from_tbar_lv.SetPtEtaPhiM(m_MC_Wdecay2_from_tbar_pt, m_MC_Wdecay2_from_tbar_eta, m_MC_Wdecay2_from_tbar_phi, m_MC_Wdecay2_from_tbar_m);
+            b_from_tbar_lv.SetPtEtaPhiM(m_MC_b_from_tbar_pt,  m_MC_b_from_tbar_eta, m_MC_b_from_tbar_phi, m_MC_b_from_tbar_m);
+            W1decay_from_tbar_lv.SetPtEtaPhiM(m_MC_Wdecay1_from_tbar_pt, m_MC_Wdecay1_from_tbar_eta, m_MC_Wdecay1_from_tbar_phi, m_MC_Wdecay1_from_tbar_m);
+            W2decay_from_tbar_lv.SetPtEtaPhiM(m_MC_Wdecay2_from_tbar_pt, m_MC_Wdecay2_from_tbar_eta, m_MC_Wdecay2_from_tbar_phi, m_MC_Wdecay2_from_tbar_m);
 
-        TLorentzVector temp1;
-        temp1 = b_from_t_lv + W1decay_from_t_lv + W2decay_from_t_lv;
-        m_MC_t_afterFSR_pt  = temp1.Pt();
-        m_MC_t_afterFSR_eta = temp1.Eta();
-        m_MC_t_afterFSR_phi = temp1.Phi();
-        m_MC_t_afterFSR_m   = temp1.M();
+            TLorentzVector temp1;
+            temp1 = b_from_t_lv + W1decay_from_t_lv + W2decay_from_t_lv;
+            m_MC_t_afterFSR_pt  = temp1.Pt();
+            m_MC_t_afterFSR_eta = temp1.Eta();
+            m_MC_t_afterFSR_phi = temp1.Phi();
+            m_MC_t_afterFSR_m   = temp1.M();
 
-        TLorentzVector temp2;
-        temp2 = b_from_tbar_lv + W1decay_from_tbar_lv + W2decay_from_tbar_lv;
+            TLorentzVector temp2;
+            temp2 = b_from_tbar_lv + W1decay_from_tbar_lv + W2decay_from_tbar_lv;
 
-        m_MC_tbar_afterFSR_pt  = temp2.Pt();
-        m_MC_tbar_afterFSR_eta = temp2.Eta();
-        m_MC_tbar_afterFSR_phi = temp2.Phi();
-        m_MC_tbar_afterFSR_m   = temp2.M();
+            m_MC_tbar_afterFSR_pt  = temp2.Pt();
+            m_MC_tbar_afterFSR_eta = temp2.Eta();
+            m_MC_tbar_afterFSR_phi = temp2.Phi();
+            m_MC_tbar_afterFSR_m   = temp2.M();
 
-        //if (m_runEWK && event.m_truth) {
-        //  double EWSF = weak->getWeight(m_MC_t_pt,m_MC_t_eta,m_MC_t_phi,m_MC_t_m,m_MC_tbar_pt,m_MC_tbar_eta,m_MC_tbar_phi,m_MC_tbar_m,m_initial_type);
-        //  m_weight_EW = EWSF;
-        //}
+            //if (m_runEWK && event.m_truth) {
+            //  double EWSF = weak->getWeight(m_MC_t_pt,m_MC_t_eta,m_MC_t_phi,m_MC_t_m,m_MC_tbar_pt,m_MC_tbar_eta,m_MC_tbar_phi,m_MC_tbar_m,m_initial_type);
+            //  m_weight_EW = EWSF;
+            //}
 
-        // matching criteria
-        float MAcriteria_fatjets  = 1.0;
-        float MAcriteria_jets     = 0.4;
-        float MAcriteria_chLep    = 0.2;
-        float MAcriteria_neutrino = 1. ;
+            // matching criteria
+            float MAcriteria_fatjets  = 1.0;
+            float MAcriteria_jets     = 0.4;
+            float MAcriteria_chLep    = 0.2;
+            float MAcriteria_neutrino = 1. ;
 
-        // had parton => truthjet index
-        int   MC_truth_b_from_t_idx(-1);
-        int   MC_truth_b_from_tbar_idx(-1);
-        int   MC_truth_Wdecay1_from_t_idx(-1);
-        int   MC_truth_Wdecay2_from_t_idx(-1);
-        int   MC_truth_Wdecay1_from_tbar_idx(-1);
-        int   MC_truth_Wdecay2_from_tbar_idx(-1);
-        int   MC_truth_t_idx(-1);
-        int   MC_truth_tbar_idx(-1);
+            // had parton => truthjet index
+            int   MC_truth_b_from_t_idx(-1);
+            int   MC_truth_b_from_tbar_idx(-1);
+            int   MC_truth_Wdecay1_from_t_idx(-1);
+            int   MC_truth_Wdecay2_from_t_idx(-1);
+            int   MC_truth_Wdecay1_from_tbar_idx(-1);
+            int   MC_truth_Wdecay2_from_tbar_idx(-1);
+            int   MC_truth_t_idx(-1);
+            int   MC_truth_tbar_idx(-1);
 
-        // Decay mode of the W boson
-        std::string W_t_DecayMode    = "";
-        int t_type = 0;
-        WbosonDecayMode(m_MC_Wdecay1_from_t_pdgId, m_MC_Wdecay2_from_t_pdgId, W_t_DecayMode, t_type);
+            // Decay mode of the W boson
+            std::string W_t_DecayMode    = "";
+            int t_type = 0;
+            WbosonDecayMode(m_MC_Wdecay1_from_t_pdgId, m_MC_Wdecay2_from_t_pdgId, W_t_DecayMode, t_type);
 
-        std::string W_tbar_DecayMode = "";
-        int tbar_type = 0;
-        WbosonDecayMode(m_MC_Wdecay1_from_tbar_pdgId, m_MC_Wdecay2_from_tbar_pdgId, W_tbar_DecayMode, tbar_type);
+            std::string W_tbar_DecayMode = "";
+            int tbar_type = 0;
+            WbosonDecayMode(m_MC_Wdecay1_from_tbar_pdgId, m_MC_Wdecay2_from_tbar_pdgId, W_tbar_DecayMode, tbar_type);
 
-        //-----------------------------------------------------------
-        // b jets: parton -> truthjet -> recojet
-        //-----------------------------------------------------------
+            //-----------------------------------------------------------
+            // b jets: parton -> truthjet -> recojet
+            //-----------------------------------------------------------
 
-        // b from t
-        if (parton_b_from_t_p4.Pt() > 0) {
+            // b from t
+            if (parton_b_from_t_p4.Pt() > 0) {
 
-            MA_hadParton_truthjet(parton_b_from_t_p4, MC_truth_b_from_t_idx, m_MA_b_from_t_truthdr, MAcriteria_jets);
+                MA_hadParton_truthjet(parton_b_from_t_p4, MC_truth_b_from_t_idx, m_MA_b_from_t_truthdr, MAcriteria_jets);
 
-            if (MC_truth_b_from_t_idx >= 0) {
+                if (MC_truth_b_from_t_idx >= 0) {
 
-                MA_truthjet_recojet(event, akt4truthjets->at(MC_truth_b_from_t_idx), m_MA_b_from_t_recodr, m_MA_b_from_t_recoidx,
-                                    m_MA_b_from_t_pt, m_MA_b_from_t_eta, m_MA_b_from_t_phi, m_MA_b_from_t_m, MAcriteria_jets);
-
-            }//if
-        }//if(parton_b_from_t_p4.Pt()>0)
-
-        // b from tbar
-        if (parton_b_from_tbar_p4.Pt() > 0) {
-
-            MA_hadParton_truthjet(parton_b_from_tbar_p4, MC_truth_b_from_tbar_idx, m_MA_b_from_tbar_truthdr, MAcriteria_jets);
-
-            if (MC_truth_b_from_tbar_idx >= 0) {
-
-                MA_truthjet_recojet(event, akt4truthjets->at(MC_truth_b_from_tbar_idx), m_MA_b_from_tbar_recodr, m_MA_b_from_tbar_recoidx,
-                                    m_MA_b_from_tbar_pt, m_MA_b_from_tbar_eta, m_MA_b_from_tbar_phi, m_MA_b_from_tbar_m, MAcriteria_jets);
-            }//if
-        }//if(parton_b_from_tbar_p4.Pt()>0)
-
-        //-----------------------------------------------------------
-        // matching W from top
-        //-----------------------------------------------------------
-        // Hadronic W decay: parton -> truthjet -> recojet
-        //-----------------------------------------------------------
-        // Leptonic W decay: parton -> reco objects (ch lep and met)
-        //-----------------------------------------------------------
-
-        if (W_t_DecayMode == "Hadronic") {
-
-            // Wdecay1 from t
-            if (parton_Wdecay1_from_t_p4.Pt() > 0) {
-
-                MA_hadParton_truthjet(parton_Wdecay1_from_t_p4, MC_truth_Wdecay1_from_t_idx, m_MA_Wdecay1_from_t_truthdr, MAcriteria_jets);
-
-                if (MC_truth_Wdecay1_from_t_idx >= 0) {
-
-                    MA_truthjet_recojet(event, akt4truthjets->at(MC_truth_Wdecay1_from_t_idx), m_MA_Wdecay1_from_t_recodr, m_MA_Wdecay1_from_t_recoidx,
-                                        m_MA_Wdecay1_from_t_pt, m_MA_Wdecay1_from_t_eta, m_MA_Wdecay1_from_t_phi, m_MA_Wdecay1_from_t_m, MAcriteria_jets);
+                    MA_truthjet_recojet(event, akt4truthjets->at(MC_truth_b_from_t_idx), m_MA_b_from_t_recodr, m_MA_b_from_t_recoidx,
+                                        m_MA_b_from_t_pt, m_MA_b_from_t_eta, m_MA_b_from_t_phi, m_MA_b_from_t_m, MAcriteria_jets);
 
                 }//if
-            }//if(parton_Wdecay1_from_t_p4.Pt()>0)
+            }//if(parton_b_from_t_p4.Pt()>0)
 
-            // Wdecay2 from t
-            if (parton_Wdecay2_from_t_p4.Pt() > 0) {
+            // b from tbar
+            if (parton_b_from_tbar_p4.Pt() > 0) {
 
-                MA_hadParton_truthjet(parton_Wdecay2_from_t_p4, MC_truth_Wdecay2_from_t_idx, m_MA_Wdecay2_from_t_truthdr, MAcriteria_jets);
+                MA_hadParton_truthjet(parton_b_from_tbar_p4, MC_truth_b_from_tbar_idx, m_MA_b_from_tbar_truthdr, MAcriteria_jets);
 
-                if (MC_truth_Wdecay2_from_t_idx >= 0) {
+                if (MC_truth_b_from_tbar_idx >= 0) {
 
-                    MA_truthjet_recojet(event, akt4truthjets->at(MC_truth_Wdecay2_from_t_idx), m_MA_Wdecay2_from_t_recodr, m_MA_Wdecay2_from_t_recoidx,
-                                        m_MA_Wdecay2_from_t_pt, m_MA_Wdecay2_from_t_eta, m_MA_Wdecay2_from_t_phi, m_MA_Wdecay2_from_t_m, MAcriteria_jets);
+                    MA_truthjet_recojet(event, akt4truthjets->at(MC_truth_b_from_tbar_idx), m_MA_b_from_tbar_recodr, m_MA_b_from_tbar_recoidx,
+                                        m_MA_b_from_tbar_pt, m_MA_b_from_tbar_eta, m_MA_b_from_tbar_phi, m_MA_b_from_tbar_m, MAcriteria_jets);
                 }//if
-            }//if(parton_Wdecay2_from_t_p4.Pt()>0)
+            }//if(parton_b_from_tbar_p4.Pt()>0)
+
+            //-----------------------------------------------------------
+            // matching W from top
+            //-----------------------------------------------------------
+            // Hadronic W decay: parton -> truthjet -> recojet
+            //-----------------------------------------------------------
+            // Leptonic W decay: parton -> reco objects (ch lep and met)
+            //-----------------------------------------------------------
+
+            if (W_t_DecayMode == "Hadronic") {
+
+                // Wdecay1 from t
+                if (parton_Wdecay1_from_t_p4.Pt() > 0) {
+
+                    MA_hadParton_truthjet(parton_Wdecay1_from_t_p4, MC_truth_Wdecay1_from_t_idx, m_MA_Wdecay1_from_t_truthdr, MAcriteria_jets);
+
+                    if (MC_truth_Wdecay1_from_t_idx >= 0) {
+
+                        MA_truthjet_recojet(event, akt4truthjets->at(MC_truth_Wdecay1_from_t_idx), m_MA_Wdecay1_from_t_recodr, m_MA_Wdecay1_from_t_recoidx,
+                                            m_MA_Wdecay1_from_t_pt, m_MA_Wdecay1_from_t_eta, m_MA_Wdecay1_from_t_phi, m_MA_Wdecay1_from_t_m, MAcriteria_jets);
+
+                    }//if
+                }//if(parton_Wdecay1_from_t_p4.Pt()>0)
+
+                // Wdecay2 from t
+                if (parton_Wdecay2_from_t_p4.Pt() > 0) {
+
+                    MA_hadParton_truthjet(parton_Wdecay2_from_t_p4, MC_truth_Wdecay2_from_t_idx, m_MA_Wdecay2_from_t_truthdr, MAcriteria_jets);
+
+                    if (MC_truth_Wdecay2_from_t_idx >= 0) {
+
+                        MA_truthjet_recojet(event, akt4truthjets->at(MC_truth_Wdecay2_from_t_idx), m_MA_Wdecay2_from_t_recodr, m_MA_Wdecay2_from_t_recoidx,
+                                            m_MA_Wdecay2_from_t_pt, m_MA_Wdecay2_from_t_eta, m_MA_Wdecay2_from_t_phi, m_MA_Wdecay2_from_t_m, MAcriteria_jets);
+                    }//if
+                }//if(parton_Wdecay2_from_t_p4.Pt()>0)
 
 
-            // t matching to fat jet
-            if (parton_t_p4.Pt() > 0) {
-                float m_MA_tFJ_truthdr(-1);
-                MA_hadParton_truthjet(parton_t_p4, MC_truth_t_idx, m_MA_tFJ_truthdr, MAcriteria_fatjets, true);
+                // t matching to fat jet
+                if (parton_t_p4.Pt() > 0) {
+                    float m_MA_tFJ_truthdr(-1);
+                    MA_hadParton_truthjet(parton_t_p4, MC_truth_t_idx, m_MA_tFJ_truthdr, MAcriteria_fatjets, true);
 
-                if (MC_truth_t_idx >= 0) {
+                    if (MC_truth_t_idx >= 0) {
 
-                    float m_MA_tFJ_recodr(-1);
-                    int m_MA_tFJ_recoidx(-1);
-                    MA_truthjet_recojet(event, akt10truthjets->at(MC_truth_t_idx), m_MA_tFJ_recodr, m_MA_tFJ_recoidx,
-                                        m_MA_tFJ_pt, m_MA_tFJ_eta, m_MA_tFJ_phi, m_MA_tFJ_m, MAcriteria_fatjets, true);
-                    if (m_MA_tFJ_recoidx >= 0) {
-                        if (parton_Wdecay1_from_t_p4.Pt() > 0 && parton_Wdecay1_from_t_p4.DeltaR(event.m_largeJets.at(m_MA_tFJ_recoidx)->p4()) < 0.75)m_MA_tFJ_nPartons++;
-                        if (parton_Wdecay2_from_t_p4.Pt() > 0 && parton_Wdecay2_from_t_p4.DeltaR(event.m_largeJets.at(m_MA_tFJ_recoidx)->p4()) < 0.75)m_MA_tFJ_nPartons++;
-                        if (parton_Wdecay2_from_t_p4.Pt() > 0 && parton_Wdecay2_from_t_p4.DeltaR(event.m_largeJets.at(m_MA_tFJ_recoidx)->p4()) < 0.75)m_MA_tFJ_nPartons++;
-                    }
-                }//if
-            }//if(parton_t_p4.Pt()>0)
+                        float m_MA_tFJ_recodr(-1);
+                        int m_MA_tFJ_recoidx(-1);
+                        MA_truthjet_recojet(event, akt10truthjets->at(MC_truth_t_idx), m_MA_tFJ_recodr, m_MA_tFJ_recoidx,
+                                            m_MA_tFJ_pt, m_MA_tFJ_eta, m_MA_tFJ_phi, m_MA_tFJ_m, MAcriteria_fatjets, true);
+                        if (m_MA_tFJ_recoidx >= 0) {
+                            if (parton_Wdecay1_from_t_p4.Pt() > 0 && parton_Wdecay1_from_t_p4.DeltaR(event.m_largeJets.at(m_MA_tFJ_recoidx)->p4()) < 0.75)m_MA_tFJ_nPartons++;
+                            if (parton_Wdecay2_from_t_p4.Pt() > 0 && parton_Wdecay2_from_t_p4.DeltaR(event.m_largeJets.at(m_MA_tFJ_recoidx)->p4()) < 0.75)m_MA_tFJ_nPartons++;
+                            if (parton_Wdecay2_from_t_p4.Pt() > 0 && parton_Wdecay2_from_t_p4.DeltaR(event.m_largeJets.at(m_MA_tFJ_recoidx)->p4()) < 0.75)m_MA_tFJ_nPartons++;
+                        }
+                    }//if
+                }//if(parton_t_p4.Pt()>0)
 
 
 
-        } else if (W_t_DecayMode == "Leptonic") {
+            } else if (W_t_DecayMode == "Leptonic") {
 
-            // Ch lepton
-            if (m_MC_Wdecay2_from_t_pdgId == -11 && parton_Wdecay2_from_t_p4.Pt() > 0) {
-                m_MA_Wdecay2_from_t_truthdr = -1;
-                MA_eParton_reco(event, parton_Wdecay2_from_t_p4, m_MA_Wdecay2_from_t_recoidx, m_MA_Wdecay2_from_t_recodr, MAcriteria_chLep);
-
-                if (m_MA_Wdecay2_from_t_recoidx >= 0) {
-                    sum_of_lep_reco += event.m_electrons.at(m_MA_Wdecay2_from_t_recoidx)->p4();
-                    sum_of_nu_parton += parton_Wdecay1_from_t_p4;
-                    TLorentzFill(event.m_electrons.at(m_MA_Wdecay2_from_t_recoidx)->p4(), m_MA_Wdecay2_from_t_m, m_MA_Wdecay2_from_t_pt, m_MA_Wdecay2_from_t_eta, m_MA_Wdecay2_from_t_phi);
-                }//((m_MA_Wdecay2_from_t_recoidx>=0)
-
-            } else if (m_MC_Wdecay2_from_t_pdgId == -13 && parton_Wdecay2_from_t_p4.Pt() > 0) {
-                m_MA_Wdecay2_from_t_truthdr = -1;
-                MA_muParton_reco(event, parton_Wdecay2_from_t_p4, m_MA_Wdecay2_from_t_recoidx, m_MA_Wdecay2_from_t_recodr, MAcriteria_chLep);
-
-                if (m_MA_Wdecay2_from_t_recoidx >= 0) {
-                    sum_of_lep_reco += event.m_muons.at(m_MA_Wdecay2_from_t_recoidx)->p4();
-                    sum_of_nu_parton += parton_Wdecay1_from_t_p4;
-                    TLorentzFill(event.m_muons.at(m_MA_Wdecay2_from_t_recoidx)->p4(), m_MA_Wdecay2_from_t_m, m_MA_Wdecay2_from_t_pt, m_MA_Wdecay2_from_t_eta, m_MA_Wdecay2_from_t_phi);
-                }//if(m_MA_Wdecay2_from_t_recoidx>=0)
-
-            } else if (m_MC_Wdecay2_from_t_pdgId == -15 && parton_Wdecay2_from_t_p4.Pt() > 0) {
-                m_MA_Wdecay2_from_t_truthdr = -1;
-                const xAOD::ElectronContainer electrons = event.m_electrons;
-                const xAOD::MuonContainer muons = event.m_muons;
-
-                if (electrons.size() > 0) {
+                // Ch lepton
+                if (m_MC_Wdecay2_from_t_pdgId == -11 && parton_Wdecay2_from_t_p4.Pt() > 0) {
+                    m_MA_Wdecay2_from_t_truthdr = -1;
                     MA_eParton_reco(event, parton_Wdecay2_from_t_p4, m_MA_Wdecay2_from_t_recoidx, m_MA_Wdecay2_from_t_recodr, MAcriteria_chLep);
+
                     if (m_MA_Wdecay2_from_t_recoidx >= 0) {
                         sum_of_lep_reco += event.m_electrons.at(m_MA_Wdecay2_from_t_recoidx)->p4();
                         sum_of_nu_parton += parton_Wdecay1_from_t_p4;
                         TLorentzFill(event.m_electrons.at(m_MA_Wdecay2_from_t_recoidx)->p4(), m_MA_Wdecay2_from_t_m, m_MA_Wdecay2_from_t_pt, m_MA_Wdecay2_from_t_eta, m_MA_Wdecay2_from_t_phi);
-                    }//if(m_MA_Wdecay2_from_t_recoidx>=0)
+                    }//((m_MA_Wdecay2_from_t_recoidx>=0)
 
-                } else if (muons.size() > 0) {
+                } else if (m_MC_Wdecay2_from_t_pdgId == -13 && parton_Wdecay2_from_t_p4.Pt() > 0) {
+                    m_MA_Wdecay2_from_t_truthdr = -1;
                     MA_muParton_reco(event, parton_Wdecay2_from_t_p4, m_MA_Wdecay2_from_t_recoidx, m_MA_Wdecay2_from_t_recodr, MAcriteria_chLep);
+
                     if (m_MA_Wdecay2_from_t_recoidx >= 0) {
                         sum_of_lep_reco += event.m_muons.at(m_MA_Wdecay2_from_t_recoidx)->p4();
                         sum_of_nu_parton += parton_Wdecay1_from_t_p4;
                         TLorentzFill(event.m_muons.at(m_MA_Wdecay2_from_t_recoidx)->p4(), m_MA_Wdecay2_from_t_m, m_MA_Wdecay2_from_t_pt, m_MA_Wdecay2_from_t_eta, m_MA_Wdecay2_from_t_phi);
                     }//if(m_MA_Wdecay2_from_t_recoidx>=0)
 
+                } else if (m_MC_Wdecay2_from_t_pdgId == -15 && parton_Wdecay2_from_t_p4.Pt() > 0) {
+                    m_MA_Wdecay2_from_t_truthdr = -1;
+                    const xAOD::ElectronContainer electrons = event.m_electrons;
+                    const xAOD::MuonContainer muons = event.m_muons;
+
+                    if (electrons.size() > 0) {
+                        MA_eParton_reco(event, parton_Wdecay2_from_t_p4, m_MA_Wdecay2_from_t_recoidx, m_MA_Wdecay2_from_t_recodr, MAcriteria_chLep);
+                        if (m_MA_Wdecay2_from_t_recoidx >= 0) {
+                            sum_of_lep_reco += event.m_electrons.at(m_MA_Wdecay2_from_t_recoidx)->p4();
+                            sum_of_nu_parton += parton_Wdecay1_from_t_p4;
+                            TLorentzFill(event.m_electrons.at(m_MA_Wdecay2_from_t_recoidx)->p4(), m_MA_Wdecay2_from_t_m, m_MA_Wdecay2_from_t_pt, m_MA_Wdecay2_from_t_eta, m_MA_Wdecay2_from_t_phi);
+                        }//if(m_MA_Wdecay2_from_t_recoidx>=0)
+
+                    } else if (muons.size() > 0) {
+                        MA_muParton_reco(event, parton_Wdecay2_from_t_p4, m_MA_Wdecay2_from_t_recoidx, m_MA_Wdecay2_from_t_recodr, MAcriteria_chLep);
+                        if (m_MA_Wdecay2_from_t_recoidx >= 0) {
+                            sum_of_lep_reco += event.m_muons.at(m_MA_Wdecay2_from_t_recoidx)->p4();
+                            sum_of_nu_parton += parton_Wdecay1_from_t_p4;
+                            TLorentzFill(event.m_muons.at(m_MA_Wdecay2_from_t_recoidx)->p4(), m_MA_Wdecay2_from_t_m, m_MA_Wdecay2_from_t_pt, m_MA_Wdecay2_from_t_eta, m_MA_Wdecay2_from_t_phi);
+                        }//if(m_MA_Wdecay2_from_t_recoidx>=0)
+
+                    }//else if
                 }//else if
-            }//else if
-        }//if(W_t_DecayMode=="Leptonic")
+            }//if(W_t_DecayMode=="Leptonic")
 
 
-        //-----------------------------------------------------------
-        // matching W from tbar
-        //-----------------------------------------------------------
-        // Hadronic W decay: parton -> truthjet -> recojet
-        //-----------------------------------------------------------
-        // Leptonic W decay: parton -> reco objects (ch lep and met)
-        //-----------------------------------------------------------
+            //-----------------------------------------------------------
+            // matching W from tbar
+            //-----------------------------------------------------------
+            // Hadronic W decay: parton -> truthjet -> recojet
+            //-----------------------------------------------------------
+            // Leptonic W decay: parton -> reco objects (ch lep and met)
+            //-----------------------------------------------------------
 
-        if (W_tbar_DecayMode == "Hadronic") {
+            if (W_tbar_DecayMode == "Hadronic") {
 
-            // Wdecay1 from tbar
-            if (parton_Wdecay1_from_tbar_p4.Pt() > 0) {
+                // Wdecay1 from tbar
+                if (parton_Wdecay1_from_tbar_p4.Pt() > 0) {
 
-                MA_hadParton_truthjet(parton_Wdecay1_from_tbar_p4, MC_truth_Wdecay1_from_tbar_idx, m_MA_Wdecay1_from_tbar_truthdr, MAcriteria_jets);
+                    MA_hadParton_truthjet(parton_Wdecay1_from_tbar_p4, MC_truth_Wdecay1_from_tbar_idx, m_MA_Wdecay1_from_tbar_truthdr, MAcriteria_jets);
 
-                if (MC_truth_Wdecay1_from_tbar_idx >= 0) {
+                    if (MC_truth_Wdecay1_from_tbar_idx >= 0) {
 
-                    MA_truthjet_recojet(event, akt4truthjets->at(MC_truth_Wdecay1_from_tbar_idx), m_MA_Wdecay1_from_tbar_recodr, m_MA_Wdecay1_from_tbar_recoidx,
-                                        m_MA_Wdecay1_from_tbar_pt, m_MA_Wdecay1_from_tbar_eta, m_MA_Wdecay1_from_tbar_phi, m_MA_Wdecay1_from_tbar_m, MAcriteria_jets);
-                }//if
-            }//if(parton_Wdecay1_from_tbar_p4.Pt()>0)
+                        MA_truthjet_recojet(event, akt4truthjets->at(MC_truth_Wdecay1_from_tbar_idx), m_MA_Wdecay1_from_tbar_recodr, m_MA_Wdecay1_from_tbar_recoidx,
+                                            m_MA_Wdecay1_from_tbar_pt, m_MA_Wdecay1_from_tbar_eta, m_MA_Wdecay1_from_tbar_phi, m_MA_Wdecay1_from_tbar_m, MAcriteria_jets);
+                    }//if
+                }//if(parton_Wdecay1_from_tbar_p4.Pt()>0)
 
-            // Wdecay2 from tbar
-            if (parton_Wdecay2_from_tbar_p4.Pt() > 0) {
+                // Wdecay2 from tbar
+                if (parton_Wdecay2_from_tbar_p4.Pt() > 0) {
 
-                MA_hadParton_truthjet(parton_Wdecay2_from_tbar_p4, MC_truth_Wdecay2_from_tbar_idx, m_MA_Wdecay2_from_tbar_truthdr, MAcriteria_jets);
+                    MA_hadParton_truthjet(parton_Wdecay2_from_tbar_p4, MC_truth_Wdecay2_from_tbar_idx, m_MA_Wdecay2_from_tbar_truthdr, MAcriteria_jets);
 
-                if (MC_truth_Wdecay2_from_tbar_idx >= 0) {
+                    if (MC_truth_Wdecay2_from_tbar_idx >= 0) {
 
-                    MA_truthjet_recojet(event, akt4truthjets->at(MC_truth_Wdecay2_from_tbar_idx), m_MA_Wdecay2_from_tbar_recodr, m_MA_Wdecay2_from_tbar_recoidx,
-                                        m_MA_Wdecay2_from_tbar_pt, m_MA_Wdecay2_from_tbar_eta, m_MA_Wdecay2_from_tbar_phi, m_MA_Wdecay2_from_tbar_m, MAcriteria_jets);
-                }//if
-            }//if(parton_Wdecay2_from_tbar_p4.Pt()>0)
+                        MA_truthjet_recojet(event, akt4truthjets->at(MC_truth_Wdecay2_from_tbar_idx), m_MA_Wdecay2_from_tbar_recodr, m_MA_Wdecay2_from_tbar_recoidx,
+                                            m_MA_Wdecay2_from_tbar_pt, m_MA_Wdecay2_from_tbar_eta, m_MA_Wdecay2_from_tbar_phi, m_MA_Wdecay2_from_tbar_m, MAcriteria_jets);
+                    }//if
+                }//if(parton_Wdecay2_from_tbar_p4.Pt()>0)
 
-            // tbar matching to fat jet
-            if (parton_tbar_p4.Pt() > 0) {
-                float m_MA_tbarFJ_truthdr(-1);
-                MA_hadParton_truthjet(parton_tbar_p4, MC_truth_tbar_idx, m_MA_tbarFJ_truthdr, MAcriteria_fatjets, true);
+                // tbar matching to fat jet
+                if (parton_tbar_p4.Pt() > 0) {
+                    float m_MA_tbarFJ_truthdr(-1);
+                    MA_hadParton_truthjet(parton_tbar_p4, MC_truth_tbar_idx, m_MA_tbarFJ_truthdr, MAcriteria_fatjets, true);
 
-                if (MC_truth_tbar_idx >= 0) {
+                    if (MC_truth_tbar_idx >= 0) {
 
-                    float m_MA_tbarFJ_recodr(-1);
-                    int m_MA_tbarFJ_recoidx(-1);
-                    MA_truthjet_recojet(event, akt10truthjets->at(MC_truth_tbar_idx), m_MA_tbarFJ_recodr, m_MA_tbarFJ_recoidx,
-                                        m_MA_tbarFJ_pt, m_MA_tbarFJ_eta, m_MA_tbarFJ_phi, m_MA_tbarFJ_m, MAcriteria_fatjets, true);
-                    if (m_MA_tbarFJ_recoidx >= 0) {
-                        if (parton_Wdecay1_from_tbar_p4.Pt() > 0 && parton_Wdecay1_from_tbar_p4.DeltaR(event.m_largeJets.at(m_MA_tbarFJ_recoidx)->p4()) < 0.75)m_MA_tbarFJ_nPartons++;
-                        if (parton_Wdecay2_from_tbar_p4.Pt() > 0 && parton_Wdecay2_from_tbar_p4.DeltaR(event.m_largeJets.at(m_MA_tbarFJ_recoidx)->p4()) < 0.75)m_MA_tbarFJ_nPartons++;
-                        if (parton_Wdecay2_from_tbar_p4.Pt() > 0 && parton_Wdecay2_from_tbar_p4.DeltaR(event.m_largeJets.at(m_MA_tbarFJ_recoidx)->p4()) < 0.75)m_MA_tbarFJ_nPartons++;
-                    }
-                }//if
-            }//if(parton_tbar_p4.Pt()>0)
+                        float m_MA_tbarFJ_recodr(-1);
+                        int m_MA_tbarFJ_recoidx(-1);
+                        MA_truthjet_recojet(event, akt10truthjets->at(MC_truth_tbar_idx), m_MA_tbarFJ_recodr, m_MA_tbarFJ_recoidx,
+                                            m_MA_tbarFJ_pt, m_MA_tbarFJ_eta, m_MA_tbarFJ_phi, m_MA_tbarFJ_m, MAcriteria_fatjets, true);
+                        if (m_MA_tbarFJ_recoidx >= 0) {
+                            if (parton_Wdecay1_from_tbar_p4.Pt() > 0 && parton_Wdecay1_from_tbar_p4.DeltaR(event.m_largeJets.at(m_MA_tbarFJ_recoidx)->p4()) < 0.75)m_MA_tbarFJ_nPartons++;
+                            if (parton_Wdecay2_from_tbar_p4.Pt() > 0 && parton_Wdecay2_from_tbar_p4.DeltaR(event.m_largeJets.at(m_MA_tbarFJ_recoidx)->p4()) < 0.75)m_MA_tbarFJ_nPartons++;
+                            if (parton_Wdecay2_from_tbar_p4.Pt() > 0 && parton_Wdecay2_from_tbar_p4.DeltaR(event.m_largeJets.at(m_MA_tbarFJ_recoidx)->p4()) < 0.75)m_MA_tbarFJ_nPartons++;
+                        }
+                    }//if
+                }//if(parton_tbar_p4.Pt()>0)
 
 
-        } else if (W_tbar_DecayMode == "Leptonic") {
+            } else if (W_tbar_DecayMode == "Leptonic") {
 
-            // Ch lepton
-            if (m_MC_Wdecay1_from_tbar_pdgId == 11 && parton_Wdecay1_from_tbar_p4.Pt() > 0) {
-                m_MA_Wdecay1_from_tbar_truthdr = -1;
-                MA_eParton_reco(event, parton_Wdecay1_from_tbar_p4, m_MA_Wdecay1_from_tbar_recoidx, m_MA_Wdecay1_from_tbar_recodr, MAcriteria_chLep);
-
-                if (m_MA_Wdecay1_from_tbar_recoidx >= 0) {
-                    sum_of_lep_reco += event.m_electrons.at(m_MA_Wdecay1_from_tbar_recoidx)->p4();
-                    sum_of_nu_parton += parton_Wdecay2_from_tbar_p4;
-                    TLorentzFill(event.m_electrons.at(m_MA_Wdecay1_from_tbar_recoidx)->p4(), m_MA_Wdecay1_from_tbar_m, m_MA_Wdecay1_from_tbar_pt, m_MA_Wdecay1_from_tbar_eta, m_MA_Wdecay1_from_tbar_phi);
-                }//if(m_MA_Wdecay1_from_tbar_idx>=0)
-
-            } else if (m_MC_Wdecay1_from_tbar_pdgId == 13 && parton_Wdecay1_from_tbar_p4.Pt() > 0) {
-                m_MA_Wdecay1_from_tbar_truthdr = -1;
-                MA_muParton_reco(event, parton_Wdecay1_from_tbar_p4, m_MA_Wdecay1_from_tbar_recoidx, m_MA_Wdecay1_from_tbar_recodr, MAcriteria_chLep);
-
-                if (m_MA_Wdecay1_from_tbar_recoidx >= 0) {
-                    sum_of_lep_reco += event.m_muons.at(m_MA_Wdecay1_from_tbar_recoidx)->p4();
-                    sum_of_nu_parton += parton_Wdecay2_from_tbar_p4;
-                    TLorentzFill(event.m_muons.at(m_MA_Wdecay1_from_tbar_recoidx)->p4(), m_MA_Wdecay1_from_tbar_m, m_MA_Wdecay1_from_tbar_pt, m_MA_Wdecay1_from_tbar_eta, m_MA_Wdecay1_from_tbar_phi);
-                }//if(m_MA_Wdecay1_from_tbar_idx>=0)
-
-            } else if (m_MC_Wdecay1_from_tbar_pdgId == 15 && parton_Wdecay1_from_tbar_p4.Pt() > 0) {
-                m_MA_Wdecay1_from_tbar_truthdr = -1;
-                const xAOD::ElectronContainer electrons = event.m_electrons;
-                const xAOD::MuonContainer muons = event.m_muons;
-
-                if (electrons.size() > 0) {
+                // Ch lepton
+                if (m_MC_Wdecay1_from_tbar_pdgId == 11 && parton_Wdecay1_from_tbar_p4.Pt() > 0) {
+                    m_MA_Wdecay1_from_tbar_truthdr = -1;
                     MA_eParton_reco(event, parton_Wdecay1_from_tbar_p4, m_MA_Wdecay1_from_tbar_recoidx, m_MA_Wdecay1_from_tbar_recodr, MAcriteria_chLep);
+
                     if (m_MA_Wdecay1_from_tbar_recoidx >= 0) {
                         sum_of_lep_reco += event.m_electrons.at(m_MA_Wdecay1_from_tbar_recoidx)->p4();
                         sum_of_nu_parton += parton_Wdecay2_from_tbar_p4;
                         TLorentzFill(event.m_electrons.at(m_MA_Wdecay1_from_tbar_recoidx)->p4(), m_MA_Wdecay1_from_tbar_m, m_MA_Wdecay1_from_tbar_pt, m_MA_Wdecay1_from_tbar_eta, m_MA_Wdecay1_from_tbar_phi);
                     }//if(m_MA_Wdecay1_from_tbar_idx>=0)
 
-                } else if (muons.size() > 0) {
+                } else if (m_MC_Wdecay1_from_tbar_pdgId == 13 && parton_Wdecay1_from_tbar_p4.Pt() > 0) {
+                    m_MA_Wdecay1_from_tbar_truthdr = -1;
                     MA_muParton_reco(event, parton_Wdecay1_from_tbar_p4, m_MA_Wdecay1_from_tbar_recoidx, m_MA_Wdecay1_from_tbar_recodr, MAcriteria_chLep);
+
                     if (m_MA_Wdecay1_from_tbar_recoidx >= 0) {
                         sum_of_lep_reco += event.m_muons.at(m_MA_Wdecay1_from_tbar_recoidx)->p4();
                         sum_of_nu_parton += parton_Wdecay2_from_tbar_p4;
                         TLorentzFill(event.m_muons.at(m_MA_Wdecay1_from_tbar_recoidx)->p4(), m_MA_Wdecay1_from_tbar_m, m_MA_Wdecay1_from_tbar_pt, m_MA_Wdecay1_from_tbar_eta, m_MA_Wdecay1_from_tbar_phi);
                     }//if(m_MA_Wdecay1_from_tbar_idx>=0)
 
+                } else if (m_MC_Wdecay1_from_tbar_pdgId == 15 && parton_Wdecay1_from_tbar_p4.Pt() > 0) {
+                    m_MA_Wdecay1_from_tbar_truthdr = -1;
+                    const xAOD::ElectronContainer electrons = event.m_electrons;
+                    const xAOD::MuonContainer muons = event.m_muons;
+
+                    if (electrons.size() > 0) {
+                        MA_eParton_reco(event, parton_Wdecay1_from_tbar_p4, m_MA_Wdecay1_from_tbar_recoidx, m_MA_Wdecay1_from_tbar_recodr, MAcriteria_chLep);
+                        if (m_MA_Wdecay1_from_tbar_recoidx >= 0) {
+                            sum_of_lep_reco += event.m_electrons.at(m_MA_Wdecay1_from_tbar_recoidx)->p4();
+                            sum_of_nu_parton += parton_Wdecay2_from_tbar_p4;
+                            TLorentzFill(event.m_electrons.at(m_MA_Wdecay1_from_tbar_recoidx)->p4(), m_MA_Wdecay1_from_tbar_m, m_MA_Wdecay1_from_tbar_pt, m_MA_Wdecay1_from_tbar_eta, m_MA_Wdecay1_from_tbar_phi);
+                        }//if(m_MA_Wdecay1_from_tbar_idx>=0)
+
+                    } else if (muons.size() > 0) {
+                        MA_muParton_reco(event, parton_Wdecay1_from_tbar_p4, m_MA_Wdecay1_from_tbar_recoidx, m_MA_Wdecay1_from_tbar_recodr, MAcriteria_chLep);
+                        if (m_MA_Wdecay1_from_tbar_recoidx >= 0) {
+                            sum_of_lep_reco += event.m_muons.at(m_MA_Wdecay1_from_tbar_recoidx)->p4();
+                            sum_of_nu_parton += parton_Wdecay2_from_tbar_p4;
+                            TLorentzFill(event.m_muons.at(m_MA_Wdecay1_from_tbar_recoidx)->p4(), m_MA_Wdecay1_from_tbar_m, m_MA_Wdecay1_from_tbar_pt, m_MA_Wdecay1_from_tbar_eta, m_MA_Wdecay1_from_tbar_phi);
+                        }//if(m_MA_Wdecay1_from_tbar_idx>=0)
+
+                    }//else if
                 }//else if
-            }//else if
-        }//if(W_tbar_DecayMode=="Leptonic")
+            }//if(W_tbar_DecayMode=="Leptonic")
 
-        //MET
+            //MET
 
-        if (W_t_DecayMode == "Leptonic") {
-            if (sum_of_nu_parton.Pt() > 0 && sum_of_lep_reco.Pt() > 0) {
-                nu_from_met = MA_nuParton_met(met, sum_of_nu_parton, sum_of_lep_reco, m_MA_Wdecay1_from_t_NuDphi);
+            if (W_t_DecayMode == "Leptonic") {
+                if (sum_of_nu_parton.Pt() > 0 && sum_of_lep_reco.Pt() > 0) {
+                    nu_from_met = MA_nuParton_met(met, sum_of_nu_parton, sum_of_lep_reco, m_MA_Wdecay1_from_t_NuDphi);
 
-                if (m_MA_Wdecay1_from_t_NuDphi < MAcriteria_neutrino) {
-                    m_MA_Wdecay1_from_t_truthdr = -1;
-                    m_MA_Wdecay1_from_t_recodr  = m_MA_Wdecay1_from_t_NuDphi;
-                    m_MA_Wdecay1_from_t_recoidx = 0;
-                    TLorentzFill(*nu_from_met, m_MA_Wdecay1_from_t_m, m_MA_Wdecay1_from_t_pt, m_MA_Wdecay1_from_t_eta, m_MA_Wdecay1_from_t_phi);
+                    if (m_MA_Wdecay1_from_t_NuDphi < MAcriteria_neutrino) {
+                        m_MA_Wdecay1_from_t_truthdr = -1;
+                        m_MA_Wdecay1_from_t_recodr  = m_MA_Wdecay1_from_t_NuDphi;
+                        m_MA_Wdecay1_from_t_recoidx = 0;
+                        TLorentzFill(*nu_from_met, m_MA_Wdecay1_from_t_m, m_MA_Wdecay1_from_t_pt, m_MA_Wdecay1_from_t_eta, m_MA_Wdecay1_from_t_phi);
+                    }//if
                 }//if
             }//if
-        }//if
 
-        if (W_tbar_DecayMode == "Leptonic") {
-            if (sum_of_nu_parton.Pt() > 0 && sum_of_lep_reco.Pt() > 0) {
-                nu_from_met = MA_nuParton_met(met, sum_of_nu_parton, sum_of_lep_reco, m_MA_Wdecay2_from_tbar_NuDphi);
+            if (W_tbar_DecayMode == "Leptonic") {
+                if (sum_of_nu_parton.Pt() > 0 && sum_of_lep_reco.Pt() > 0) {
+                    nu_from_met = MA_nuParton_met(met, sum_of_nu_parton, sum_of_lep_reco, m_MA_Wdecay2_from_tbar_NuDphi);
 
-                if (m_MA_Wdecay2_from_tbar_NuDphi < MAcriteria_neutrino) {
-                    m_MA_Wdecay2_from_tbar_truthdr = -1;
-                    m_MA_Wdecay2_from_tbar_recodr  = m_MA_Wdecay2_from_tbar_NuDphi;
-                    m_MA_Wdecay2_from_tbar_recoidx = 0;
-                    TLorentzFill(*nu_from_met, m_MA_Wdecay2_from_tbar_m, m_MA_Wdecay2_from_tbar_pt, m_MA_Wdecay2_from_tbar_eta, m_MA_Wdecay2_from_tbar_phi);
+                    if (m_MA_Wdecay2_from_tbar_NuDphi < MAcriteria_neutrino) {
+                        m_MA_Wdecay2_from_tbar_truthdr = -1;
+                        m_MA_Wdecay2_from_tbar_recodr  = m_MA_Wdecay2_from_tbar_NuDphi;
+                        m_MA_Wdecay2_from_tbar_recoidx = 0;
+                        TLorentzFill(*nu_from_met, m_MA_Wdecay2_from_tbar_m, m_MA_Wdecay2_from_tbar_pt, m_MA_Wdecay2_from_tbar_eta, m_MA_Wdecay2_from_tbar_phi);
+                    }//if
                 }//if
             }//if
-        }//if
 
-        //if(topParton)delete topParton;
-        //if(akt4truthjets)delete akt4truthjets;
-        if (nu_from_met)delete nu_from_met;
-        if (met)delete met;
-        Reconstruction_w_top_ttbar(W_t_DecayMode, t_type, W_tbar_DecayMode, tbar_type); // Reconstruction of particles from the matched reco objetcs
-        Fill_MA_semileptonic(W_t_DecayMode, W_tbar_DecayMode); // Reconstruction of particles for semi-leptonic cases (-->define tl, wl, th, wh, ...)
+            //if(topParton)delete topParton;
+            //if(akt4truthjets)delete akt4truthjets;
+            if (nu_from_met)delete nu_from_met;
+            if (met)delete met;
+            Reconstruction_w_top_ttbar(W_t_DecayMode, t_type, W_tbar_DecayMode, tbar_type); // Reconstruction of particles from the matched reco objetcs
+            Fill_MA_semileptonic(W_t_DecayMode, W_tbar_DecayMode); // Reconstruction of particles for semi-leptonic cases (-->define tl, wl, th, wh, ...)
 #ifdef ENABLE_LJETSUBSTRUCTURE_DEBUG
-        unsigned int k = 0;
-        float Rmatch = 0.75; //this is a variable: R_match=0.75*R_ljet!
-        TLorentzVector MC_bh_p4, MC_w1h_p4, MC_w2h_p4;
-        MC_bh_p4.SetPtEtaPhiM(m_MC_bh_pt, m_MC_bh_eta, m_MC_bh_phi, m_MC_bh_m);
-        MC_w1h_p4.SetPtEtaPhiM(m_MC_w1h_pt, m_MC_w1h_eta, m_MC_w1h_phi, m_MC_w1h_m);
-        MC_w2h_p4.SetPtEtaPhiM(m_MC_w2h_pt, m_MC_w2h_eta, m_MC_w2h_phi, m_MC_w2h_m);
-        for (const auto* const jetPtr : event.m_largeJets) {
-            if ((MC_w1h_p4.DeltaR(jetPtr->p4()) < Rmatch) && (MC_w2h_p4.DeltaR(jetPtr->p4()) < Rmatch)) {
-                if (MC_bh_p4.DeltaR(jetPtr->p4()) < Rmatch) {m_ljet_MClike[k] = 2; }
-                else {m_ljet_MClike[k] = 1; }
-            } else { m_ljet_MClike[k] = 0; }
-            k++;
-        }
+            unsigned int k = 0;
+            float Rmatch = 0.75; //this is a variable: R_match=0.75*R_ljet!
+            TLorentzVector MC_bh_p4, MC_w1h_p4, MC_w2h_p4;
+            MC_bh_p4.SetPtEtaPhiM(m_MC_bh_pt, m_MC_bh_eta, m_MC_bh_phi, m_MC_bh_m);
+            MC_w1h_p4.SetPtEtaPhiM(m_MC_w1h_pt, m_MC_w1h_eta, m_MC_w1h_phi, m_MC_w1h_m);
+            MC_w2h_p4.SetPtEtaPhiM(m_MC_w2h_pt, m_MC_w2h_eta, m_MC_w2h_phi, m_MC_w2h_m);
+            for (const auto* const jetPtr : event.m_largeJets) {
+                if ((MC_w1h_p4.DeltaR(jetPtr->p4()) < Rmatch) && (MC_w2h_p4.DeltaR(jetPtr->p4()) < Rmatch)) {
+                    if (MC_bh_p4.DeltaR(jetPtr->p4()) < Rmatch) {m_ljet_MClike[k] = 2; }
+                    else {m_ljet_MClike[k] = 1; }
+                } else { m_ljet_MClike[k] = 0; }
+                k++;
+            }
 #endif
 
-        if (m_chi2Sel->apply(event) && (!m_runHtt)) {
-            TtresChi2* chi2Tool = m_chi2Sel->getChi2Tool();
-            TLorentzFill(chi2Tool->getResult_Wl(), m_chi2_wl_m, m_chi2_wl_pt, m_chi2_wl_eta, m_chi2_wl_phi);
-            TLorentzFill(chi2Tool->getResult_Wh(), m_chi2_wh_m, m_chi2_wh_pt, m_chi2_wh_eta, m_chi2_wh_phi);
-            TLorentzFill(chi2Tool->getResult_Bl(), m_chi2_bl_m, m_chi2_bl_pt, m_chi2_bl_eta, m_chi2_bl_phi);
-            TLorentzFill(chi2Tool->getResult_Bh(), m_chi2_bh_m, m_chi2_bh_pt, m_chi2_bh_eta, m_chi2_bh_phi);
-            TLorentzFill(chi2Tool->getResult_Tl(), m_chi2_tl_m, m_chi2_tl_pt, m_chi2_tl_eta, m_chi2_tl_phi);
-            TLorentzFill(chi2Tool->getResult_Th(), m_chi2_th_m, m_chi2_th_pt, m_chi2_th_eta, m_chi2_th_phi);
-            TLorentzFill(chi2Tool->getResult_TT(), m_chi2_ttbar_m, m_chi2_ttbar_pt, m_chi2_ttbar_eta, m_chi2_ttbar_phi);
-        }
-    }//if (m_savePartons || m_runEWK)
+            if (m_chi2Sel->apply(event) && (!m_runHtt)) {
+                TtresChi2* chi2Tool = m_chi2Sel->getChi2Tool();
+                TLorentzFill(chi2Tool->getResult_Wl(), m_chi2_wl_m, m_chi2_wl_pt, m_chi2_wl_eta, m_chi2_wl_phi);
+                TLorentzFill(chi2Tool->getResult_Wh(), m_chi2_wh_m, m_chi2_wh_pt, m_chi2_wh_eta, m_chi2_wh_phi);
+                TLorentzFill(chi2Tool->getResult_Bl(), m_chi2_bl_m, m_chi2_bl_pt, m_chi2_bl_eta, m_chi2_bl_phi);
+                TLorentzFill(chi2Tool->getResult_Bh(), m_chi2_bh_m, m_chi2_bh_pt, m_chi2_bh_eta, m_chi2_bh_phi);
+                TLorentzFill(chi2Tool->getResult_Tl(), m_chi2_tl_m, m_chi2_tl_pt, m_chi2_tl_eta, m_chi2_tl_phi);
+                TLorentzFill(chi2Tool->getResult_Th(), m_chi2_th_m, m_chi2_th_pt, m_chi2_th_eta, m_chi2_th_phi);
+                TLorentzFill(chi2Tool->getResult_TT(), m_chi2_ttbar_m, m_chi2_ttbar_pt, m_chi2_ttbar_eta, m_chi2_ttbar_phi);
+            }
+        }//if (m_savePartons || m_runEWK)
+    } //if (m_isMC)
 
     if (m_savePdfWeight) {
         const xAOD::TruthEventContainer* truthEvent(nullptr);
