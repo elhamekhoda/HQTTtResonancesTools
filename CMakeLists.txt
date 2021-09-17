@@ -53,7 +53,8 @@ option(ENABLE_LJETSUBSTRUCTURE_DEBUG "This enables jet substructures debug outpu
 option(ENABLE_BTAG_DEBUG "This enables b-tagging debug outputs" OFF)
 option(ENABLE_TOPTAG_DEBUG "This enables top-tagging debug outputs" OFF)
 option(ENABLE_EXTRA_LEP_VARS "This adds extra lepton variables to the output" OFF)
-option(ENABLE_WJETS_FILTER "This enables W+jets filter variables" OFF)
+# option(ENABLE_WJETS_FILTER "This enables W+jets filter variables" OFF)
+set (ENABLE_WJETS_FILTER ON)
 
 if( EXISTS ${CMAKE_SOURCE_DIR}/ZprimeRWGT/CMakeLists.txt )
   set(ENABLE_ZPRIMERWGT_DEFAULT ON)

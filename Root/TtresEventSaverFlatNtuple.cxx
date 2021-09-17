@@ -162,7 +162,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         //Default algorithms is mv2c10
         std::string m_tagger = TaggerBtagWP.first;
         std::string btagWP = TaggerBtagWP.second;
-        cout << m_tagger << btagWP << endl;
+        //cout << m_tagger << btagWP << endl;
         btaggingAlgWP = "btag_SF_" + m_tagger + "_" + btagWP + "_nom"; //variable to acceess the nominal b-tagging SF
         btag_outputVar = "btag_SF_" + m_tagger + "_" + btagWP.substr( btagWP.length() - 2); //The b_tag SF gets saved with this name
     }
@@ -428,19 +428,11 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_chi2_all,      "chi2");
 
         if (m_isMC){
-            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_pt,   "MC_ttbar_beforeFSR_pt");
-            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_eta,  "MC_ttbar_beforeFSR_eta");
-            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_phi,  "MC_ttbar_beforeFSR_phi");
             systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_m,    "MC_ttbar_beforeFSR_m");
-
-            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_pt,   "MC_ttbar_afterFSR_pt");
-            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_eta,  "MC_ttbar_afterFSR_eta");
-            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_phi,  "MC_ttbar_afterFSR_phi");
             systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_m,    "MC_ttbar_afterFSR_m");
-
             // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
             systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_beforeDecay_m, "MC_ttbar_afterFSR_beforeDecay_m");
-
+            systematicTree->makeOutputVariable(m_MC_ttbar_type, "MC_ttbar_type");
         }
 
         if (m_runEWK){
@@ -551,9 +543,15 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
             systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_eta,    "MC_tbar_afterFSR_eta");
             systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_phi,    "MC_tbar_afterFSR_phi");
             systematicTree->makeOutputVariable(m_MC_tbar_afterFSR_m,   "MC_tbar_afterFSR_m");
-            //
 
-            systematicTree->makeOutputVariable(m_MC_ttbar_type, "MC_ttbar_type");
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_pt,   "MC_ttbar_afterFSR_pt");
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_eta,  "MC_ttbar_afterFSR_eta");
+            systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_phi,  "MC_ttbar_afterFSR_phi");
+
+            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_pt,   "MC_ttbar_beforeFSR_pt");
+            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_eta,  "MC_ttbar_beforeFSR_eta");
+            systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_phi,  "MC_ttbar_beforeFSR_phi");
+
 
             //Matched jets
             systematicTree->makeOutputVariable(m_MA_b_from_t_pt,      "MA_b_from_t_pt");
