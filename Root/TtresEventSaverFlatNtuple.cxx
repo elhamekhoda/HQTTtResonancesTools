@@ -429,6 +429,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
 
         if (m_isMC){
             systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_m,    "MC_ttbar_beforeFSR_m");
+            cout << "m_MC_ttbar_afterFSR_beforeDecay_m: "<< m_MC_ttbar_afterFSR_beforeDecay_m <<endl;
             systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_m,    "MC_ttbar_afterFSR_m");
             // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
             systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_beforeDecay_m, "MC_ttbar_afterFSR_beforeDecay_m");
@@ -2025,6 +2026,21 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
 //  Always store the mtt truth information
 
     if (m_isMC){
+        // Initialize the variables
+        m_MC_ttbar_afterFSR_beforeDecay_m = -5000;
+        m_MC_ttbar_beforeFSR_pt  = -5000;
+        m_MC_ttbar_beforeFSR_eta = -5000;
+        m_MC_ttbar_beforeFSR_phi = -5000;
+        m_MC_ttbar_beforeFSR_m   = -5000;
+
+        m_MC_ttbar_afterFSR_pt  = -5000;
+        m_MC_ttbar_afterFSR_eta = -5000;
+        m_MC_ttbar_afterFSR_phi = -5000;
+        m_MC_ttbar_afterFSR_m   = -5000;
+
+        m_MC_ttbar_type = -1;
+
+
         const xAOD::PartonHistoryContainer* topPartonCont = nullptr;
         //top::check(evtStore()->event()->retrieve(topPartonCont, m_config->sgKeyTopPartonHistory()), "FAILURE"); //m_config is private ...
         top::check(evtStore()->event()->retrieve(topPartonCont, "TopPartonHistory"), "FAILURE");
@@ -2063,13 +2079,13 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
                     m_MC_t_afterFSR_SC_eta = topParton->auxdata<float>("MC_t_afterFSR_SC_eta");
                     m_MC_t_afterFSR_SC_phi = topParton->auxdata<float>("MC_t_afterFSR_SC_phi");
                     m_MC_t_afterFSR_SC_m   = topParton->auxdata<float>("MC_t_afterFSR_SC_m");
-                    t_after_SC.SetPtEtaPhiM(m_MC_t_afterFSR_pt, m_MC_t_afterFSR_SC_eta, m_MC_t_afterFSR_SC_phi, m_MC_t_afterFSR_SC_m);
+                    t_after_SC.SetPtEtaPhiM(m_MC_t_afterFSR_SC_pt, m_MC_t_afterFSR_SC_eta, m_MC_t_afterFSR_SC_phi, m_MC_t_afterFSR_SC_m);
      
                     m_MC_tbar_afterFSR_SC_pt  = topParton->auxdata<float>("MC_tbar_afterFSR_SC_pt");
                     m_MC_tbar_afterFSR_SC_eta = topParton->auxdata<float>("MC_tbar_afterFSR_SC_eta");
                     m_MC_tbar_afterFSR_SC_phi = topParton->auxdata<float>("MC_tbar_afterFSR_SC_phi");
                     m_MC_tbar_afterFSR_SC_m   = topParton->auxdata<float>("MC_tbar_afterFSR_SC_m");
-                    tbar_after_SC.SetPtEtaPhiM(m_MC_tbar_afterFSR_pt, m_MC_tbar_afterFSR_SC_eta, m_MC_tbar_afterFSR_SC_phi, m_MC_tbar_afterFSR_SC_m);
+                    tbar_after_SC.SetPtEtaPhiM(m_MC_tbar_afterFSR_SC_pt, m_MC_tbar_afterFSR_SC_eta, m_MC_tbar_afterFSR_SC_phi, m_MC_tbar_afterFSR_SC_m);
 
                     ttbar_after_SC = t_after_SC + tbar_after_SC;
                     m_MC_ttbar_afterFSR_SC_pt  = ttbar_after_SC.Pt();
@@ -3373,15 +3389,6 @@ void TtresEventSaverFlatNtuple::IniVariables() {
     m_MC_tbar_phi     = -5000;
     m_MC_tbar_m       = -5000;
 
-    m_MC_ttbar_beforeFSR_pt  = -5000;
-    m_MC_ttbar_beforeFSR_eta = -5000;
-    m_MC_ttbar_beforeFSR_phi = -5000;
-    m_MC_ttbar_beforeFSR_m   = -5000;
-
-    m_MC_ttbar_afterFSR_pt  = -5000;
-    m_MC_ttbar_afterFSR_eta = -5000;
-    m_MC_ttbar_afterFSR_phi = -5000;
-    m_MC_ttbar_afterFSR_m   = -5000;
 
     // post-FSR top or anti-top found using statusCodes
     m_MC_t_afterFSR_SC_pt  = -5000;;
@@ -3399,8 +3406,7 @@ void TtresEventSaverFlatNtuple::IniVariables() {
     m_MC_ttbar_afterFSR_SC_phi = -5000;;
     m_MC_ttbar_afterFSR_SC_m   = -5000;;
 
-    // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
-    m_MC_ttbar_afterFSR_beforeDecay_m = -5000;
+
 
     //Matched jets
     m_MA_b_from_t_pt = -5000;
@@ -3500,7 +3506,7 @@ void TtresEventSaverFlatNtuple::IniVariables() {
     m_MA_ttbarFJ_phi  = -5000;
     m_MA_ttbarFJ_m    = -5000;
 
-    m_MC_ttbar_type = -1;
+
 
     //only for l+jets
     m_MA_bh_pt    = -5000;
