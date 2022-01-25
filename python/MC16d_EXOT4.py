@@ -12,7 +12,8 @@ TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_ttbar_nonallhad_systematics").da
 'mc16_13TeV.410465.aMcAtNloPy8EvtGen_MEN30NLO_A14N23LO_ttbar_noShWe_dil.deriv.DAOD_EXOT4.e6762_a875_r10201_p4396',
 'mc16_13TeV.410557.PowhegHerwig7EvtGen_H7UE_tt_hdamp258p75_704_SingleLep.deriv.DAOD_EXOT4.e6366_a875_r10201_p4396',
 'mc16_13TeV.410558.PowhegHerwig7EvtGen_H7UE_tt_hdamp258p75_704_dil.deriv.DAOD_EXOT4.e6366_a875_r10201_p4396',
-'mc16_13TeV.411234.PowhegHerwig7EvtGen_tt_hdamp258p75_713_dil.deriv.DAOD_EXOT4.e7580_s3126_r10201_p4149',
+'mc16_13TeV.411233.PowhegHerwig7EvtGen_tt_hdamp258p75_713_SingleLep.deriv.DAOD_EXOT4.e7580_a875_r10201_p4149',
+'mc16_13TeV.411234.PowhegHerwig7EvtGen_tt_hdamp258p75_713_dil.deriv.DAOD_EXOT4.e7580_a875_r10201_p4149',
 'mc16_13TeV.410480.PhPy8EG_A14_ttbar_hdamp517p5_SingleLep.deriv.DAOD_EXOT4.e6454_a875_r10201_p4149',
 'mc16_13TeV.410482.PhPy8EG_A14_ttbar_hdamp517p5_dil.deriv.DAOD_EXOT4.e6454_a875_r10201_p4149',
 'mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.deriv.DAOD_EXOT4.e6337_a875_r10201_p4149',
@@ -24,10 +25,16 @@ TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_ttbar_nonallhad_af2").datasets =
 'mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.deriv.DAOD_EXOT4.e6337_a875_r10201_p4149'
 ]
 
-# Had: Herwig7
+# Had: Herwig7.0
 TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_ttbar_nonallhad_had").datasets = [
 'mc16_13TeV.410557.PowhegHerwig7EvtGen_H7UE_tt_hdamp258p75_704_SingleLep.deriv.DAOD_EXOT4.e6366_a875_r10201_p4396',
 'mc16_13TeV.410558.PowhegHerwig7EvtGen_H7UE_tt_hdamp258p75_704_dil.deriv.DAOD_EXOT4.e6366_a875_r10201_p4396',
+]
+
+# Had: Herwig7.1
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_ttbar_nonallhad_had_v2").datasets = [
+'mc16_13TeV.411233.PowhegHerwig7EvtGen_tt_hdamp258p75_713_SingleLep.deriv.DAOD_EXOT4.e7580_a875_r10201_p4149',
+'mc16_13TeV.411234.PowhegHerwig7EvtGen_tt_hdamp258p75_713_dil.deriv.DAOD_EXOT4.e7580_a875_r10201_p4149',
 ]
 
 # hdamp
