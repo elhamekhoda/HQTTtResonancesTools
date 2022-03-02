@@ -110,6 +110,23 @@ TopExamples.grid.Add("MC16e_13TeV_25ns_FS_EXOT4_dijets").datasets = [
 # No PYTHIA8 dilet like mc16a/d. We need to swith to another dijet samples in near future
 ]
 
+#W+jets new samples: Sherpa 2.2.11
+TopExamples.grid.Add("mc16e_13TeV_25ns_FS_EXOT4_Wjets2211").datasets = [
+'mc16_13TeV.700338.Sh_2211_Wenu_maxHTpTV2_BFilter.deriv.DAOD_EXOT4.e8351_s3126_r10724_p4149',
+'mc16_13TeV.700339.Sh_2211_Wenu_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10724_p4149',
+'mc16_13TeV.700340.Sh_2211_Wenu_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10724_p4149',
+'mc16_13TeV.700341.Sh_2211_Wmunu_maxHTpTV2_BFilter.deriv.DAOD_EXOT4.e8351_s3126_r10724_p4149',
+'mc16_13TeV.700342.Sh_2211_Wmunu_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10724_p4149',
+'mc16_13TeV.700343.Sh_2211_Wmunu_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10724_p4149',
+'mc16_13TeV.700344.Sh_2211_Wtaunu_L_maxHTpTV2_BFilter.deriv.DAOD_EXOT4.e8351_s3126_r10724_p4149',
+'mc16_13TeV.700345.Sh_2211_Wtaunu_L_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10724_p4149',
+'mc16_13TeV.700346.Sh_2211_Wtaunu_L_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10724_p4149',
+'mc16_13TeV.700347.Sh_2211_Wtaunu_H_maxHTpTV2_BFilter.deriv.DAOD_EXOT4.e8351_s3126_r10724_p4149',
+'mc16_13TeV.700348.Sh_2211_Wtaunu_H_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10724_p4149',
+'mc16_13TeV.700349.Sh_2211_Wtaunu_H_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10724_p4149'
+]
+
+
 #W+jets samples
 TopExamples.grid.Add("MC16e_13TeV_25ns_FS_EXOT4_Wjets221").datasets = [
 # different p_tag: New samples

@@ -12,7 +12,6 @@ LibraryNames libTopEventSelectionTools libTopEventReconstructionTools libHQTTtRe
 GRLDir  GoodRunsLists
 GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/physics_25ns_21.0.19.xml data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.xml data18_13TeV/20190318/physics_25ns_Triggerno17e33prim.xml
 
-#TDPPath dev/AnalysisTop/TopDataPreparation/versions/XSection-MC16-13TeV.data/XSection-MC16-13TeV-20200305-375baf1a.data
 ######################################## PRW Files ###################################################
 
 ## Pile-up reweighting tool - Metadata determines which to use
@@ -98,7 +97,7 @@ BTaggingTrackJetWP DL1r:FixedCutBEff_77
 JetUncertainties_NPModel CategoryReduction
 LargeRJESJMSConfig CombMass
 LargeRJetUncertainties_JESJERJMS_NPModel CategoryJES_FullJER_FullJMS
-LargeRJetUncertainties_JMR_NPModel FullJMR_COMB
+LargeRJetUncertainties_JMR_NPModel FullJMR_COMB_newBinning
 
 ElectronID TightLH
 ElectronIDLoose MediumLH
