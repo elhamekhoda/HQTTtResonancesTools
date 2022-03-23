@@ -130,7 +130,8 @@ isTOPQ False
 fakeLeptonSel False
 isSherpaW True
 SaveFullTruthRecord False
-DumpToolConfigTo toolConfig
+DumpToolConfigTo toolConfig.txt
+MCGeneratorWeights Nominal
 
 FilterBranches truthparticle_*,mu_trigMatch_*,el_trigMatch_*,HLT_*,tjet_DL1*,jet_DL1*,weight_globalLeptonTriggerSF*,weight_oldTriggerSF*,tjet_numConstituents,el_true_firstEgMotherTruthType,el_true_firstEgMotherTruthOrigin,weight_trackjet_bTagSF_DL1r_77_*
 #MA_*,chi2_*,MC_ttbar_lpj*,MC_tl_*,MC_th_*,MC_w*,MC_bl*,MC_bh*,MC_W*,MC_b*,MC_i*,MC_p*,MC_e_*,MC_m*,MC_Q*,MC_a*
@@ -183,7 +184,7 @@ JETCLEAN LooseBad
 MET > 20000
 MET+MWT > 60000
 JET_N 25000 >= 1
-JET_N_BTAG DL1r:FixedCutBEff_77 >= 1
+# JET_N_BTAG DL1r:FixedCutBEff_77 >= 1
 
 SUB boosted_common
 . COMMON
