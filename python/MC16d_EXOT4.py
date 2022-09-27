@@ -124,7 +124,7 @@ TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_dijets").datasets = [
 ]
 
 #W+jets new samples: Sherpa 2.2.11
-TopExamples.grid.Add("mc16d_13TeV_25ns_FS_EXOT4_Wjets2211").datasets = [
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_Wjets2211").datasets = [
 'mc16_13TeV.700338.Sh_2211_Wenu_maxHTpTV2_BFilter.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',
 'mc16_13TeV.700339.Sh_2211_Wenu_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',
 'mc16_13TeV.700340.Sh_2211_Wenu_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',
@@ -138,7 +138,6 @@ TopExamples.grid.Add("mc16d_13TeV_25ns_FS_EXOT4_Wjets2211").datasets = [
 'mc16_13TeV.700348.Sh_2211_Wtaunu_H_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',
 'mc16_13TeV.700349.Sh_2211_Wtaunu_H_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149'
 ]
-
 
 #W+jets samples
 TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_Wjets221").datasets = [
@@ -184,6 +183,25 @@ TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_Wjets221").datasets = [
 'mc16_13TeV.364195.Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV280_500_BFilter.deriv.DAOD_EXOT4.e5340_s3126_r10201_p4149',
 'mc16_13TeV.364196.Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV500_1000.deriv.DAOD_EXOT4.e5340_s3126_r10201_p4149',
 'mc16_13TeV.364197.Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV1000_E_CMS.deriv.DAOD_EXOT4.e5340_s3126_r10201_p4149'
+]
+
+#Z+jets new samples: Sherpa 2.2.11
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_Zjets2211").datasets = [
+'mc16_13TeV.700320.Sh_2211_Zee_maxHTpTV2_BFilter.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',             
+'mc16_13TeV.700321.Sh_2211_Zee_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',        
+'mc16_13TeV.700322.Sh_2211_Zee_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',          
+'mc16_13TeV.700323.Sh_2211_Zmumu_maxHTpTV2_BFilter.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',           
+'mc16_13TeV.700324.Sh_2211_Zmumu_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',      
+'mc16_13TeV.700325.Sh_2211_Zmumu_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',        
+'mc16_13TeV.700326.Sh_2211_Ztautau_LL_maxHTpTV2_BFilter.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',      
+'mc16_13TeV.700327.Sh_2211_Ztautau_LL_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149', 
+'mc16_13TeV.700328.Sh_2211_Ztautau_LL_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',   
+'mc16_13TeV.700329.Sh_2211_Ztautau_LH_maxHTpTV2_BFilter.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',      
+'mc16_13TeV.700330.Sh_2211_Ztautau_LH_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149', 
+'mc16_13TeV.700331.Sh_2211_Ztautau_LH_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',   
+'mc16_13TeV.700332.Sh_2211_Ztautau_HH_maxHTpTV2_BFilter.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149',      
+'mc16_13TeV.700333.Sh_2211_Ztautau_HH_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149', 
+'mc16_13TeV.700334.Sh_2211_Ztautau_HH_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r10201_p4149'
 ]
 
 #Z+jets samples
@@ -309,6 +327,124 @@ TopExamples.grid.availableDatasets['MC16d_13TeV_25ns_FS_EXOT4_ZprimeAll'].datase
 TopExamples.grid.availableDatasets['MC16d_13TeV_25ns_FS_EXOT4_ZprimeAll'].datasets += TopExamples.grid.availableDatasets['MC16d_13TeV_25ns_FS_EXOT4_Zprime4000'].datasets
 TopExamples.grid.availableDatasets['MC16d_13TeV_25ns_FS_EXOT4_ZprimeAll'].datasets += TopExamples.grid.availableDatasets['MC16d_13TeV_25ns_FS_EXOT4_Zprime5000'].datasets
 TopExamples.grid.availableDatasets['MC16d_13TeV_25ns_FS_EXOT4_ZprimeAll'].datasets += TopExamples.grid.availableDatasets['MC16d_13TeV_25ns_FS_EXOT4_Zprime6000'].datasets
+
+#Z' signal samples: Madgraph
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprimeALL").datasets = [
+'mc16_13TeV.508853.MGPy8EG_A14NN23LO_Zprime400_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508854.MGPy8EG_A14NN23LO_Zprime500_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508855.MGPy8EG_A14NN23LO_Zprime750_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508856.MGPy8EG_A14NN23LO_Zprime1000_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508857.MGPy8EG_A14NN23LO_Zprime1250_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508858.MGPy8EG_A14NN23LO_Zprime1500_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508859.MGPy8EG_A14NN23LO_Zprime1750_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508860.MGPy8EG_A14NN23LO_Zprime2000_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508861.MGPy8EG_A14NN23LO_Zprime2500_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508862.MGPy8EG_A14NN23LO_Zprime3000_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508863.MGPy8EG_A14NN23LO_Zprime3500_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508864.MGPy8EG_A14NN23LO_Zprime4000_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508865.MGPy8EG_A14NN23LO_Zprime4500_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508866.MGPy8EG_A14NN23LO_Zprime5000_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+'mc16_13TeV.508867.MGPy8EG_A14NN23LO_Zprime6000_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime400").datasets = [
+'mc16_13TeV.508853.MGPy8EG_A14NN23LO_Zprime400_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime500").datasets = [
+'mc16_13TeV.508854.MGPy8EG_A14NN23LO_Zprime500_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime750").datasets = [
+'mc16_13TeV.508855.MGPy8EG_A14NN23LO_Zprime750_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime1000").datasets = [
+'mc16_13TeV.508856.MGPy8EG_A14NN23LO_Zprime1000_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime1250").datasets = [
+'mc16_13TeV.508857.MGPy8EG_A14NN23LO_Zprime1250_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime1500").datasets = [
+'mc16_13TeV.508858.MGPy8EG_A14NN23LO_Zprime1500_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime1750").datasets = [
+'mc16_13TeV.508859.MGPy8EG_A14NN23LO_Zprime1750_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime2000").datasets = [
+'mc16_13TeV.508860.MGPy8EG_A14NN23LO_Zprime2000_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime2500").datasets = [
+'mc16_13TeV.508861.MGPy8EG_A14NN23LO_Zprime2500_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime3000").datasets = [
+'mc16_13TeV.508862.MGPy8EG_A14NN23LO_Zprime3000_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime3500").datasets = [
+'mc16_13TeV.508863.MGPy8EG_A14NN23LO_Zprime3500_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime4000").datasets = [
+'mc16_13TeV.508864.MGPy8EG_A14NN23LO_Zprime4000_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime4500").datasets = [
+'mc16_13TeV.508865.MGPy8EG_A14NN23LO_Zprime4500_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime5000").datasets = [
+'mc16_13TeV.508866.MGPy8EG_A14NN23LO_Zprime5000_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGZprime6000").datasets = [
+'mc16_13TeV.508867.MGPy8EG_A14NN23LO_Zprime6000_Width3_tt_nallh.deriv.DAOD_EXOT4.e8357_s3126_r10201_p4840',
+]
+
+#kk Gluon signal samples
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGkkg500").datasets = [
+'mc16_13TeV.510073.MGPy8EG_A14NN23LO_KKG500_Width30_GlEqGr_tt_nallh.deriv.DAOD_EXOT4.e8418_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGkkg1000").datasets = [
+'mc16_13TeV.510074.MGPy8EG_A14NN23LO_KKG1000_Width30_GlEqGr_tt_nallh.deriv.DAOD_EXOT4.e8418_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGkkg1500").datasets = [
+'mc16_13TeV.510075.MGPy8EG_A14NN23LO_KKG1500_Width30_GlEqGr_tt_nallh.deriv.DAOD_EXOT4.e8418_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGkkg2000").datasets = [
+'mc16_13TeV.510076.MGPy8EG_A14NN23LO_KKG2000_Width30_GlEqGr_tt_nallh.deriv.DAOD_EXOT4.e8418_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGkkg2500").datasets = [
+'mc16_13TeV.510077.MGPy8EG_A14NN23LO_KKG2500_Width30_GlEqGr_tt_nallh.deriv.DAOD_EXOT4.e8418_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGkkg3000").datasets = [
+'mc16_13TeV.510078.MGPy8EG_A14NN23LO_KKG3000_Width30_GlEqGr_tt_nallh.deriv.DAOD_EXOT4.e8418_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGkkg3500").datasets = [
+'mc16_13TeV.510079.MGPy8EG_A14NN23LO_KKG3500_Width30_GlEqGr_tt_nallh.deriv.DAOD_EXOT4.e8418_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGkkg4000").datasets = [
+'mc16_13TeV.510080.MGPy8EG_A14NN23LO_KKG4000_Width30_GlEqGr_tt_nallh.deriv.DAOD_EXOT4.e8418_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGkkg4500").datasets = [
+'mc16_13TeV.510081.MGPy8EG_A14NN23LO_KKG4500_Width30_GlEqGr_tt_nallh.deriv.DAOD_EXOT4.e8418_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_MGkkg5000").datasets = [
+'mc16_13TeV.510082.MGPy8EG_A14NN23LO_KKG5000_Width30_GlEqGr_tt_nallh.deriv.DAOD_EXOT4.e8418_s3126_r10201_p4905',
+]
+
+#kk Graviton signal samples
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_KKGrav400").datasets = [
+'mc16_13TeV.305012.MadGraphPythia8EvtGen_A14NNPDF23LO_RS_G_tt_c10_m0400.deriv.DAOD_EXOT4.e4859_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_KKGrav500").datasets = [
+'mc16_13TeV.305013.MadGraphPythia8EvtGen_A14NNPDF23LO_RS_G_tt_c10_m0500.deriv.DAOD_EXOT4.e4859_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_KKGrav750").datasets = [
+'mc16_13TeV.305014.MadGraphPythia8EvtGen_A14NNPDF23LO_RS_G_tt_c10_m0750.deriv.DAOD_EXOT4.e4859_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_KKGrav1000").datasets = [
+'mc16_13TeV.305015.MadGraphPythia8EvtGen_A14NNPDF23LO_RS_G_tt_c10_m1000.deriv.DAOD_EXOT4.e4859_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_KKGrav2000").datasets = [
+'mc16_13TeV.305016.MadGraphPythia8EvtGen_A14NNPDF23LO_RS_G_tt_c10_m2000.deriv.DAOD_EXOT4.e4859_s3126_r10201_p4905',
+]
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_KKGrav3000").datasets = [
+'mc16_13TeV.305017.MadGraphPythia8EvtGen_A14NNPDF23LO_RS_G_tt_c10_m3000.deriv.DAOD_EXOT4.e4859_s3126_r10201_p4905',
+]
+
 
 TopExamples.grid.Add("MC16d_EXOT4_combination").datasets = [
 'mc16_13TeV.302286.MadGraphPythia8EvtGen_A14NNPDF23LO_HVT_Agv1_VcWZ_lvll_m3000.deriv.DAOD_EXOT4.e4069_a875_r10201_p3652',
