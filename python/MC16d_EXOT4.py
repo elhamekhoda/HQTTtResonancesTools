@@ -87,12 +87,21 @@ TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_singletop").datasets = [
 'mc16_13TeV.410659.PhPy8EG_A14_tchan_BW50_lept_antitop.deriv.DAOD_EXOT4.e6671_s3126_r10201_p4149'
 ]
 
+#Single top systematic samples
+TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_singletop_syst").datasets = [
+'mc16_13TeV.410654.PowhegPythia8EvtGen_A14_Wt_DS_inclusive_top.deriv.DAOD_TOPQ1.e6552_s3126_r10201_p4514',
+'mc16_13TeV.410655.PowhegPythia8EvtGen_A14_Wt_DS_inclusive_antitop.deriv.DAOD_TOPQ1.e6552_s3126_r10201_p4514',
+'mc16_13TeV.412002.aMcAtNloPythia8EvtGen_HThalfscale_tW_inclusive.deriv.DAOD_TOPQ1.e6817_a875_r10201_p4514',
+'mc16_13TeV.600727.PhH7EG_H7UE_716_Wt_DR_inclusive_top.deriv.DAOD_TOPQ1.e8272_a875_r10201_p4514',
+'mc16_13TeV.600728.PhH7EG_H7UE_716_Wt_DR_inclusive_antitop.deriv.DAOD_TOPQ1.e8272_a875_r10201_p4514',
+]
+
+
 #ttbar+V samples
 TopExamples.grid.Add("MC16d_13TeV_25ns_FS_EXOT4_ttbarV").datasets = [
 'mc16_13TeV.410155.aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttW.deriv.DAOD_EXOT4.e5070_s3126_r10201_p4149',
 'mc16_13TeV.410156.aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttZnunu.deriv.DAOD_EXOT4.e5070_s3126_r10201_p4149',
 'mc16_13TeV.410157.aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttZqq.deriv.DAOD_EXOT4.e5070_s3126_r10201_p4149',
-
 ]
 
 #Di-boson

@@ -17,12 +17,12 @@ GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/phy
 ## Pile-up reweighting tool - Metadata determines which to use
 
 # MC16a configuration to compare with 2015-16
-#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root # HQTTtResonancesTools/PRW_mttSlicedTtbar_mc16a.root
+#PRWConfigFiles_FS HQTTtResonancesTools/kkg_mc16a.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root # HQTTtResonancesTools/PRW_mttSlicedTtbar_mc16a.root
 #PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.AF.v2/prw.merged.root
 #PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root
 
 # MC16d configuration to compare with 2017-only
-#PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
+#PRWConfigFiles_FS HQTTtResonancesTools/kkg_mc16d.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
 #PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root
 #PRWActualMu_AF GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
 #PRWActualMu_FS GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
@@ -34,7 +34,7 @@ GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/phy
 #PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root
 
 # MC16e configuration to comapre with 2018-only
-PRWConfigFiles_FS HQTTtResonancesTools/PRW_Zp_mc16e.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root
+PRWConfigFiles_FS HQTTtResonancesTools/kkg_mc16e.root HQTTtResonancesTools/PRW_Zp_mc16e.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root
 PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
 PRWActualMu_AF GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
 PRWActualMu_FS GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
@@ -118,7 +118,7 @@ TtresRunHTT False
 
 # Note that turning `TtresrunEWK` on when running ttbar samples is necessary in order to apply EWKCorrection in the later stage.
 # However, it may increase the running time significantly when running non-ttbar samples. Therefore, it must be only turned OFF with caution.
-TtresrunEWK True
+TtresrunEWK False
 TtresSavePartons True
 SaveTruthJets True
 
@@ -129,8 +129,10 @@ SaveFullTruthRecord False
 DumpToolConfigTo toolConfig.txt
 MCGeneratorWeights Nominal
 
-FilterBranches truthparticle_*
+#FilterBranches truthparticle_*
 #MA_*,chi2_*,MC_ttbar_lpj*,MC_tl_*,MC_th_*,MC_w*,MC_bl*,MC_bh*,MC_W*,MC_b*,MC_i*,MC_p*,MC_e_*,MC_m*,MC_Q*,MC_a*
+
+FilterBranches truthparticle_*,mu_trigMatch_*,el_trigMatch_*,HLT_*,tjet_DL1*,jet_DL1*,weight_globalLeptonTriggerSF*,weight_oldTriggerSF*,tjet_numConstituents,el_true_firstEgMotherTruthType,el_true_firstEgMotherTruthOrigin,weight_trackjet_bTagSF_DL1r_77_*
 #FilterPartonLevelBranches
 
 ### Global lepton trigger scale factor example
