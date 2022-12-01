@@ -94,7 +94,7 @@ TopExamples.grid.Add("MC16a_13TeV_25ns_FS_EXOT4_singletop_syst").datasets = [
 'mc16_13TeV.412002.aMcAtNloPythia8EvtGen_HThalfscale_tW_inclusive.deriv.DAOD_TOPQ1.e6817_a875_r9364_p4514',
 'mc16_13TeV.600727.PhH7EG_H7UE_716_Wt_DR_inclusive_top.deriv.DAOD_TOPQ1.e8272_a875_r9364_p4514',
 'mc16_13TeV.600728.PhH7EG_H7UE_716_Wt_DR_inclusive_antitop.deriv.DAOD_TOPQ1.e8272_a875_r9364_p4514',
-
+]
 
 #ttbar+V samples
 TopExamples.grid.Add("MC16a_13TeV_25ns_FS_EXOT4_ttbarV").datasets = [
