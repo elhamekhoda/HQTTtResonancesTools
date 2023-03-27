@@ -4,7 +4,7 @@ This Tool is developed to fulfill the purpose of the exotics ttbar resonances se
 
 ## Current Version:
 
-**AanalysisTop, 21.2.180**    
+**AanalysisTop, 21.2.243**    
 
 Make sure you setup AnalysisBase instead of AnalysisTop for release >=21.2.99
 
@@ -28,7 +28,7 @@ Make sure you setup AnalysisBase instead of AnalysisTop for release >=21.2.99
     cd MyProject
     mkdir build source run
     cd build
-    acmSetup --sourcedir=../source AnalysisBase,21.2.180
+    acmSetup --sourcedir=../source AnalysisBase,21.2.243
     ```
     **NOTE:** Next time when you come back, simply do `cd ./build/; acmSetup;`. If you've made some change, do `acm find_packages; acm compile;` as well.
 
