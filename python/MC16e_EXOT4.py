@@ -17,7 +17,7 @@ TopExamples.grid.Add("MC16e_13TeV_25ns_FS_EXOT4_ttbar_nonallhad_systematics").da
 'mc16_13TeV.410480.PhPy8EG_A14_ttbar_hdamp517p5_SingleLep.deriv.DAOD_EXOT4.e6454_a875_r10724_p4149',
 'mc16_13TeV.410482.PhPy8EG_A14_ttbar_hdamp517p5_dil.deriv.DAOD_EXOT4.e6454_a875_r10724_p4149',
 'mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.deriv.DAOD_EXOT4.e6337_a875_r10724_p4149',
-'mc16_13TeV.411288.PhPy8EG_A14_ttbar_hdamp258p75_MECoff_nonallhad.deriv.DAOD_TOPQ1.e7948_a875_r10724_p4346'
+'mc16_13TeV.411288.PhPy8EG_A14_ttbar_hdamp258p75_MECoff_nonallhad.deriv.DAOD_TOPQ1.e7948_a875_r10724_p4514'
 ]
 
 #ttbar systematics samples: inclusive AFII
