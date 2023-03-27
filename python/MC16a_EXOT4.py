@@ -212,12 +212,6 @@ TopExamples.grid.Add("MC16a_13TeV_25ns_FS_EXOT4_Zjets2211").datasets = [
 'mc16_13TeV.700332.Sh_2211_Ztautau_HH_maxHTpTV2_BFilter.deriv.DAOD_EXOT4.e8351_s3126_r9364_p4149',      
 'mc16_13TeV.700333.Sh_2211_Ztautau_HH_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r9364_p4149', 
 'mc16_13TeV.700334.Sh_2211_Ztautau_HH_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r9364_p4149'
-'mc16_13TeV.700320.Sh_2211_Zee_maxHTpTV2_BFilter.deriv.DAOD_EXOT4.e8351_s3126_r9364_p4149',
-'mc16_13TeV.700321.Sh_2211_Zee_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r9364_p4149',
-'mc16_13TeV.700322.Sh_2211_Zee_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r9364_p4149',
-'mc16_13TeV.700323.Sh_2211_Zmumu_maxHTpTV2_BFilter.deriv.DAOD_EXOT4.e8351_s3126_r9364_p4149',
-'mc16_13TeV.700324.Sh_2211_Zmumu_maxHTpTV2_CFilterBVeto.deriv.DAOD_EXOT4.e8351_s3126_r9364_p4149',
-'mc16_13TeV.700325.Sh_2211_Zmumu_maxHTpTV2_CVetoBVeto.deriv.DAOD_EXOT4.e8351_s3126_r9364_p4149'
 ]
 
 #Z+jets samples
