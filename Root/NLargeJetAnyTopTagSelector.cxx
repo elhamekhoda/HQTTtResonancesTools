@@ -26,8 +26,10 @@ bool NLargeJetAnyTopTagSelector::apply(const top::Event& event) const {
     int nGoodJets = 0;
     for (const auto* const largeJet : event.m_largeJets) {
         int good = 0;
-        if (largeJet->isAvailable<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkInclusive80") || largeJet->isAvailable<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkContained80") ){
-            if (largeJet->getAttribute<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkInclusive80") || largeJet->getAttribute<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkContained80") ){
+        //if ( largeJet->isAvailable<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkContained80") || largeJet->isAvailable<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkInclusive80")  ){
+        if ( largeJet->isAvailable<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkInclusive80")  ){
+            //if (largeJet->getAttribute<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkInclusive80") || largeJet->getAttribute<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkContained80") ){
+            if ( largeJet->getAttribute<char>("isTagged_JSSWTopTaggerDNN_DNNTaggerTopQuarkInclusive80") ){
                 good = 1;
                 ++nGoodJets;
             }
