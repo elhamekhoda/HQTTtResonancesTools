@@ -203,16 +203,16 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         // Sherpa 2.2 reweighting
         systematicTree->makeOutputVariable(m_Sherpa22_weight, "weight_Sherpa22_corr");
 #endif
-        systematicTree->makeOutputVariable(m_tjet_label, "tjet_label");
-        systematicTree->makeOutputVariable(m_tjet_ghostlabel, "tjet_ghostlabel");
-        systematicTree->makeOutputVariable(m_tjet_numConstituents, "tjet_numConstituents");
-        if (m_trackjetBtaggingExtra) {
-            //b-hadrons within dR=0.3
-            systematicTree->makeOutputVariable(m_tjet_BHadron_eta, "tjet_BHadron_eta");
-            systematicTree->makeOutputVariable(m_tjet_BHadron_phi, "tjet_BHadron_phi");
-            systematicTree->makeOutputVariable(m_tjet_BHadron_pt, "tjet_BHadron_pt");
-            systematicTree->makeOutputVariable(m_tjet_BHadron_e, "tjet_BHadron_e");
-        }
+        // systematicTree->makeOutputVariable(m_tjet_label, "tjet_label");  15Mar2023
+        // systematicTree->makeOutputVariable(m_tjet_ghostlabel, "tjet_ghostlabel");
+        // systematicTree->makeOutputVariable(m_tjet_numConstituents, "tjet_numConstituents");
+        // if (m_trackjetBtaggingExtra) {
+        //     //b-hadrons within dR=0.3
+        //     systematicTree->makeOutputVariable(m_tjet_BHadron_eta, "tjet_BHadron_eta");
+        //     systematicTree->makeOutputVariable(m_tjet_BHadron_phi, "tjet_BHadron_phi");
+        //     systematicTree->makeOutputVariable(m_tjet_BHadron_pt, "tjet_BHadron_pt");
+        //     systematicTree->makeOutputVariable(m_tjet_BHadron_e, "tjet_BHadron_e");
+        // }
 
 #ifdef ENABLE_BTAG_DEBUG
         //per-jet b-tag SF and their variations
@@ -264,7 +264,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         // including mass, sqrt(d_12), dr, dphi, etc.
         // so that we can save all other large-R jets as well just passing pt and eta cuts
         systematicTree->makeOutputVariable(m_ljet_good, "ljet_good");
-        systematicTree->makeOutputVariable(m_ljet_notgood, "ljet_notgood");
+        // systematicTree->makeOutputVariable(m_ljet_notgood, "ljet_notgood");  15Mar2023
         systematicTree->makeOutputVariable(m_ljet_tau32_wta, "ljet_tau32_wta");
         systematicTree->makeOutputVariable(m_ljet_tau21_wta, "ljet_tau21_wta");
         systematicTree->makeOutputVariable(m_ljet_angular_cuts, "ljet_angular_cuts"); // large-R jet angular cuts
@@ -308,7 +308,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
         systematicTree->makeOutputVariable(m_ljet_nghosttrackjetcc, "ljet_nghosttrackjetcc");
         systematicTree->makeOutputVariable(m_ljet_nghosttrackjetl, "ljet_nghosttrackjetl");
 #endif
-        systematicTree->makeOutputVariable(m_ljtmatch, "ljtmatch");
+        // systematicTree->makeOutputVariable(m_ljtmatch, "ljtmatch");  15Mar2023
         systematicTree->makeOutputVariable(m_initial_type, "initial_type"); // add information about initial state  1-GG,2-UU,3-DD
         //systematicTree->makeOutputVariable(m_weight_EW,"weight_EW");
 
@@ -429,7 +429,7 @@ void TtresEventSaverFlatNtuple::initialize(std::shared_ptr<top::TopConfig> confi
 
         if (m_isMC){
             systematicTree->makeOutputVariable(m_MC_ttbar_beforeFSR_m,    "MC_ttbar_beforeFSR_m");
-            cout << "m_MC_ttbar_afterFSR_beforeDecay_m: "<< m_MC_ttbar_afterFSR_beforeDecay_m <<endl;
+            //cout << "m_MC_ttbar_afterFSR_beforeDecay_m: "<< m_MC_ttbar_afterFSR_beforeDecay_m <<endl;
             systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_m,    "MC_ttbar_afterFSR_m");
             // post-FSR top or anti-top found using last top pair before decay // only store ttbar mass now
             systematicTree->makeOutputVariable(m_MC_ttbar_afterFSR_beforeDecay_m, "MC_ttbar_afterFSR_beforeDecay_m");
@@ -1750,28 +1750,28 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
         m_chi2_all = chi2Tool->getResult_Chi2All();
     }
 
-    m_tjet_numConstituents.resize(trackjets->size(), -1);
-    m_tjet_label.resize(trackjets->size(), 0);
-    m_tjet_ghostlabel.resize(trackjets->size(), 0);
+    // m_tjet_numConstituents.resize(trackjets->size(), -1);
+    // m_tjet_label.resize(trackjets->size(), 0);
+    // m_tjet_ghostlabel.resize(trackjets->size(), 0);
 
-    m_tjet_bTagSF_70.resize(trackjets->size(), 1);
-    m_tjet_bTagSF_70_eigen_B_up.resize(trackjets->size(), std::vector<float>());
-    m_tjet_bTagSF_70_eigen_B_down.resize(trackjets->size(), std::vector<float>());
-    m_tjet_bTagSF_70_eigen_C_up.resize(trackjets->size(), std::vector<float>());
-    m_tjet_bTagSF_70_eigen_C_down.resize(trackjets->size(), std::vector<float>());
-    m_tjet_bTagSF_70_eigen_Light_up.resize(trackjets->size(), std::vector<float>());
-    m_tjet_bTagSF_70_eigen_Light_down.resize(trackjets->size(), std::vector<float>());
-    m_tjet_bTagSF_70_syst_extrapolation_up.resize(trackjets->size(), 1);
-    m_tjet_bTagSF_70_syst_extrapolation_down.resize(trackjets->size(), 1);
-    m_tjet_bTagSF_70_syst_extrapolation_from_charm_up.resize(trackjets->size(), 1);
-    m_tjet_bTagSF_70_syst_extrapolation_from_charm_down.resize(trackjets->size(), 1);
+    // m_tjet_bTagSF_70.resize(trackjets->size(), 1);
+    // m_tjet_bTagSF_70_eigen_B_up.resize(trackjets->size(), std::vector<float>());
+    // m_tjet_bTagSF_70_eigen_B_down.resize(trackjets->size(), std::vector<float>());
+    // m_tjet_bTagSF_70_eigen_C_up.resize(trackjets->size(), std::vector<float>());
+    // m_tjet_bTagSF_70_eigen_C_down.resize(trackjets->size(), std::vector<float>());
+    // m_tjet_bTagSF_70_eigen_Light_up.resize(trackjets->size(), std::vector<float>());
+    // m_tjet_bTagSF_70_eigen_Light_down.resize(trackjets->size(), std::vector<float>());
+    // m_tjet_bTagSF_70_syst_extrapolation_up.resize(trackjets->size(), 1);
+    // m_tjet_bTagSF_70_syst_extrapolation_down.resize(trackjets->size(), 1);
+    // m_tjet_bTagSF_70_syst_extrapolation_from_charm_up.resize(trackjets->size(), 1);
+    // m_tjet_bTagSF_70_syst_extrapolation_from_charm_down.resize(trackjets->size(), 1);
 
-    if (m_trackjetBtaggingExtra) {
-        m_tjet_BHadron_eta.resize(trackjets->size(), std::vector<float>());
-        m_tjet_BHadron_pt.resize(trackjets->size(), std::vector<float>());
-        m_tjet_BHadron_phi.resize(trackjets->size(), std::vector<float>());
-        m_tjet_BHadron_e.resize(trackjets->size(), std::vector<float>());
-    }
+    // if (m_trackjetBtaggingExtra) {
+    //     m_tjet_BHadron_eta.resize(trackjets->size(), std::vector<float>());
+    //     m_tjet_BHadron_pt.resize(trackjets->size(), std::vector<float>());
+    //     m_tjet_BHadron_phi.resize(trackjets->size(), std::vector<float>());
+    //     m_tjet_BHadron_e.resize(trackjets->size(), std::vector<float>());
+    // }
 
 #ifdef ENABLE_BTAG_DEBUG
     m_tjet_bTagSF_70_syst_B_up.resize(trackjets->size(), 1);
@@ -1793,100 +1793,100 @@ void TtresEventSaverFlatNtuple::saveEvent(const top::Event& event) {
     m_weight_trackjet_bTagSF_70_env_extrapolation_from_charm_down = 1;
 #endif
 
-    for (unsigned int k = 0; k < trackjets->size(); ++k) {
-        const xAOD::Jet *trackjetPtr = trackjets->at(k);
-        m_tjet_label[k] = xAOD::jetFlavourLabel(trackjetPtr, xAOD::ExclConeHadron);
-        m_tjet_ghostlabel[k] = xAOD::jetFlavourLabel(trackjetPtr, xAOD::GAFinalHadron);
+//     for (unsigned int k = 0; k < trackjets->size(); ++k) {
+//         const xAOD::Jet *trackjetPtr = trackjets->at(k);
+//         m_tjet_label[k] = xAOD::jetFlavourLabel(trackjetPtr, xAOD::ExclConeHadron);
+//         m_tjet_ghostlabel[k] = xAOD::jetFlavourLabel(trackjetPtr, xAOD::GAFinalHadron);
 
-        m_tjet_numConstituents[k] = trackjetPtr->numConstituents();
+//         m_tjet_numConstituents[k] = trackjetPtr->numConstituents();
 
-        if (trackjetPtr->isAvailable<float>(btaggingAlgWP))
-            m_tjet_bTagSF_70[k] = trackjetPtr->auxdataConst<float>(btaggingAlgWP);
+//         if (trackjetPtr->isAvailable<float>(btaggingAlgWP))
+//             m_tjet_bTagSF_70[k] = trackjetPtr->auxdataConst<float>(btaggingAlgWP);
 
-        /*
-               m_tjet_bTagSF_70_eigen_B_up[k].resize(n_b, 1);
-               m_tjet_bTagSF_70_eigen_B_down[k].resize(n_b, 1);
-               for (int l = 0; l < n_b; ++l) {
-                 if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_B_"+std::to_string(l)+"__1up"))
-                   m_tjet_bTagSF_70_eigen_B_up[k][l] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_B_"+std::to_string(l)+"__1up");
-                 if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_B_"+std::to_string(l)+"__1down"))
-                 m_tjet_bTagSF_70_eigen_B_down[k][l] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_B_"+std::to_string(l)+"__1down");
-               }
-               m_tjet_bTagSF_70_eigen_C_up[k].resize(n_c, 1);
-               m_tjet_bTagSF_70_eigen_C_down[k].resize(n_c, 1);
-               for (int l = 0; l < n_c; ++l) {
-                 if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_C_"+std::to_string(l)+"__1up"))
-                   m_tjet_bTagSF_70_eigen_C_up[k][l] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_C_"+std::to_string(l)+"__1up");
-                 if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_C_"+std::to_string(l)+"__1down"))
-                   m_tjet_bTagSF_70_eigen_C_down[k][l] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_C_"+std::to_string(l)+"__1down");
-               }
-               m_tjet_bTagSF_70_eigen_Light_up[k].resize(n_l, 1);
-               m_tjet_bTagSF_70_eigen_Light_down[k].resize(n_l, 1);
-               for (int l = 0; l < n_l; ++l) {
-                 if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_Light_"+std::to_string(l)+"__1up"))
-                   m_tjet_bTagSF_70_eigen_Light_up[k][l] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_Light_"+std::to_string(l)+"__1up");
-                 if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_Light_"+std::to_string(l)+"__1down"))
-                   m_tjet_bTagSF_70_eigen_Light_down[k][l] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_Light_"+std::to_string(l)+"__1down");
-               }
-        */
-        if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation__1up"))
-            m_tjet_bTagSF_70_syst_extrapolation_up[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation__1up");
-        if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation__1down"))
-            m_tjet_bTagSF_70_syst_extrapolation_down[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation__1down");
+//         /*
+//                m_tjet_bTagSF_70_eigen_B_up[k].resize(n_b, 1);
+//                m_tjet_bTagSF_70_eigen_B_down[k].resize(n_b, 1);
+//                for (int l = 0; l < n_b; ++l) {
+//                  if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_B_"+std::to_string(l)+"__1up"))
+//                    m_tjet_bTagSF_70_eigen_B_up[k][l] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_B_"+std::to_string(l)+"__1up");
+//                  if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_B_"+std::to_string(l)+"__1down"))
+//                  m_tjet_bTagSF_70_eigen_B_down[k][l] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_B_"+std::to_string(l)+"__1down");
+//                }
+//                m_tjet_bTagSF_70_eigen_C_up[k].resize(n_c, 1);
+//                m_tjet_bTagSF_70_eigen_C_down[k].resize(n_c, 1);
+//                for (int l = 0; l < n_c; ++l) {
+//                  if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_C_"+std::to_string(l)+"__1up"))
+//                    m_tjet_bTagSF_70_eigen_C_up[k][l] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_C_"+std::to_string(l)+"__1up");
+//                  if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_C_"+std::to_string(l)+"__1down"))
+//                    m_tjet_bTagSF_70_eigen_C_down[k][l] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_C_"+std::to_string(l)+"__1down");
+//                }
+//                m_tjet_bTagSF_70_eigen_Light_up[k].resize(n_l, 1);
+//                m_tjet_bTagSF_70_eigen_Light_down[k].resize(n_l, 1);
+//                for (int l = 0; l < n_l; ++l) {
+//                  if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_Light_"+std::to_string(l)+"__1up"))
+//                    m_tjet_bTagSF_70_eigen_Light_up[k][l] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_Light_"+std::to_string(l)+"__1up");
+//                  if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_Light_"+std::to_string(l)+"__1down"))
+//                    m_tjet_bTagSF_70_eigen_Light_down[k][l] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Eigen_Light_"+std::to_string(l)+"__1down");
+//                }
+//         */
+//         if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation__1up"))
+//             m_tjet_bTagSF_70_syst_extrapolation_up[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation__1up");
+//         if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation__1down"))
+//             m_tjet_bTagSF_70_syst_extrapolation_down[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation__1down");
 
-        if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation from charm__1up"))
-            m_tjet_bTagSF_70_syst_extrapolation_from_charm_up[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation from charm__1up");
-        if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation from charm__1down"))
-            m_tjet_bTagSF_70_syst_extrapolation_from_charm_down[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation from charm__1down");
-#ifdef ENABLE_BTAG_DEBUG
+//         if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation from charm__1up"))
+//             m_tjet_bTagSF_70_syst_extrapolation_from_charm_up[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation from charm__1up");
+//         if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation from charm__1down"))
+//             m_tjet_bTagSF_70_syst_extrapolation_from_charm_down[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_extrapolation from charm__1down");
+// #ifdef ENABLE_BTAG_DEBUG
 
-        if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_B_systematics__1up"))
-            m_tjet_bTagSF_70_syst_B_up[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_B_systematics__1up");
-        if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_B_systematics__1down"))
-            m_tjet_bTagSF_70_syst_B_down[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_B_systematics__1down");
+//         if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_B_systematics__1up"))
+//             m_tjet_bTagSF_70_syst_B_up[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_B_systematics__1up");
+//         if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_B_systematics__1down"))
+//             m_tjet_bTagSF_70_syst_B_down[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_B_systematics__1down");
 
-        if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_C_systematics__1up"))
-            m_tjet_bTagSF_70_syst_C_up[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_C_systematics__1up");
-        if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_C_systematics__1down"))
-            m_tjet_bTagSF_70_syst_C_down[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_C_systematics__1down");
+//         if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_C_systematics__1up"))
+//             m_tjet_bTagSF_70_syst_C_up[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_C_systematics__1up");
+//         if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_C_systematics__1down"))
+//             m_tjet_bTagSF_70_syst_C_down[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_C_systematics__1down");
 
-        if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Light_systematics__1up"))
-            m_tjet_bTagSF_70_syst_Light_up[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Light_systematics__1up");
-        if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Light_systematics__1down"))
-            m_tjet_bTagSF_70_syst_Light_down[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Light_systematics__1down");
+//         if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Light_systematics__1up"))
+//             m_tjet_bTagSF_70_syst_Light_up[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Light_systematics__1up");
+//         if (trackjetPtr->isAvailable<float>("btag_SF_FixedCutBEff_70_FT_EFF_Light_systematics__1down"))
+//             m_tjet_bTagSF_70_syst_Light_down[k] = trackjetPtr->auxdataConst<float>("btag_SF_FixedCutBEff_70_FT_EFF_Light_systematics__1down");
 
-        if (trackjetPtr->pt() > 10e3 && std::fabs(trackjetPtr->eta()) < 2.5 && trackjetPtr->numConstituents() >= 2) {
-            m_weight_trackjet_bTagSF_70_env_nom *= m_tjet_bTagSF_70[k];
-            m_weight_trackjet_bTagSF_70_env_B_up *= m_tjet_bTagSF_70_syst_B_up[k];
-            m_weight_trackjet_bTagSF_70_env_B_down *= m_tjet_bTagSF_70_syst_B_down[k];
-            m_weight_trackjet_bTagSF_70_env_C_up *= m_tjet_bTagSF_70_syst_C_up[k];
-            m_weight_trackjet_bTagSF_70_env_C_down *= m_tjet_bTagSF_70_syst_C_down[k];
-            m_weight_trackjet_bTagSF_70_env_Light_up *= m_tjet_bTagSF_70_syst_Light_up[k];
-            m_weight_trackjet_bTagSF_70_env_Light_down *= m_tjet_bTagSF_70_syst_Light_down[k];
-            m_weight_trackjet_bTagSF_70_env_extrapolation_up *= m_tjet_bTagSF_70_syst_extrapolation_up[k];
-            m_weight_trackjet_bTagSF_70_env_extrapolation_down *= m_tjet_bTagSF_70_syst_extrapolation_down[k];
-            m_weight_trackjet_bTagSF_70_env_extrapolation_from_charm_up *= m_tjet_bTagSF_70_syst_extrapolation_from_charm_up[k];
-            m_weight_trackjet_bTagSF_70_env_extrapolation_from_charm_down *= m_tjet_bTagSF_70_syst_extrapolation_from_charm_down[k];
-        }
+//         if (trackjetPtr->pt() > 10e3 && std::fabs(trackjetPtr->eta()) < 2.5 && trackjetPtr->numConstituents() >= 2) {
+//             m_weight_trackjet_bTagSF_70_env_nom *= m_tjet_bTagSF_70[k];
+//             m_weight_trackjet_bTagSF_70_env_B_up *= m_tjet_bTagSF_70_syst_B_up[k];
+//             m_weight_trackjet_bTagSF_70_env_B_down *= m_tjet_bTagSF_70_syst_B_down[k];
+//             m_weight_trackjet_bTagSF_70_env_C_up *= m_tjet_bTagSF_70_syst_C_up[k];
+//             m_weight_trackjet_bTagSF_70_env_C_down *= m_tjet_bTagSF_70_syst_C_down[k];
+//             m_weight_trackjet_bTagSF_70_env_Light_up *= m_tjet_bTagSF_70_syst_Light_up[k];
+//             m_weight_trackjet_bTagSF_70_env_Light_down *= m_tjet_bTagSF_70_syst_Light_down[k];
+//             m_weight_trackjet_bTagSF_70_env_extrapolation_up *= m_tjet_bTagSF_70_syst_extrapolation_up[k];
+//             m_weight_trackjet_bTagSF_70_env_extrapolation_down *= m_tjet_bTagSF_70_syst_extrapolation_down[k];
+//             m_weight_trackjet_bTagSF_70_env_extrapolation_from_charm_up *= m_tjet_bTagSF_70_syst_extrapolation_from_charm_up[k];
+//             m_weight_trackjet_bTagSF_70_env_extrapolation_from_charm_down *= m_tjet_bTagSF_70_syst_extrapolation_from_charm_down[k];
+//         }
 
-#endif
-        if (m_trackjetBtaggingExtra) {
-            m_tjet_BHadron_eta[k].clear();
-            m_tjet_BHadron_phi[k].clear();
-            m_tjet_BHadron_pt[k].clear();
-            m_tjet_BHadron_e[k].clear();
-            std::vector<const xAOD::IParticle*> tjet_bhadrons;
-            const std::string labelB = "ConeExclBHadronsFinal";
-            trackjetPtr->getAssociatedObjects<xAOD::IParticle>(labelB, tjet_bhadrons);
-            for (const auto* const ip : tjet_bhadrons) {
-                const xAOD::TruthParticle * bhadron = (const xAOD::TruthParticle*)(ip);
-                m_tjet_BHadron_eta[k].push_back(bhadron->eta());
-                m_tjet_BHadron_phi[k].push_back(bhadron->phi());
-                m_tjet_BHadron_pt[k].push_back(bhadron->pt());
-                m_tjet_BHadron_e[k].push_back(bhadron->e());
-            }
-        }
-    }
+// #endif
+    //     if (m_trackjetBtaggingExtra) {
+    //         m_tjet_BHadron_eta[k].clear();
+    //         m_tjet_BHadron_phi[k].clear();
+    //         m_tjet_BHadron_pt[k].clear();
+    //         m_tjet_BHadron_e[k].clear();
+    //         std::vector<const xAOD::IParticle*> tjet_bhadrons;
+    //         const std::string labelB = "ConeExclBHadronsFinal";
+    //         trackjetPtr->getAssociatedObjects<xAOD::IParticle>(labelB, tjet_bhadrons);
+    //         for (const auto* const ip : tjet_bhadrons) {
+    //             const xAOD::TruthParticle * bhadron = (const xAOD::TruthParticle*)(ip);
+    //             m_tjet_BHadron_eta[k].push_back(bhadron->eta());
+    //             m_tjet_BHadron_phi[k].push_back(bhadron->phi());
+    //             m_tjet_BHadron_pt[k].push_back(bhadron->pt());
+    //             m_tjet_BHadron_e[k].push_back(bhadron->e());
+    //         }
+    //     }
+    // }
 
     //storing the calojet btagging SF
     m_jet_bTagSF_70.resize(event.m_jets.size(), 1);

@@ -22,11 +22,11 @@ GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/phy
 #PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root
 
 # MC16d configuration to compare with 2017-only
-#PRWConfigFiles_FS HQTTtResonancesTools/kkg_mc16d.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
-#PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root
-#PRWActualMu_AF GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
-#PRWActualMu_FS GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
-#PRWLumiCalcFiles GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root
+PRWConfigFiles_FS HQTTtResonancesTools/kkg_mc16d.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
+PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.AF.v2/prw.merged.root
+PRWActualMu_AF GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
+PRWActualMu_FS GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root
+PRWLumiCalcFiles GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root
 
 # MC16a and MC16d configuration to compare (2015+2016+2017) data
 #PRWConfigFiles_FS dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16a.FS.v2/prw.merged.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16d.FS.v2/prw.merged.root
@@ -34,11 +34,11 @@ GRLFile data15_13TeV/20170619/physics_25ns_21.0.19.xml data16_13TeV/20180129/phy
 #PRWLumiCalcFiles GoodRunsLists/data15_13TeV/20170619/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root GoodRunsLists/data16_13TeV/20180129/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root GoodRunsLists/data17_13TeV/20180619/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root
 
 # MC16e configuration to comapre with 2018-only
-PRWConfigFiles_FS HQTTtResonancesTools/kkg_mc16e.root HQTTtResonancesTools/PRW_Zp_mc16e.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root
-PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
-PRWActualMu_AF GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
-PRWActualMu_FS GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
-PRWLumiCalcFiles GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
+#PRWConfigFiles_FS HQTTtResonancesTools/kkg_mc16e.root HQTTtResonancesTools/PRW_Zp_mc16e.root dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.FS.v2/prw.merged.root
+#PRWConfigFiles_AF dev/AnalysisTop/PileupReweighting/user.iconnell.Top.PRW.MC16e.AF.v2/prw.merged.root
+#PRWActualMu_AF GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
+#PRWActualMu_FS GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
+#PRWLumiCalcFiles GoodRunsLists/data18_13TeV/20190318/ilumicalc_histograms_None_348885-364292_OflLumi-13TeV-010.root
 
 ######################################################################################################
 
@@ -61,8 +61,8 @@ LargeJetSubstructure None
 #LargeJetSubstructure Trimmer
 
 #Track jet (VR track jet) configuration
-TrackJetCollectionName AntiKtVR30Rmax4Rmin02TrackJets_BTagging201903
-TrackJetPt 10000
+TrackJetCollectionName None #AntiKtVR30Rmax4Rmin02TrackJets_BTagging201903
+#TrackJetPt 10000
 
 TruthCollectionName TruthParticles
 TruthJetCollectionName AntiKt4TruthJets
@@ -71,7 +71,7 @@ TruthBlockInfo False
 PDFInfo False
 
 IsAFII False
-OutputFileNEventAutoFlush -30000000
+#OutputFileNEventAutoFlush -30000000
 #NEvents 2000
 #OutputFileBasketSizePrimitive 512
 #OutputFileBasketSizeVector 1024
@@ -90,7 +90,7 @@ Systematics AllJets,AllElectrons,AllMuons,AllMET
 #BTagCDIPath xAODBTaggingEfficiency/13TeV/2020-21-13TeV-MC16-CDI-2020-12-02_v2.root
 
 BTaggingCaloJetWP DL1r:FixedCutBEff_77
-BTaggingTrackJetWP DL1r:FixedCutBEff_77
+#BTaggingTrackJetWP DL1r:FixedCutBEff_77
 
 #BTaggingWP DL1:FixedCutBEff_60 DL1:FixedCutBEff_70 DL1:FixedCutBEff_77 DL1:FixedCutBEff_85 DL1r:FixedCutBEff_60 DL1r:FixedCutBEff_70 DL1r:FixedCutBEff_77 DL1r:FixedCutBEff_85
 
@@ -98,6 +98,9 @@ JetUncertainties_NPModel CategoryReduction
 LargeRJESJMSConfig CombMass
 LargeRJetUncertainties_JESJERJMS_NPModel CategoryJES_FullJER_FullJMS
 LargeRJetUncertainties_JMR_NPModel FullJMR_COMB_newBinning
+
+#JetMCtoMCCalibration pythia ## default: Allowed values: H713, H716, H716dip, H721, Sh221, Sh222, Sh225, Sh225Lund, Sh2211, Sh2211tun, pythia, None
+useJESPrecisionFlavourUncertainties True ## will not work without JetMc-2-Mc option
 
 ElectronID TightLH
 ElectronIDLoose MediumLH
@@ -122,7 +125,7 @@ TtresRunHTT False
 
 # Note that turning `TtresrunEWK` on when running ttbar samples is necessary in order to apply EWKCorrection in the later stage.
 # However, it may increase the running time significantly when running non-ttbar samples. Therefore, it must be only turned OFF with caution.
-TtresrunEWK False
+TtresrunEWK True
 TtresSavePartons False
 SaveTruthJets False
 
@@ -133,8 +136,8 @@ SaveFullTruthRecord False
 DumpToolConfigTo toolConfig.txt
 MCGeneratorWeights Nominal
 
-FilterBranches truthparticle_*,mu_trigMatch_*,el_trigMatch_*,HLT_*,tjet_DL1*,jet_DL1*,weight_globalLeptonTriggerSF*,weight_oldTriggerSF*,tjet_numConstituents,el_true_firstEgMotherTruthType,el_true_firstEgMotherTruthOrigin,weight_trackjet_bTagSF_DL1r_77_*
-#MA_*,chi2_*,MC_ttbar_lpj*,MC_tl_*,MC_th_*,MC_w*,MC_bl*,MC_bh*,MC_W*,MC_b*,MC_i*,MC_p*,MC_e_*,MC_m*,MC_Q*,MC_a*
+FilterBranches truthparticle_*,mu_trigMatch_*,el_trigMatch_*,HLT_*,tjet_DL1*,jet_DL1*,weight_globalLeptonTriggerSF*,weight_oldTriggerSF*,tjet_numConstituents,el_true_firstEgMotherTruthType,el_true_firstEgMotherTruthOrigin,weight_trackjet_bTagSF_DL1r_77_*,el_CF,el_cl_eta,el_true_*,mu_true_*,jet_NumTrkPt500,ljtmatch,backgroundFlags,hasBadMuon
+#MA_*,chi2_*,MC_ttbar_lpj*,MC_tl_*,MC_th_*,MC_w*,MC_bl*,MC_bh*,MC_W*,MC_b*,MC_i*,MC_p*,MC_e_*,MC_m*,MC_Q*,MC_a*,
 FilterPartonLevelBranches
 
 ### Global lepton trigger scale factor example
